@@ -1,0 +1,28 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "search.exclude": {
+        "**/node_modules": true
+    },
+    "files.exclude": {
+        "node_modules": true,
+        "*.editorconfig": true,
+        "*.gitignore": false,
+        "*.gitattributes": true,
+        "*.md": true,
+        "LICENSE": true,
+        "dist": true,
+        ".vs": true,
+        "*.csproj": true,
+        "*.user": true,
+        "*.vspscc": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true
+    },
+    "workbench.iconTheme": "material-icon-theme",
+    "vsicons.presets.angular": true,
+    "prettier.singleQuote": true,
+    "editor.foldingStrategy": "auto"
+}

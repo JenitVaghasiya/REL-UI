@@ -1,0 +1,41 @@
+<div>
+<div id="header">
+    <div fxLayout="row" fxLayout.xs="column" fxFlexFill fxLayoutAlign="space-between center" fxLayoutAlign.xs="start stretch">
+    <div fxFlex="30%">
+      <!-- <span class="logo"> 
+        <img src="./assets/images/monday_logo_short.png" style="height: 44px; width: 180px;vertical-align: baseline;" /> </span> -->
+        <button mat-icon-button color="primary">
+            <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+          </button>
+    </div>
+    <div  fxFlex="40%">
+          <button mat-icon-button color="primary">
+            <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+          </button>
+          <button mat-icon-button>
+            <mat-icon aria-label="Edit dashboard">report</mat-icon>
+          </button>
+    </div>
+    <div fxFlex="30%">
+
+    </div>
+  </div>
+</div>
+<mat-drawer-container class="main-container" autosize>
+    <mat-drawer #drawer class="main-sidenav" mode="side">
+      <p>Auto-resizing sidenav</p>
+      <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+      <button (click)="showFiller = !showFiller" mat-raised-button>
+        Toggle extra text
+      </button>
+    </mat-drawer>
+  
+    <div class="main-sidenav-content">
+        <router-outlet></router-outlet>
+      <button type="button" mat-button (click)="drawer.toggle()">
+        Toggle sidenav
+      </button>
+    </div>
+  
+  </mat-drawer-container>
+</div>

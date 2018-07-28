@@ -1,0 +1,36 @@
+@import '~@angular/material/theming'
+@import '~ngx-toastr/toastr.css'
+
+$app-blue: ( 50 : #e0f4fc, 100 : #b3e3f7, 200 : #80d0f2, 300 : #4dbded, 400 : #26afe9,    500 : #00a1e5,    600 : #0099e2,    700 : #008fde,    800 : #0085da,    900 : #0074d3,    A100 : #fbfdff,    A200 : #c8e3ff,    A400 : #95c9ff,    A700 : #7bbcff,    contrast: (        50 : #000000,        100 : #000000,        200 : #000000,        300 : #000000,        400 : #000000,        500 : #ffffff,        600 : #ffffff,        700 : #ffffff,        800 : #ffffff,        900 : #ffffff,        A100 : #000000,        A200 : #000000,        A400 : #000000,        A700 : #000000    ));
+
+$app-green: (    50 : #e0f8ee,    100 : #b3efd6,    200 : #80e4ba,    300 : #4dd99e,    400 : #26d08a,    500 : #00c875,    600 : #00c26d,    700 : #00bb62,    800 : #00b458,    900 : #00a745,    A100 : #d1ffe1,    A200 : #9effbf,    A400 : #6bff9d,    A700 : #52ff8d,    contrast: (        50 : #000000,        100 : #000000,        200 : #000000,        300 : #000000,        400 : #000000,        500 : #000000,        600 : #ffffff,        700 : #ffffff,        800 : #ffffff,        900 : #ffffff,        A100 : #000000,        A200 : #000000,        A400 : #000000,        A700 : #000000,    ));
+
+$app-red: (    50 : #fce9eb,    100 : #f6c7ce,    200 : #f1a2ae,    300 : #eb7c8d,    400 : #e66074,    500 : #e2445c,    600 : #df3e54,    700 : #da354a,    800 : #d62d41,    900 : #cf1f30,    A100 : #ffffff,    A200 : #ffd3d6,    A400 : #ffa0a8,    A700 : #ff8690,    contrast: (       50 : #000000,        100 : #000000,        200 : #000000,        300 : #000000,        400 : #000000,        500 : #ffffff,        600 : #ffffff,        700 : #ffffff,        800 : #ffffff,        900 : #ffffff,        A100 : #000000,        A200 : #000000,        A400 : #000000,        A700 : #000000,    ));
+
+$custom-typography: mat-typography-config($font-family: 'Roboto, helvetica, arial, sans-serif', $headline: mat-typography-level(16px, 32px, 700),$body-1: mat-typography-level(13px, 16px, 500));
+
+@include mat-base-typography($custom-typography)
+@include mat-checkbox-typography($custom-typography)
+@include angular-material-typography($custom-typography)
+
+$app-primary: mat-palette($app-blue);
+$app-accent: mat-palette($app-green, 500, 500, 500);
+$app-warn: mat-palette($app-red);
+$app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+@include angular-material-theme($app-theme)
+@include mat-core($custom-typography)
+$app-button-primary: mat-palette($app-blue);
+$app-button-accent: mat-palette($app-red, 500, 500, 500);
+$app-button-theme: mat-light-theme($app-button-primary, $app-button-accent, $app-warn);
+@include mat-button-theme($app-button-theme)
+
+*
+  font-family: mat-font-family($custom-typography)
+
+body
+  min-height: 100vh
+  margin: 0
+  padding: 0
+  color: #ffffff
+  font-size: 13px
+  overflow-y: hidden
