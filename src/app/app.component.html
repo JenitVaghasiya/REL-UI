@@ -70,17 +70,17 @@
             
         <mat-divider></mat-divider>
         <mat-list-item (click)="menuExpand = !menuExpand">
-          <mat-icon>menu</mat-icon>
+          <mat-icon>subject</mat-icon>
           Boards
         </mat-list-item>
-        <mat-list-item  *ngIf="menuExpand" >
+        <mat-list-item class="normal"  *ngIf="menuExpand" >
             Real Estate Management
         </mat-list-item>
       
-        <mat-list-item *ngIf="menuExpand"  (click)="layoutClick()" >
+        <mat-list-item class="normal" *ngIf="menuExpand"  (click)="layoutClick()" >
             Layout
         </mat-list-item>
-        <mat-list-item *ngIf="menuExpand" fxLayoutAlign="end center">
+        <mat-list-item class="new" *ngIf="menuExpand" fxLayoutAlign="end center">
             <button style="border-radius: 20px;" mat-button> <mat-icon color="primary" style="vertical-align: middle;">add_circle</mat-icon>New</button>
         </mat-list-item>
         
