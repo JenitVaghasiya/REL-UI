@@ -20,7 +20,7 @@ $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
 @include angular-material-theme($app-theme)
 @include mat-core($custom-typography)
 $app-button-primary: mat-palette($app-blue);
-$app-button-accent: mat-palette($app-red, 500, 500, 500);
+$app-button-accent: mat-palette($app-green, 500, 500, 500);
 $app-button-theme: mat-light-theme($app-button-primary, $app-button-accent, $app-warn);
 @include mat-button-theme($app-button-theme)
 
@@ -34,3 +34,10 @@ body
   color: #ffffff
   font-size: 13px
   overflow-y: hidden
+
+.headerDivider
+    display: inline-block
+    height: 30px
+    vertical-align: top
+    margin: 5px 10px 0px 5px
+    border-right: 1px solid #dfdfdf
