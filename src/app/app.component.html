@@ -12,42 +12,42 @@
           <mat-icon aria-label="">menu</mat-icon>
         </button>
         <div>
-          <button class="icon-border" mat-icon-button color="accent">
+          <button class="icon-border" mat-icon-button color="accent" matTooltip="Notification">
             <mat-icon aria-label="Notification">alarm</mat-icon>
           </button>
         </div>
         <div class="headerDivider"></div>
         <div>
-          <button class="icon-border" mat-icon-button color="accent">
+          <button class="icon-border" mat-icon-button color="accent" matTooltip="Manage Mamber List">
             <mat-icon aria-label="Manage Mamber List">supervisor_account</mat-icon>
           </button>
         </div>
         <div>
           <input type="text" class="search" name="search" [(value)]="searchInput" (focus)="searchFocus()" (focusout)="searchFocusOut()"
             placeholder="Search Everything..." />
-          <mat-icon *ngIf="resetSearch" (click)="searchReset()" style="color:black;vertical-align: middle;padding-left: 3px;cursor: pointer;"
+          <mat-icon *ngIf="resetSearch" (click)="searchReset()" matTooltip="Remove" style="color:black;vertical-align: middle;padding-left: 3px;cursor: pointer;"
             aria-label="remove">cancel</mat-icon>
 
         </div>
         <div fxFlex fxHide.lt-sm="true"> 
           <div fxLayout="row" fxLayoutAlign="end center">
-            <button class="button-round" mat-raised-button color="primary">
+            <button class="button-round" mat-raised-button color="primary" matTooltip="Upgrade">
               <mat-icon aria-label="">arrow_right</mat-icon>
               Upgrade
             </button>
             <div class="headerDivider"></div>
-            <button mat-icon-button color="primary">
+            <button mat-icon-button color="primary" matTooltip="Favorite">
               <mat-icon aria-label="">favorite</mat-icon>
             </button>
             <div class="headerDivider"></div>
             <div>
-              <a href="#" class="invite-member">
+              <a href="#" class="invite-member" matTooltip="Invite Team Members">
                 <mat-icon color="primary" style="vertical-align: middle;">add_circle</mat-icon>
                 Invite Team Members
               </a>
             </div>
             <div class="headerDivider"></div>
-            <button color="primary" mat-fab>
+            <button color="primary" mat-fab matTooltip="Profile">
               <mat-icon aria-label="Edit dashboard">JV</mat-icon>
             </button>
             <div fxFlex="10px"></div>
