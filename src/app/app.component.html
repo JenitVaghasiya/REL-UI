@@ -29,7 +29,7 @@
             aria-label="remove">cancel</mat-icon>
 
         </div>
-        <div fxFlex>
+        <div fxFlex fxHide.lt-sm="true"> 
           <div fxLayout="row" fxLayoutAlign="end center">
             <button class="button-round" mat-raised-button color="primary">
               <mat-icon aria-label="">arrow_right</mat-icon>
@@ -95,6 +95,31 @@
           Private Boards
         </mat-list-item>
         <mat-divider></mat-divider>
+        <mat-list-item fxHide="true" fxShow.lt-sm="true">
+          <mat-icon>person</mat-icon>
+          Your Profile
+        </mat-list-item>
+        <mat-divider fxHide="true" fxShow.lt-sm="true"></mat-divider>
+        <mat-list-item fxHide="true" fxShow.lt-sm="true">
+          <mat-icon>build</mat-icon>
+          Admin
+        </mat-list-item>
+        <mat-divider fxHide="true" fxShow.lt-sm="true"></mat-divider>
+        <mat-list-item fxHide="true" fxShow.lt-sm="true">
+          <mat-icon>add_circle_outline</mat-icon>
+          Invite Members
+        </mat-list-item>
+        <mat-divider fxHide="true" fxShow.lt-sm="true"></mat-divider>
+        <mat-list-item fxHide="true" fxShow.lt-sm="true">
+          <mat-icon>people</mat-icon>
+          User List
+        </mat-list-item>
+        <mat-divider fxHide="true" fxShow.lt-sm="true"></mat-divider>
+        <mat-list-item fxHide="true" fxShow.lt-sm="true">
+          <mat-icon>launch</mat-icon>
+          Log Out
+        </mat-list-item>
+        <mat-divider fxHide="true" fxShow.lt-sm="true"></mat-divider>
       </mat-nav-list>
     </mat-drawer>
 
