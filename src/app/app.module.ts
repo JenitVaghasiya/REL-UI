@@ -9,7 +9,8 @@ import {
   MatFormFieldModule,
   MatSelectModule,
   MatDatepickerModule,
-  MatLineModule
+  MatLineModule,
+  MatTooltipModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
@@ -45,6 +46,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatMenuModule,
     MatListModule,
     MatFormFieldModule,
+    MatTooltipModule,
     MatSelectModule,
     MatDatepickerModule,
     ToastrModule.forRoot({

@@ -1,34 +1,144 @@
-<div fxLayout="row" fxLayoutAlign="start start">
-  <div style="min-height: 40px; height:40px" fxFlex>
-      
-  </div>
-
-</div>
-
-<div fxLayout="row" fxLayoutAlign="start center">
-    <div  fxFlex>
-            <div fxLayout="column" fxLayoutAlign="start start">
-                <h1>Layout</h1>
-                <div>
-                    Add board description
-                </div>
-                </div>
+<div class="header-content-wrapper">
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <div fxFlex>
+      <div fxLayout="column" fxLayoutAlign="start start">
+        <h1>Layout</h1>
+        <div class="sub-header-description">
+          Add board description
+        </div>
+      </div>
     </div>
     <div fxFlex>
-            <div fxLayout="row" fxLayoutAlign="end center">
-                <button mat-raised-button>Add View</button>
-                <div fxFlex="15px;">
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <button class="button-radius" mat-raised-button>Add View</button>
+        <div fxFlex="15px;">
 
-                    </div>
-                <button mat-raised-button>Subscribe</button>
-                <button mat-raised-button>Menu 3</button>
-                <button mat-raised-button>Menu 4</button>
-                <button class="icon-border" mat-icon-button color="accent">
-                <mat-icon aria-label="menu">menu</mat-icon>
-                </button>
-                <div fxFlex="15px;">
+        </div>
+        <button class="button-radius" mat-raised-button>Subscribe</button>
+        <button class="button-radius" mat-raised-button>People</button>
+        <button class="button-radius" mat-raised-button>Show Activity</button>
+        <div fxFlex="10px;">
 
-                </div>
-            </div>
+        </div>
+        <button class="button-radius" class="icon-border" mat-icon-button color="accent">
+
+          <mat-icon aria-label="menu">menu</mat-icon>
+        </button>
+        <div fxFlex="15px;">
+
+        </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="main-content-wrapper">
+  <div class="table-generic-filter" fxLayout="row" fxLayoutAlign="start center">
+    <div>
+      <button mat-icon-button color="accent" matTooltip="Collapse groups" (click)="collapseGroup()">
+        <mat-icon aria-label="Collapse groups">{{ isGroupsCollapesed ? 'remove' : 'add' }}</mat-icon>
+      </button>
+    </div>
+    <div>
+      <input type="text" class="search" name="search" placeholder="Search Everything..." />
+
+    </div>
+    <button mat-icon-button color="primary" matTooltip="Filter List">
+      <mat-icon aria-label="Filter">filter_list</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" matTooltip="Filter by Person">
+      <mat-icon aria-label="Filter by Person">account_circle</mat-icon>
+    </button>
+
+  </div>
+
+  <div fxLayout="column" fxLayoutAlign="start start">
+    <div fxLayout="row" fxFlexFill fxLayoutAlign="start center">
+      <div fxFlex="5px" fxFlexFill>
+        &nbsp;
+      </div>
+      <div fxFlexFill fxFlex="60%">
+        <div fxLayout="row" fxFlexFill fxLayoutAlign="start center">
+          <button mat-icon-button color="primary" matTooltip="Group Menu">
+            <mat-icon aria-label="Group Menu">keyboard_arrow_down</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" matTooltip="Collapse groups" (click)="collapseGroup(0)">
+            <mat-icon aria-label="Collapse groups">{{ isGroupsCollapesed ? 'remove' : 'add' }}</mat-icon>
+          </button>
+          <div class="group-name">Group Title</div>
+        </div>
+      </div>
+      <div class="table-header" fxFlexFill fxFlex="7%" fxLayoutAlign="center center">
+
+      </div>
+      <div class="table-header" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
+        Person
+      </div>
+      <div class="table-header" fxFlexFill fxFlex="17%" fxLayoutAlign="center center">
+        Status
+      </div>
+      <div class="table-header" fxFlex>&nbsp;</div>
+    </div>
+    <div class="table-row" fxLayout="row" fxFlexFill fxLayoutAlign="space-between center">
+      <div fxFlex="5px" fxFlexFill style="background-color: #66ccf5">
+        &nbsp;
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="60%">
+        <input type="text" class="table-input" value="Test data 1">
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="7%" fxLayoutAlign="center center">
+
+        <mat-icon aria-label="list alt">list_alt</mat-icon>
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
+
+        <mat-icon aria-label="Person">account_box</mat-icon>
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="17%" fxLayoutAlign="center center">
+        <button fxFlex mat-raised-button color="accent" matTooltip="Collapse groups" (click)="collapseGroup()">
+          Done
+        </button>
+      </div>
+      <div class="table-column" fxFlex>&nbsp;</div>
+    </div>
+    <div class="table-row" fxLayout="row" fxFlexFill fxLayoutAlign="space-between center">
+      <div fxFlex="5px" fxFlexFill style="background-color: #66ccf5">
+        &nbsp;
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="60%">
+        <input type="text" class="table-input" value="Test data 2 with more details">
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="7%" fxLayoutAlign="center center">
+        <mat-icon aria-label="list alt">list_alt</mat-icon>
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
+        <mat-icon aria-label="Person">account_box</mat-icon>
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="17%">
+        <button fxFlex mat-raised-button color="primary" matTooltip="Collapse groups" (click)="collapseGroup()">
+          Working on it
+        </button>
+      </div>
+      <div class="table-column" fxFlex>&nbsp;</div>
+    </div>
+    <div class="table-row" fxLayout="row" fxFlexFill fxLayoutAlign="space-between center">
+      <div fxFlex="5px" fxFlexFill style="background-color: #66ccf5">
+        &nbsp;
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="60%">
+        <input type="text" class="table-input" value="Test data 3 for test only">
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="7%" fxLayoutAlign="center center">
+        <mat-icon aria-label="list alt">list_alt</mat-icon>
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
+        <mat-icon aria-label="Person">account_box</mat-icon>
+      </div>
+      <div class="table-column" fxFlexFill fxFlex="17%">
+        <button fxFlex mat-raised-button color="warn" matTooltip="Collapse groups" (click)="collapseGroup()">
+          Need Help
+        </button>
+      </div>
+      <div class="table-column" fxFlex>&nbsp;</div>
+
+    </div>
   </div>

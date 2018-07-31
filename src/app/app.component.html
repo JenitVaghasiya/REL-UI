@@ -29,7 +29,7 @@
             aria-label="remove">cancel</mat-icon>
 
         </div>
-        <div fxFlex fxHide.lt-sm="true"> 
+        <div fxFlex fxHide.lt-sm="true">
           <div fxLayout="row" fxLayoutAlign="end center">
             <button class="button-round" mat-raised-button color="primary" matTooltip="Upgrade">
               <mat-icon aria-label="">arrow_right</mat-icon>
@@ -47,9 +47,28 @@
               </a>
             </div>
             <div class="headerDivider"></div>
-            <button color="primary" mat-fab matTooltip="Profile">
+            <button color="primary" [matMenuTriggerFor]="menu" mat-fab matTooltip="Profile">
               <mat-icon aria-label="Edit dashboard">JV</mat-icon>
             </button>
+
+            <mat-menu #menu="matMenu" yPosition="below" xPosition="before" [overlapTrigger]="false" class="right-arrow-box">
+              <button mat-menu-item>
+                <mat-icon>add</mat-icon>
+                <span>My Profile</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>add</mat-icon>
+                <span>Upgrade Account</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>add</mat-icon>
+                <span>Admin</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>add</mat-icon>
+                <span>Integration</span>
+              </button>
+            </mat-menu>
             <div fxFlex="10px"></div>
           </div>
         </div>
@@ -67,23 +86,24 @@
         <mat-list-item>
           Inbox
         </mat-list-item>
-            
+
         <mat-divider></mat-divider>
         <mat-list-item (click)="menuExpand = !menuExpand">
           <mat-icon>subject</mat-icon>
           Boards
         </mat-list-item>
-        <mat-list-item class="normal"  *ngIf="menuExpand" >
-            Real Estate Management
+        <mat-list-item class="normal" *ngIf="menuExpand">
+          Real Estate Management
         </mat-list-item>
-      
-        <mat-list-item class="normal" *ngIf="menuExpand"  (click)="layoutClick()" >
-            Layout
+
+        <mat-list-item class="normal" *ngIf="menuExpand" (click)="layoutClick()">
+          Layout
         </mat-list-item>
         <mat-list-item class="new" *ngIf="menuExpand" fxLayoutAlign="end center">
-            <button style="border-radius: 20px;" mat-button> <mat-icon color="primary" style="vertical-align: middle;">add_circle</mat-icon>New</button>
+          <button style="border-radius: 20px;" mat-button>
+            <mat-icon color="primary" style="vertical-align: middle;">add_circle</mat-icon>New</button>
         </mat-list-item>
-        
+
         <mat-divider></mat-divider>
         <mat-list-item>
           <mat-icon>share</mat-icon>
