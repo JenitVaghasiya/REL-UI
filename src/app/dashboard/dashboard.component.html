@@ -56,7 +56,7 @@
       <div fxFlex="5px" fxFlexFill>
         &nbsp;
       </div>
-      <div fxFlexFill fxFlex="60%">
+      <div fxFlexFill fxFlex="62%">
         <div fxLayout="row" fxFlexFill fxLayoutAlign="start center">
           <button *ngIf="!groupItem.isGrouped" mat-icon-button color="primary" matTooltip="Group Menu">
             <mat-icon aria-label="Group Menu">keyboard_arrow_down</mat-icon>
@@ -64,10 +64,10 @@
           <button mat-icon-button color="accent" matTooltip="Collapse groups" (click)="groupItem.isGrouped = !groupItem.isGrouped">
             <mat-icon aria-label="Collapse groups">{{ groupItem.isGrouped ? 'remove' : 'add' }}</mat-icon>
           </button>
-          <div class="group-name">Group Title</div>
+          <div class="group-name">Group Title - {{ i+1 }}</div>
         </div>
       </div>
-      <div class="table-header" fxFlexFill fxFlex="7%" fxLayoutAlign="center center">
+      <div class="table-header" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
 
       </div>
       <div class="table-header" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
@@ -85,10 +85,10 @@
       <div fxFlex="5px" fxFlexFill style="background-color: #66ccf5">
         &nbsp;
       </div>
-      <div class="table-column" fxFlexFill fxFlex="60%">
+      <div class="table-column" fxFlexFill fxFlex="62%">
         <input type="text" class="table-input" value="Test data 1">
       </div>
-      <div class="table-column" fxFlexFill fxFlex="7%" fxLayoutAlign="center center">
+      <div class="table-column" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
 
         <mat-icon aria-label="list alt">list_alt</mat-icon>
       </div>
@@ -107,10 +107,10 @@
       <div fxFlex="5px" fxFlexFill style="background-color: #66ccf5">
         &nbsp;
       </div>
-      <div class="table-column" fxFlexFill fxFlex="60%">
+      <div class="table-column" fxFlexFill fxFlex="62%">
         <input type="text" class="table-input" value="Test data 2 with more details">
       </div>
-      <div class="table-column" fxFlexFill fxFlex="7%" fxLayoutAlign="center center">
+      <div class="table-column" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
         <mat-icon aria-label="list alt">list_alt</mat-icon>
       </div>
       <div class="table-column" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
@@ -127,10 +127,10 @@
       <div fxFlex="5px" fxFlexFill style="background-color: #66ccf5">
         &nbsp;
       </div>
-      <div class="table-column" fxFlexFill fxFlex="60%">
+      <div class="table-column" fxFlexFill fxFlex="62%">
         <input type="text" class="table-input" value="Test data 3 for test only">
       </div>
-      <div class="table-column" fxFlexFill fxFlex="7%" fxLayoutAlign="center center">
+      <div class="table-column" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
         <mat-icon aria-label="list alt">list_alt</mat-icon>
       </div>
       <div class="table-column" fxFlexFill fxFlex="8%" fxLayoutAlign="center center">
