@@ -34,7 +34,7 @@
 <div class="main-content-wrapper">
   <div class="table-generic-filter" fxLayout="row" fxLayoutAlign="start center">
     <div>
-      <button mat-icon-button color="accent" matTooltip="Collapse groups" (click)="collapseGroup()">
+      <button mat-icon-button color="accent" matTooltip="Collapse groups" (click)="collapseGroups()">
         <mat-icon aria-label="Collapse groups">{{ isGroupsCollapesed ? 'remove' : 'add' }}</mat-icon>
       </button>
     </div>
@@ -50,19 +50,19 @@
     </button>
 
   </div>
-
+<div style="padding-top: 20px;" *ngFor="let groupItem of gridGroups; let i = index;">
   <div fxLayout="column" fxLayoutAlign="start start">
-    <div fxLayout="row" fxFlexFill fxLayoutAlign="start center">
+    <div fxLayout="row" fxFlexFill fxLayoutAlign="start center" [class]="groupItem.isGrouped ? 'group-collapsed' : ''">
       <div fxFlex="5px" fxFlexFill>
         &nbsp;
       </div>
       <div fxFlexFill fxFlex="60%">
         <div fxLayout="row" fxFlexFill fxLayoutAlign="start center">
-          <button mat-icon-button color="primary" matTooltip="Group Menu">
+          <button *ngIf="!groupItem.isGrouped" mat-icon-button color="primary" matTooltip="Group Menu">
             <mat-icon aria-label="Group Menu">keyboard_arrow_down</mat-icon>
           </button>
-          <button mat-icon-button color="accent" matTooltip="Collapse groups" (click)="collapseGroup(0)">
-            <mat-icon aria-label="Collapse groups">{{ isGroupsCollapesed ? 'remove' : 'add' }}</mat-icon>
+          <button mat-icon-button color="accent" matTooltip="Collapse groups" (click)="groupItem.isGrouped = !groupItem.isGrouped">
+            <mat-icon aria-label="Collapse groups">{{ groupItem.isGrouped ? 'remove' : 'add' }}</mat-icon>
           </button>
           <div class="group-name">Group Title</div>
         </div>
@@ -77,7 +77,10 @@
         Status
       </div>
       <div class="table-header" fxFlex>&nbsp;</div>
+      <div *ngIf="groupItem.isGrouped" class="table-header" fxFlex>2 pluses</div>
     </div>
+  </div>
+  <div *ngIf="!groupItem.isGrouped" fxLayout="column" fxLayoutAlign="start start">
     <div class="table-row" fxLayout="row" fxFlexFill fxLayoutAlign="space-between center">
       <div fxFlex="5px" fxFlexFill style="background-color: #66ccf5">
         &nbsp;
@@ -142,3 +145,6 @@
 
     </div>
   </div>
+
+</div>
+  
