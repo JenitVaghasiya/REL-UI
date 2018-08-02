@@ -33,7 +33,7 @@
           }
         }
         .item-link {
-          color: rgba(#fff,.5);
+          color: gray; //rgba(#fff,.5); // this is for menu font color
           display: block;
           font-size: 1rem;
           font-weight: 400;
@@ -63,7 +63,8 @@
             width: 22px;
           }
           &:hover {
-            color: #fff;
+            color: main-color(A200); // this is for menu hover
+            background-color: main-color(50)
           }
         }
         &.menu-item-group {
@@ -124,11 +125,11 @@
             }
           }
           > .item-link {
-            background: main-color(700);
+            background: main-color(500);
             color: #fff;
 
             .icon {
-              color: main-color(A100);
+              color: main-color(A200);
             }
           }
         }

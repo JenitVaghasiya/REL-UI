@@ -84,16 +84,10 @@ const folders: any[] = [
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class PageDashboardComponent {
+export class PageDashboardComponent implements OnInit {
   pageTitle: string = 'Dashboard';
   messages = messages;
   folders = folders;
-
-  constructor( private _sharedService: SharedService ) {
-    this._sharedService.emitChange(this.pageTitle);
-  }
-
-  ngOnInit() {}
 
   // lineChart
   public lineChartData: any[] = [
@@ -224,4 +218,10 @@ export class PageDashboardComponent {
     }
   ];
   public radarChartType: string = 'radar';
+
+  constructor( private _sharedService: SharedService ) {
+    this._sharedService.emitChange(this.pageTitle);
+  }
+
+  ngOnInit() {}
 }
