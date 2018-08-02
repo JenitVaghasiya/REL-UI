@@ -1,10 +1,10 @@
-import { A2AdminPage } from './app.po';
+import { RelUiAdminPage } from './app.po';
 
 describe('Rel UI-admin App', () => {
-  let page: A2AdminPage;
+  let page: RelUiAdminPage;
 
   beforeEach(() => {
-    page = new A2AdminPage();
+    page = new RelUiAdminPage();
   });
 
   it('should display welcome message', () => {

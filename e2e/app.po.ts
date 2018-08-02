@@ -1,6 +1,6 @@
 import { browser, by, element } from 'protractor';
 
-export class A2AdminPage {
+export class RelUiAdminPage {
   navigateTo() {
     return browser.get('/');
   }

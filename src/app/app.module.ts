@@ -52,7 +52,7 @@ import { NavbarComponent }                  from './rel-ui-components/navbar/nav
 import { SidebarComponent }                 from './rel-ui-components/sidebar/sidebar.component';
 import { LogoComponent }                    from './rel-ui-components/logo/logo.component';
 import { MainMenuComponent }                from './rel-ui-components/main-menu/main-menu.component';
-import { A2CardComponent }                  from './rel-ui-components/card/card.component';
+import { RelUiCardComponent }                  from './rel-ui-components/card/card.component';
 import { AlertComponent }                   from './rel-ui-components/alert/alert.component';
 import { BadgeComponent }                   from './rel-ui-components/badge/badge.component';
 import { BreadcrumbComponent }              from './rel-ui-components/breadcrumb/breadcrumb.component';
@@ -181,7 +181,7 @@ import { AdditionNavbarComponent }          from './rel-ui-components/addition-n
     SidebarComponent,
     LogoComponent,
     MainMenuComponent,
-    A2CardComponent,
+    RelUiCardComponent,
     AlertComponent,
     BadgeComponent,
     BreadcrumbComponent,
