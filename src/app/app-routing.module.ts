@@ -65,9 +65,14 @@ import { PageFormValidationComponent } from './pages/forms/form-validation/form-
 import { PageGoogleMapComponent } from './pages/maps/google-map/google-map.component';
 import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.component';
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
+import { AuthenticationGuard } from './services/authentication.guard';
 
 const defaultRoutes: Routes = [
-  { path: 'dashboard', component: PageDashboardComponent },
+  {
+    path: 'dashboard',
+    component: PageDashboardComponent,
+    canActivate: [AuthenticationGuard]
+  },
   { path: 'dashboard-2', component: PageDashboard2Component },
   { path: 'typography', component: PageTypographyComponent },
   { path: 'widgets', component: PageWidgetsComponent },

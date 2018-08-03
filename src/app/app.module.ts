@@ -133,6 +133,7 @@ import { HttpClientModule } from '../../node_modules/@angular/common/http';
 import { Globals } from './globals';
 
 import { ToastrModule } from 'ngx-toastr';
+import { AuthenticationGuard } from './services/authentication.guard';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -270,7 +271,7 @@ import { ToastrModule } from 'ngx-toastr';
   entryComponents: [DialogResultComponent, CalendarDialogComponent],
   bootstrap: [AppComponent],
   exports: [],
-  providers: [SharedService, OAuthService, AccountClient]
+  providers: [SharedService, OAuthService, AccountClient, AuthenticationGuard]
 })
 export class AppModule {
   constructor(private injector: Injector) {

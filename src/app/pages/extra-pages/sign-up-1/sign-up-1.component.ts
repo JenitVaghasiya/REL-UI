@@ -46,11 +46,18 @@ export class PageSignUp1Component implements OnInit {
       this.accountClient.register(this.model).subscribe(e => {
         if (e.successful) {
           this.toastrService.success('Registration Done Successfully', 'Alert');
-          this.oAuthService.setAuthorizationHeader(e.token);
-          this.router.navigate(['/rel/dashboard']);
+          const token = this.oAuthService.getToken();
+          if (token && token.length > 0) {
+            this.oAuthService.setAuthorizationHeader(e.token);
+            this.router.navigate(['/rel/dashboard']);
+          }
         } else {
           let error = '';
-          e.errorMessages.map((item, i) => error += ( i !== 0 ? ('<br/>' + item.errorMessage) : item.errorMessage));
+          e.errorMessages.map(
+            (item, i) =>
+              (error +=
+                i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
           this.toastrService.error(error, 'Alert');
         }
       });
