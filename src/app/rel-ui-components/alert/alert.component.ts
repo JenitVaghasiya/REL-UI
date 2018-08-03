@@ -7,10 +7,10 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['alert.component.scss']
 })
 export class AlertComponent {
-  @Input() color: string = '';
-  @Input() customColor: string = '';
-  @Input() outline: boolean = false;
-  @Input() close: boolean = false;
+  @Input() color = '';
+  @Input() customColor = '';
+  @Input() outline = false;
+  @Input() close = false;
 
   delete(event: any, alert: any) {
     event.preventDefault();

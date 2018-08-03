@@ -25,7 +25,8 @@
         "assets/sass/custom-material-theme.scss",
         "../node_modules/angular-calendar/css/angular-calendar.css",
         "../node_modules/leaflet/dist/leaflet.css",
-        "assets/sass/styles.scss"
+        "assets/sass/styles.scss",
+        "../node_modules/ngx-toastr/toastr.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['extra.component.scss']
 })
 export class ExtraLayoutComponent {
-  rtl: boolean = false;
+  rtl = false;
 
   constructor( ) { }
 }

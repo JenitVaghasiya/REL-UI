@@ -8,8 +8,16 @@ export class OAuthService {
   public getAuthorizationHeader(): any {
     if (localStorage.getItem('token')) {
       return 'Bearer ' + localStorage.getItem('token');
+    } else {
+      return '';
+      // this.router.navigate(['/registration/sign-in']);
     }
-    else{
+  }
+
+  public getToken(): any {
+    if (localStorage.getItem('token')) {
+      return localStorage.getItem('token');
+    } else {
       return '';
       // this.router.navigate(['/registration/sign-in']);
     }

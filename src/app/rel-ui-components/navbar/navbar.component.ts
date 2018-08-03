@@ -1,4 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '../../../../node_modules/@angular/router';
+import { OAuthService } from '../../services/o-auth.service';
+import { ToastrService } from '../../../../node_modules/ngx-toastr';
 
 @Component({
   moduleId: module.id,
@@ -8,14 +11,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
   @Input() title: string;
-  @Input() openedSidebar: boolean = false;
+  @Input() openedSidebar = false;
   @Output() sidebarState = new EventEmitter();
 
-  constructor() {}
+  constructor( private router: Router,    private oAuthService: OAuthService,
+    private toastrService: ToastrService) {}
 
   open(event) {
-    let clickedComponent = event.target.closest('.nav-item');
-    let items = clickedComponent.parentElement.children;
+    const clickedComponent = event.target.closest('.nav-item');
+    const items = clickedComponent.parentElement.children;
 
     for (let i = 0; i < items.length; i++) {
       items[i].classList.remove('opened');
@@ -24,8 +28,8 @@ export class NavbarComponent implements OnInit {
   }
 
   close(event) {
-    let clickedComponent = event.target;
-    let items = clickedComponent.parentElement.children;
+    const clickedComponent = event.target;
+    const items = clickedComponent.parentElement.children;
 
     for (let i = 0; i < items.length; i++) {
       items[i].classList.remove('opened');
@@ -38,4 +42,9 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/registration/sign-in']);
+  }
 }

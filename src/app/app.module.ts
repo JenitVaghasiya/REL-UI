@@ -131,6 +131,8 @@ import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/add
 import { AccountClient } from 'api/apiclient';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
 import { Globals } from './globals';
+
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -173,7 +175,15 @@ import { Globals } from './globals';
     CalendarModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAU9f7luK3J31nurL-Io3taRKF7w9BItQE'
-    })
+    }),
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      progressBar: true,
+      enableHtml: true,
+      easeTime: 300,
+      preventDuplicates: true
+    }),
   ],
   declarations: [
     AppComponent,

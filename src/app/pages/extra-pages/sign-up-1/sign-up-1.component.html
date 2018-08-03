@@ -1,21 +1,48 @@
 <card [title]="'Create your account'" [align]="'center'">
   <form (ngSubmit)="onSubmit()">
+      <mat-form-field>
+          <input matInput placeholder="First name" value="" [(ngModel)]="model.firstName" [formControl]="form.controls['firstName']">
+          <mat-error *ngIf="form.controls['firstName'].hasError('required') && form.controls['firstName'].touched">
+            You must include first name.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Last name" value="" [(ngModel)]="model.lastName" [formControl]="form.controls['lastName']">
+            <mat-error *ngIf="form.controls['lastName'].hasError('required') && form.controls['lastName'].touched">
+              You must include first name.
+            </mat-error>
+          </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Email address" value="">
+      <input matInput placeholder="Email address" value="" [(ngModel)]="model.email" [formControl]="form.controls['email']">
+      <mat-error *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched">
+        You must include a valid email address.
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Password" value="">
+      <input matInput placeholder="Password" type="password" [(ngModel)]="model.password" [formControl]="form.controls['password']">
+        <mat-error *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">
+          You must include passward.
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Confirm Password" value="">
+      <input matInput placeholder="Confirm Password" [(ngModel)]="model.confirmPassword" [formControl]="form.controls['confirmPassword']">
+      <mat-error *ngIf="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched">
+        You must include confirm password.
+      </mat-error>
+      <mat-error *ngIf="form.controls['confirmPassword'].value != form.controls['password'].value">
+        Passwards didn't matched
+      </mat-error>
     </mat-form-field>
 
     <div class="text-left mb-module">
-      <mat-checkbox>
+      <mat-checkbox [(ngModel)]="iAgreed" [formControl]="form.controls['agree']">
         I have read and agree to the terms of service.
       </mat-checkbox>
+      <mat-error *ngIf="form.controls['agree'].hasError('requiredTrue') && form.controls['agree'].touched">
+          You must agreed to terms of service.
+        </mat-error>
     </div>
 
     <button mat-raised-button color="primary" type="submit" color="accent">Sign Up</button>
