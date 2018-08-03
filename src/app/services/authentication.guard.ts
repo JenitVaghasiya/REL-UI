@@ -18,6 +18,7 @@ export class AuthenticationGuard implements CanActivate {
     if (token && token.length > 0) {
       return true;
     } else {
+      this.router.navigate(['/registration/sign-in']);
       return false;
     }
   }

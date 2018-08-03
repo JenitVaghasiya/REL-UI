@@ -8,7 +8,7 @@ import { SharedService } from '../../../layouts/shared-service';
   styleUrls: ['rel-ui-card.component.scss']
 })
 export class PageRelUICardComponent implements OnInit {
-  pageTitle: string = 'Card';
+  pageTitle = 'Card';
 
   constructor( private _sharedService: SharedService ) {
     this._sharedService.emitChange(this.pageTitle);

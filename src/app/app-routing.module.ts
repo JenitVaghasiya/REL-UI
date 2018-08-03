@@ -153,7 +153,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: DefaultLayoutComponent,
+    component: PageNotFoundComponent,
     children: defaultRoutes
   }
 ];
