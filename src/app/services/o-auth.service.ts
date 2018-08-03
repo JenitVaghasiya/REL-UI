@@ -5,9 +5,9 @@ import { Router } from '../../../node_modules/@angular/router';
 export class OAuthService {
   constructor(private router: Router) {}
 
-  public get getAuthorizationHeader(): any {
-    if (localStorage.getItemItem('token')) {
-      return 'Bearer ' + localStorage.getItemItem('token');
+  public getAuthorizationHeader(): any {
+    if (localStorage.getItem('token')) {
+      return 'Bearer ' + localStorage.getItem('token');
     }
     else{
       return '';
@@ -15,7 +15,7 @@ export class OAuthService {
     }
   }
 
-  public set setAuthorizationHeader(value) {
+  public setAuthorizationHeader(value) {
     localStorage.setItem('token', value);
   }
 }

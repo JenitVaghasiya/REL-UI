@@ -1,12 +1,13 @@
 import { Observable } from 'rxjs/Observable'; // ignore
 import { HttpHeaders, HttpResponseBase } from '@angular/common/http'; // ignore
 import { OAuthService } from 'app/services/o-auth.service';
+import { Globals } from 'app/globals';
 
 export class BaseClient {
   private oAuthService: OAuthService;
 
   constructor() {
-    
+    this.oAuthService = Globals.injector.get(OAuthService);
   }
 
   protected transformOptions(options: any) {
@@ -14,7 +15,12 @@ export class BaseClient {
     let customHeaders = new HttpHeaders();
         customHeaders = customHeaders.append("Access-Control-Allow-Origin", "*");
         customHeaders = customHeaders.append("Content-Type", "application/json; charset=UTF-8");
-        customHeaders = customHeaders.append("Authorization", this.oAuthService.getAuthorizationHeader());
+        if (this.oAuthService.getAuthorizationHeader() != '') {
+            customHeaders = customHeaders.append(
+              'Authorization',
+              this.oAuthService.getAuthorizationHeader()
+            );
+          }
         customHeaders = customHeaders.append("Accept", "application/json");
         customHeaders = customHeaders.append("Cache-Control", "no-cache");
         customHeaders = customHeaders.append("Pragma", "no-cache");

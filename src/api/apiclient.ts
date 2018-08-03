@@ -7,6 +7,7 @@
 // ReSharper disable InconsistentNaming
 
 import { OAuthService } from 'app/services/o-auth.service';
+import { Globals } from 'app/globals';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
@@ -25,7 +26,7 @@ export class BaseClient {
   private oAuthService: OAuthService;
 
   constructor() {
-    
+    this.oAuthService = Globals.injector.get(OAuthService);
   }
 
   protected transformOptions(options: any) {
@@ -33,7 +34,12 @@ export class BaseClient {
     let customHeaders = new HttpHeaders();
         customHeaders = customHeaders.append("Access-Control-Allow-Origin", "*");
         customHeaders = customHeaders.append("Content-Type", "application/json; charset=UTF-8");
-        customHeaders = customHeaders.append("Authorization", this.oAuthService.getAuthorizationHeader());
+        if (this.oAuthService.getAuthorizationHeader() != '') {
+            customHeaders = customHeaders.append(
+              'Authorization',
+              this.oAuthService.getAuthorizationHeader()
+            );
+          }
         customHeaders = customHeaders.append("Accept", "application/json");
         customHeaders = customHeaders.append("Cache-Control", "no-cache");
         customHeaders = customHeaders.append("Pragma", "no-cache");
@@ -66,7 +72,7 @@ export class AccountClient extends BaseClient implements IAccountClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     login(model: LoginModel): Observable<ServiceResponse> {
@@ -248,7 +254,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     create(account: AccountForCreationDto): Observable<FileResponse> {
@@ -479,7 +485,7 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     getInstitution(id: string): Observable<FileResponse> {
@@ -708,7 +714,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     get(checkListId: string, id: string): Observable<FileResponse> {
@@ -838,7 +844,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     getInstitution(id: string): Observable<FileResponse> {
@@ -1149,28 +1155,15 @@ export interface IServiceResponse {
     token?: string;
 }
 
-/** Defines a validation failure */
 export class ValidationFailure implements IValidationFailure {
-    /** The name of the property. */
     propertyName?: string;
-    /** The error message */
     errorMessage?: string;
-    /** The property value that caused the failure. */
     attemptedValue?: any;
-    /** Custom state associated with the failure. */
     customState?: any;
-    /** Custom severity level associated with the failure. */
     severity: Severity;
-    /** Gets or sets the error code. */
     errorCode?: string;
-    /** Gets or sets the formatted message arguments.
-These are values for custom formatted message in validator resource files
-Same formatted message can be reused in UI and with same number of format placeholders
-Like "Value {0} that you entered should be {1}" */
     formattedMessageArguments?: any[];
-    /** Gets or sets the formatted message placeholder values. */
     formattedMessagePlaceholderValues?: { [key: string] : any; };
-    /** The resource name used for building the message */
     resourceName?: string;
 
     constructor(data?: IValidationFailure) {
@@ -1238,32 +1231,18 @@ Like "Value {0} that you entered should be {1}" */
     }
 }
 
-/** Defines a validation failure */
 export interface IValidationFailure {
-    /** The name of the property. */
     propertyName?: string;
-    /** The error message */
     errorMessage?: string;
-    /** The property value that caused the failure. */
     attemptedValue?: any;
-    /** Custom state associated with the failure. */
     customState?: any;
-    /** Custom severity level associated with the failure. */
     severity: Severity;
-    /** Gets or sets the error code. */
     errorCode?: string;
-    /** Gets or sets the formatted message arguments.
-These are values for custom formatted message in validator resource files
-Same formatted message can be reused in UI and with same number of format placeholders
-Like "Value {0} that you entered should be {1}" */
     formattedMessageArguments?: any[];
-    /** Gets or sets the formatted message placeholder values. */
     formattedMessagePlaceholderValues?: { [key: string] : any; };
-    /** The resource name used for building the message */
     resourceName?: string;
 }
 
-/** Specifies the severity of a rule. */
 export enum Severity {
     Error = 0, 
     Warning = 1, 

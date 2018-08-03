@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "codegen": "nswag swagger2tsclient /input:https://localhost:44354/swagger/v1/swagger.json /output:./src/api/apiclient.ts /template:angular /ClientBaseClass:BaseClient /ExtensionCode:./src/api/baseclient.ts /UseTransformOptionsMethod:true /GenerateClientInterfaces:true /HttpClass:HttpClient /InjectionTokenType:InjectionToken"
+    "codegen-prod": "nswag swagger2tsclient /input:https://realestateloansapi.azurewebsites.net/swagger/v1/swagger.json /output:./src/api/apiclient.ts /template:angular /ClientBaseClass:BaseClient /ExtensionCode:./src/api/baseclient.ts /UseTransformOptionsMethod:true /GenerateClientInterfaces:true /HttpClass:HttpClient /InjectionTokenType:InjectionToken",
+    "codegen-local": "nswag swagger2tsclient /input:https://localhost:44354/swagger/v1/swagger.json /output:./src/api/apiclient.ts /template:angular /ClientBaseClass:BaseClient /ExtensionCode:./src/api/baseclient.ts /UseTransformOptionsMethod:true /GenerateClientInterfaces:true /HttpClass:HttpClient /InjectionTokenType:InjectionToken"
   },
   "dependencies": {
     "@angular/common": "5.0.3",

@@ -2,7 +2,7 @@ import { OAuthService } from 'app/services/o-auth.service';
 import { SharedService } from './layouts/shared-service';
 import { BrowserModule }                    from '@angular/platform-browser';
 import { RouterModule }                     from '@angular/router';
-import { NgModule }                         from '@angular/core';
+import { NgModule, Injector }                         from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http }                 from '@angular/http';
 import { BrowserAnimationsModule }          from '@angular/platform-browser/animations';
@@ -131,9 +131,11 @@ import { PageWidgetsComponent }             from './pages/widgets/widgets.compon
 import { FooterComponent }                  from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent }          from './rel-ui-components/addition-navbar/addition-navbar.component';
 import { AccountClient } from 'api/apiclient';
-
+import { HttpClientModule } from '../../node_modules/@angular/common/http';
+import { Globals } from './globals';
 @NgModule({
   imports: [
+    HttpClientModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -272,5 +274,7 @@ import { AccountClient } from 'api/apiclient';
 })
 
 export class AppModule {
-
+  constructor(private injector: Injector) {
+    Globals.injector = this.injector;
+  }
 }
