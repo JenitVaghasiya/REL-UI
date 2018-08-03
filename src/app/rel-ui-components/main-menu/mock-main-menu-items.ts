@@ -15,21 +15,21 @@ export const MAINMENUITEMS: MainMenuItem[] = [
   {
     title: 'Dashboards',
     icon: 'fa fa-home',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Dashboard 1',
-        routing: '/default-layout/dashboard'
-      },
-      {
-        title: 'Dashboard 2',
-        routing: '/default-layout/dashboard-2'
-      }
-    ],
-    routing: '/default-layout/dashboard',
+    // active: false,
+    // groupTitle: false,
+    // sub: [
+    //   {
+    //     title: 'Dashboard 1',
+    //     routing: '/rel/dashboard'
+    //   },
+    //   {
+    //     title: 'Dashboard 2',
+    //     routing: '/rel/dashboard-2'
+    //   }
+    // ],
+    routing: '/rel/dashboard',
     externalLink: '',
-    budge: '2',
+    // budge: '2',
     budgeColor: '#f44236'
   },
   {
@@ -38,7 +38,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     active: false,
     groupTitle : false,
     sub: '',
-    routing: '/default-layout/widgets',
+    routing: '',  // routing: '/rel/widgets',
     externalLink: '',
     budge: '',
     budgeColor: ''
@@ -49,7 +49,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     active: false,
     groupTitle : false,
     sub: '',
-    routing: '/default-layout/calendar',
+    routing: '', // routing: '/rel/calendar',
     externalLink: '',
     budge: 'New',
     budgeColor: '#008000'
@@ -65,94 +65,94 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     budge: '',
     budgeColor: ''
   },
-  {
-    title: 'Material components',
-    icon: 'fa fa-briefcase',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Button',
-        routing: '/default-layout/button'
-      },
-      {
-        title: 'Card',
-        routing: '/default-layout/card'
-      },
-      {
-        title: 'Checkbox',
-        routing: '/default-layout/checkbox'
-      },
-      {
-        title: 'Chips',
-        routing: '/default-layout/chips'
-      },
-      {
-        title: 'Dialog',
-        routing: '/default-layout/dialog'
-      },
-      {
-        title: 'Icon',
-        routing: '/default-layout/icon'
-      },
-      {
-        title: 'Input',
-        routing: '/default-layout/input'
-      },
-      {
-        title: 'List',
-        routing: '/default-layout/list'
-      },
-      {
-        title: 'Menu',
-        routing: '/default-layout/menu'
-      },
-      {
-        title: 'Progress bar',
-        routing: '/default-layout/progress-bar'
-      },
-      {
-        title: 'Progress spinner',
-        routing: '/default-layout/progress-spinner'
-      },
-      {
-        title: 'Radio Button',
-        routing: '/default-layout/radio-button'
-      },
-      {
-        title: 'Select',
-        routing: '/default-layout/select'
-      },
-      {
-        title: 'Slider',
-        routing: '/default-layout/slider'
-      },
-      {
-        title: 'Slide toggle',
-        routing: '/default-layout/slide-toggle'
-      },
-      {
-        title: 'Snackbar',
-        routing: '/default-layout/snackbar'
-      },
-      {
-        title: 'Tabs',
-        routing: '/default-layout/tabs'
-      },
-      {
-        title: 'Toolbar',
-        routing: '/default-layout/toolbar'
-      },
-      {
-        title: 'Tooltip',
-        routing: '/default-layout/tooltip'
-      }
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
-  },
+  // {
+  //   title: 'Material components',
+  //   icon: 'fa fa-briefcase',
+  //   active: false,
+  //   groupTitle: false,
+  //   sub: [
+  //     {
+  //       title: 'Button',
+  //       routing: '/rel/button'
+  //     },
+  //     {
+  //       title: 'Card',
+  //       routing: '/rel/card'
+  //     },
+  //     {
+  //       title: 'Checkbox',
+  //       routing: '/rel/checkbox'
+  //     },
+  //     {
+  //       title: 'Chips',
+  //       routing: '/rel/chips'
+  //     },
+  //     {
+  //       title: 'Dialog',
+  //       routing: '/rel/dialog'
+  //     },
+  //     {
+  //       title: 'Icon',
+  //       routing: '/rel/icon'
+  //     },
+  //     {
+  //       title: 'Input',
+  //       routing: '/rel/input'
+  //     },
+  //     {
+  //       title: 'List',
+  //       routing: '/rel/list'
+  //     },
+  //     {
+  //       title: 'Menu',
+  //       routing: '/rel/menu'
+  //     },
+  //     {
+  //       title: 'Progress bar',
+  //       routing: '/rel/progress-bar'
+  //     },
+  //     {
+  //       title: 'Progress spinner',
+  //       routing: '/rel/progress-spinner'
+  //     },
+  //     {
+  //       title: 'Radio Button',
+  //       routing: '/rel/radio-button'
+  //     },
+  //     {
+  //       title: 'Select',
+  //       routing: '/rel/select'
+  //     },
+  //     {
+  //       title: 'Slider',
+  //       routing: '/rel/slider'
+  //     },
+  //     {
+  //       title: 'Slide toggle',
+  //       routing: '/rel/slide-toggle'
+  //     },
+  //     {
+  //       title: 'Snackbar',
+  //       routing: '/rel/snackbar'
+  //     },
+  //     {
+  //       title: 'Tabs',
+  //       routing: '/rel/tabs'
+  //     },
+  //     {
+  //       title: 'Toolbar',
+  //       routing: '/rel/toolbar'
+  //     },
+  //     {
+  //       title: 'Tooltip',
+  //       routing: '/rel/tooltip'
+  //     }
+  //   ],
+  //   routing: '',
+  //   externalLink: '',
+  //   budge: '',
+  //   budgeColor: ''
+  // },
   {
     title: 'RelUI components',
     icon: 'fa fa-diamond',
@@ -161,23 +161,23 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     sub: [
       {
         title: 'Alert',
-        routing: '/default-layout/alert'
+        routing: '/rel/alert'
       },
       {
         title: 'Badge',
-        routing: '/default-layout/badge'
+        routing: '/rel/badge'
       },
       {
         title: 'Breadcrumb',
-        routing: '/default-layout/breadcrumb'
+        routing: '/rel/breadcrumb'
       },
       {
         title: 'Card',
-        routing: '/default-layout/rel-ui-card'
+        routing: '/rel/rel-ui-card'
       },
       {
         title: 'File',
-        routing: '/default-layout/file'
+        routing: '/rel/file'
       }
     ],
     routing: '',
@@ -191,7 +191,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     active: false,
     groupTitle : false,
     sub: '',
-    routing: '/default-layout/typography',
+    routing: '/rel/typography',
     externalLink: '',
     budge: '',
     budgeColor: ''
@@ -204,23 +204,23 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     sub: [
       {
         title: 'Simple table',
-        routing: '/default-layout/simple-table'
+        routing: '/rel/simple-table'
       },
       {
         title: 'Sorting table',
-        routing: '/default-layout/sorting-table'
+        routing: '/rel/sorting-table'
       },
       {
         title: 'Filtering table',
-        routing: '/default-layout/filtering-table'
+        routing: '/rel/filtering-table'
       },
       {
         title: 'Pagination table',
-        routing: '/default-layout/pagination-table'
+        routing: '/rel/pagination-table'
       },
       {
         title: 'Bootstrap tables',
-        routing: '/default-layout/bootstrap-tables'
+        routing: '/rel/bootstrap-tables'
       },
     ],
     routing: '',
@@ -236,15 +236,15 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     sub: [
       {
         title: 'Form Elements',
-        routing: '/default-layout/form-elements'
+        routing: '/rel/form-elements'
       },
       {
         title: 'Form Layout',
-        routing: '/default-layout/form-layout'
+        routing: '/rel/form-layout'
       },
       {
         title: 'Form Validation',
-        routing: '/default-layout/form-validation'
+        routing: '/rel/form-validation'
       },
     ],
     routing: '',
@@ -260,31 +260,31 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     sub: [
       {
         title: 'Line Chart',
-        routing: '/default-layout/line-chart'
+        routing: '/rel/line-chart'
       },
       {
         title: 'Bar Chart',
-        routing: '/default-layout/bar-chart'
+        routing: '/rel/bar-chart'
       },
       {
         title: 'Doughnut Chart',
-        routing: '/default-layout/doughnut-chart'
+        routing: '/rel/doughnut-chart'
       },
       {
         title: 'Radar Chart',
-        routing: '/default-layout/radar-chart'
+        routing: '/rel/radar-chart'
       },
       {
         title: 'Pie Chart',
-        routing: '/default-layout/pie-chart'
+        routing: '/rel/pie-chart'
       },
       {
         title: 'Polar Area Chart',
-        routing: '/default-layout/polar-area-chart'
+        routing: '/rel/polar-area-chart'
       },
       {
         title: 'Dynamic Chart',
-        routing: '/default-layout/dynamic-chart'
+        routing: '/rel/dynamic-chart'
       }
     ],
     routing: '',
@@ -300,11 +300,11 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     sub: [
       {
         title: 'Google map',
-        routing: '/default-layout/google-map'
+        routing: '/rel/google-map'
       },
       {
         title: 'Leaflet map',
-        routing: '/default-layout/leaflet-map'
+        routing: '/rel/leaflet-map'
       }
     ],
     routing: '',
@@ -331,76 +331,77 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     sub: [
       {
         title: 'About Us',
-        routing: '/default-layout/about-us'
+        routing: '/rel/about-us'
       },
       {
         title: 'FAQ',
-        routing: '/default-layout/faq'
+        routing: '/rel/faq'
       },
       {
         title: 'TimeLine',
-        routing: '/default-layout/timeline'
+        routing: '/rel/timeline'
       },
       {
         title: 'Invoice',
-        routing: '/default-layout/invoice'
+        routing: '/rel/invoice'
       },
     ],
     routing: '',
     externalLink: '',
     budge: 'New',
     budgeColor: '#008000'
-  },
-  {
-    title: 'Extra pages',
-    icon: 'fa fa-clone',
-    active: false,
-    groupTitle: false,
-    sub: [
-      {
-        title: 'Sign In 1',
-        routing: '/extra-layout/sign-in'
-      },
-      {
-        title: 'Sign In 2',
-        routing: '/default-layout/sign-in'
-      },
-      {
-        title: 'Sign In with Social',
-        routing: '/extra-layout/sign-in-social'
-      },
-      {
-        title: 'Sign Up 1',
-        routing: '/extra-layout/sign-up'
-      },
-      {
-        title: 'Sign Up 2',
-        routing: '/default-layout/sign-up'
-      },
-      {
-        title: 'Forgot password',
-        routing: '/extra-layout/forgot'
-      },
-      {
-        title: 'Confirm email',
-        routing: '/extra-layout/confirm'
-      },
-      {
-        title: '404',
-        routing: '/extra-layout/page-404'
-      },
-      {
-        title: '500',
-        routing: '/extra-layout/page-500'
-      },
-      {
-        title: 'Not found',
-        routing: '/default-layout/not-found'
-      }
-    ],
-    routing: '',
-    externalLink: '',
-    budge: '',
-    budgeColor: ''
   }
+  // ,
+  // {
+  //   title: 'Extra pages',
+  //   icon: 'fa fa-clone',
+  //   active: false,
+  //   groupTitle: false,
+  //   sub: [
+  //     {
+  //       title: 'Sign In 1',
+  //       routing: '/registration/sign-in'
+  //     },
+  //     {
+  //       title: 'Sign In 2',
+  //       routing: '/rel/sign-in'
+  //     },
+  //     {
+  //       title: 'Sign In with Social',
+  //       routing: '/registration/sign-in-social'
+  //     },
+  //     {
+  //       title: 'Sign Up 1',
+  //       routing: '/registration/sign-up'
+  //     },
+  //     {
+  //       title: 'Sign Up 2',
+  //       routing: '/rel/sign-up'
+  //     },
+  //     {
+  //       title: 'Forgot password',
+  //       routing: '/registration/forgot'
+  //     },
+  //     {
+  //       title: 'Confirm email',
+  //       routing: '/registration/confirm'
+  //     },
+  //     {
+  //       title: '404',
+  //       routing: '/registration/page-404'
+  //     },
+  //     {
+  //       title: '500',
+  //       routing: '/registration/page-500'
+  //     },
+  //     {
+  //       title: 'Not found',
+  //       routing: '/rel/not-found'
+  //     }
+  //   ],
+  //   routing: '',
+  //   externalLink: '',
+  //   budge: '',
+  //   budgeColor: ''
+  // }
 ];

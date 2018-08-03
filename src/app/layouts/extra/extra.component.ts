@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'extra-layout',
+  selector: 'registration',
   templateUrl: 'extra.component.html',
   styleUrls: ['extra.component.scss']
 })

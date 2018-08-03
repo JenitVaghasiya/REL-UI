@@ -137,16 +137,16 @@ const extraRoutes: Routes = [
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/default-layout/dashboard',
+    redirectTo: '/registration/sign-in',
     pathMatch: 'full'
   },
   {
-    path: 'default-layout',
+    path: 'rel',
     component: DefaultLayoutComponent,
     children: defaultRoutes
   },
   {
-    path: 'extra-layout',
+    path: 'registration',
     component: ExtraLayoutComponent,
     children: extraRoutes
   },
@@ -158,7 +158,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes, { useHash: true }) ],
+  imports: [ RouterModule.forRoot(routes, { useHash: false }) ],
   exports: [ RouterModule ]
 })
 export class AppRoutingModule {}
