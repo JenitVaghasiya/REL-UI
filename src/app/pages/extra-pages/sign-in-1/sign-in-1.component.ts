@@ -31,8 +31,7 @@ export class PageSignIn1Component implements OnInit {
     this.accountClient.login(this.model).subscribe(e=> 
     {
       this.oAuthService.setAuthorizationHeader(e);
+          // this.router.navigate(['/rel/dashboard']);
     });
-    
-    // this.router.navigate(['/rel/dashboard']);
   }
 }

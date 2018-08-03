@@ -33,7 +33,7 @@ export class BaseClient {
     let customHeaders = new HttpHeaders();
         customHeaders = customHeaders.append("Access-Control-Allow-Origin", "*");
         customHeaders = customHeaders.append("Content-Type", "application/json; charset=UTF-8");
-        customHeaders = customHeaders.append("Authorization", this.oAuthService.authorizationHeader());
+        customHeaders = customHeaders.append("Authorization", this.oAuthService.getAuthorizationHeader());
         customHeaders = customHeaders.append("Accept", "application/json");
         customHeaders = customHeaders.append("Cache-Control", "no-cache");
         customHeaders = customHeaders.append("Pragma", "no-cache");
