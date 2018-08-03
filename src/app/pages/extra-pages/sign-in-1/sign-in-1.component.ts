@@ -8,6 +8,7 @@ import { OAuthService } from 'app/services/o-auth.service';
 import { ToastrService } from '../../../../../node_modules/ngx-toastr';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'page-sign-in-1',
   templateUrl: './sign-in-1.component.html',
   styleUrls: ['./sign-in-1.component.scss']
