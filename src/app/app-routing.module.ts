@@ -37,7 +37,6 @@ import { PageNotFoundComponent } from './pages/not-found/not-found.component';
 
 import { PageSignIn1Component } from './pages/extra-pages/sign-in-1/sign-in-1.component';
 import { PageSignUp1Component } from './pages/extra-pages/sign-up-1/sign-up-1.component';
-import { PageSignUp2Component } from './pages/extra-pages/sign-up-2/sign-up-2.component';
 import { PageForgotComponent } from './pages/extra-pages/forgot/forgot.component';
 import { PageConfirmComponent } from './pages/extra-pages/confirm/confirm.component';
 import { Page404Component } from './pages/extra-pages/page-404/page-404.component';
@@ -101,7 +100,6 @@ const defaultRoutes: Routes = [
   { path: 'alert', component: PageAlertComponent },
   { path: 'badge', component: PageBadgeComponent },
   { path: 'breadcrumb', component: PageBreadcrumbComponent },
-  { path: 'sign-up', component: PageSignUp2Component },
   { path: 'about-us', component: PageAboutUsComponent },
   { path: 'faq', component: PageFaqComponent },
   { path: 'timeline', component: PageTimelineComponent },

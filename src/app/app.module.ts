@@ -97,7 +97,6 @@ import { PageNotFoundComponent } from './pages/not-found/not-found.component';
 // Extra pages
 import { PageSignIn1Component } from './pages/extra-pages/sign-in-1/sign-in-1.component';
 import { PageSignUp1Component } from './pages/extra-pages/sign-up-1/sign-up-1.component';
-import { PageSignUp2Component } from './pages/extra-pages/sign-up-2/sign-up-2.component';
 import { PageForgotComponent } from './pages/extra-pages/forgot/forgot.component';
 import { PageConfirmComponent } from './pages/extra-pages/confirm/confirm.component';
 import { Page404Component } from './pages/extra-pages/page-404/page-404.component';
@@ -236,7 +235,6 @@ import { AuthenticationGuard } from './services/authentication.guard';
 
     PageSignIn1Component,
     PageSignUp1Component,
-    PageSignUp2Component,
     PageForgotComponent,
     PageConfirmComponent,
     Page404Component,
