@@ -15,8 +15,9 @@ export const MAINMENUITEMS: MainMenuItem[] = [
   {
     title: 'Dashboards',
     icon: 'fa fa-home',
-    // active: false,
-    // groupTitle: false,
+    active: false,
+    groupTitle: false,
+    sub: [],
     // sub: [
     //   {
     //     title: 'Dashboard 1',
@@ -29,7 +30,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     // ],
     routing: '/rel/dashboard',
     externalLink: '',
-    // budge: '2',
+    budge: '',
     budgeColor: '#f44236'
   },
   {
