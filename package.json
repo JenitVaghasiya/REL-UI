@@ -9,7 +9,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "codegen": "nswag swagger2tsclient /input:https://localhost:44354/swagger/v1/swagger.json /output:./src/api/apiclient.ts /template:angular /ClientBaseClass:BaseClient /ExtensionCode:./src/api/baseclient.ts /UseTransformOptionsMethod:true /GenerateClientInterfaces:true /HttpClass:HttpClient /InjectionTokenType:InjectionToken"
   },
   "dependencies": {
     "@angular/common": "5.0.3",
@@ -51,6 +52,7 @@
     "karma-coverage-istanbul-reporter": "1.3.0",
     "karma-jasmine": "1.1.0",
     "karma-jasmine-html-reporter": "0.2.2",
+    "nswag": "^11.17.9",
     "protractor": "5.2.0",
     "ts-node": "3.3.0",
     "tslint": "5.8.0",

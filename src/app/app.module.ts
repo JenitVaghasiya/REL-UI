@@ -1,3 +1,5 @@
+import { OAuthService } from 'app/services/o-auth.service';
+import { SharedService } from './layouts/shared-service';
 import { BrowserModule }                    from '@angular/platform-browser';
 import { RouterModule }                     from '@angular/router';
 import { NgModule }                         from '@angular/core';
@@ -128,6 +130,7 @@ import { PageLeafletMapComponent }          from './pages/maps/leaflet-map/leafl
 import { PageWidgetsComponent }             from './pages/widgets/widgets.component';
 import { FooterComponent }                  from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent }          from './rel-ui-components/addition-navbar/addition-navbar.component';
+import { AccountClient } from 'api/apiclient';
 
 @NgModule({
   imports: [
@@ -257,7 +260,15 @@ import { AdditionNavbarComponent }          from './rel-ui-components/addition-n
     AdditionNavbarComponent
   ],
   entryComponents: [ DialogResultComponent, CalendarDialogComponent ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
+  exports: [
+    
+  ],
+  providers: [
+    SharedService,
+    OAuthService,
+    AccountClient
+  ],
 })
 
 export class AppModule {

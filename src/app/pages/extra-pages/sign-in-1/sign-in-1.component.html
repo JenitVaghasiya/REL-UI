@@ -1,25 +1,35 @@
 <card [title]="'Sign in with your app id to continue'" [align]="'center'">
-  <form (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <input matInput placeholder="Username" value="">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Password" value="">
-    </mat-form-field>
-
-    <div class="text-left mb-module">
-      <mat-checkbox>
-        Keep me signed in
-      </mat-checkbox>
-    </div>
-
-    <button mat-raised-button color="primary" type="submit" color="accent">Sign In</button>
-
-    <div class="additional-info">
-      <a href="/registration/sign-up">Sign up</a>
-      <span class="divider"></span>
-      <a href="/registration/forgot">Forgot your password?</a>
-    </div>
-  </form>
-</card>
+    <form (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <input matInput placeholder="Username" value="" [(ngModel)]="model.email" [formControl]="form.controls['username']">
+        <mat-error *ngIf="form.controls['username'].hasError('required') && form.controls['username'].touched">
+          You must include a user name.
+        </mat-error>
+        <mat-error *ngIf="form.controls['username'].errors?.email && form.controls['username'].touched">
+          You must include a valid email address.
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput placeholder="Password" type="password" [(ngModel)]="model.password" [formControl]="form.controls['password']">
+        <mat-error *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">
+          You must include a user name.
+        </mat-error>
+      </mat-form-field>
+  
+      <div class="text-left mb-module">
+        <mat-checkbox [(ngModel)]="model.remember" [formControl]="form.controls['remember']">
+          Keep me signed in
+        </mat-checkbox>
+      </div>
+  
+      <button mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">Sign In</button>
+  
+      <div class="additional-info">
+        <a href="/registration/sign-up">Sign up</a>
+        <span class="divider"></span>
+        <a href="/registration/forgot">Forgot your password?</a>
+      </div>
+    </form>
+  </card>
+  
