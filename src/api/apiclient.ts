@@ -32,27 +32,33 @@ export class BaseClient {
   protected transformOptions(options: any) {
     const timestamp = new Date();
     let customHeaders = new HttpHeaders();
-        customHeaders = customHeaders.append("Access-Control-Allow-Origin", "*");
-        customHeaders = customHeaders.append("Content-Type", "application/json; charset=UTF-8");
-        if (this.oAuthService.getAuthorizationHeader() != '') {
-            customHeaders = customHeaders.append(
-              'Authorization',
-              this.oAuthService.getAuthorizationHeader()
-            );
-          }
-        customHeaders = customHeaders.append("Accept", "application/json");
-        customHeaders = customHeaders.append("Cache-Control", "no-cache");
-        customHeaders = customHeaders.append("Pragma", "no-cache");
-        customHeaders = customHeaders.append(
-            "X-REL-Timezone-Offset-Mins",
-            (timestamp.getTimezoneOffset() * -1).toString()
-        );
-        customHeaders = customHeaders.append("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
-        customHeaders = customHeaders.append(
-            "Access-Control-Allow-Headers",
-            "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-        );
-        options.headers = customHeaders;
+    customHeaders = customHeaders.append('Access-Control-Allow-Origin', '*');
+    customHeaders = customHeaders.append(
+      'Content-Type',
+      'application/json; charset=UTF-8'
+    );
+    if (this.oAuthService.getAuthorizationHeader() !== '') {
+      customHeaders = customHeaders.append(
+        'Authorization',
+        this.oAuthService.getAuthorizationHeader()
+      );
+    }
+    customHeaders = customHeaders.append('Accept', 'application/json');
+    customHeaders = customHeaders.append('Cache-Control', 'no-cache');
+    customHeaders = customHeaders.append('Pragma', 'no-cache');
+    customHeaders = customHeaders.append(
+      'X-REL-Timezone-Offset-Mins',
+      (timestamp.getTimezoneOffset() * -1).toString()
+    );
+    customHeaders = customHeaders.append(
+      'Access-Control-Allow-Methods',
+      'PUT, GET, POST, DELETE, OPTIONS'
+    );
+    customHeaders = customHeaders.append(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    options.headers = customHeaders;
     return Promise.resolve(options);
   }
 }
@@ -292,6 +298,7 @@ export interface IAuthClient {
     login(model: LoginModel): Observable<ServiceResponseOfProfileViewModel>;
     register(model: RegisterModel): Observable<ServiceResponse>;
     forgotPassword(email: string): Observable<ServiceResponse>;
+    testApiGet(id: number): Observable<string>;
 }
 
 @Injectable()
@@ -467,6 +474,60 @@ export class AuthClient extends BaseClient implements IAuthClient {
             });
         }
         return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    testApiGet(id: number): Observable<string> {
+        let url_ = this.baseUrl + "/api/auth/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processTestApiGet(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTestApiGet(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<string>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processTestApiGet(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<string>(<any>null);
     }
 }
 
