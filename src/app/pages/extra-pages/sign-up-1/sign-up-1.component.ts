@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegisterModel, AccountClient } from 'api/apiclient';
 import { OAuthService } from '../../../services/o-auth.service';
-import { CustomValidators } from '../../../../../node_modules/ng2-validation';
-import { ToastrService } from '../../../../../node_modules/ngx-toastr';
+import { CustomValidators } from 'ng2-validation';
+import { ToastrService } from 'ngx-toastr';
+import { LoaderService } from '../../../loader/loader.service';
 
 @Component({
   selector: 'page-sign-up-1',
@@ -17,6 +13,9 @@ import { ToastrService } from '../../../../../node_modules/ngx-toastr';
   styleUrls: ['./sign-up-1.component.scss']
 })
 export class PageSignUp1Component implements OnInit {
+  @ViewChild('signUpDiv', { read: ViewContainerRef })
+  signUpDiv: ViewContainerRef;
+
   public form: FormGroup;
   model = new RegisterModel();
   iAgreed = false;
@@ -25,7 +24,8 @@ export class PageSignUp1Component implements OnInit {
     private fb: FormBuilder,
     private accountClient: AccountClient,
     private oAuthService: OAuthService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private loaderService: LoaderService
   ) {}
   ngOnInit() {
     this.form = this.fb.group({
@@ -43,11 +43,13 @@ export class PageSignUp1Component implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
+      this.loaderService.start(this.signUpDiv);
       this.accountClient.register(this.model).subscribe(e => {
+        this.loaderService.stop();
         if (e.successful) {
           this.toastrService.success('Registration Done Successfully', 'Alert');
-            this.oAuthService.setAuthorizationHeader(e.token);
-            this.router.navigate(['/rel/dashboard']);
+          this.oAuthService.setAuthorizationHeader(e.token);
+          this.router.navigate(['/rel/dashboard']);
         } else {
           let error = '';
           e.errorMessages.map(

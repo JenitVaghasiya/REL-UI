@@ -1,19 +1,21 @@
-import { LoginModel } from './../../../../api/apiclient';
-import { Component, OnInit } from '@angular/core';
+import { LoginModel } from 'api/apiclient';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from '../../../../../node_modules/ng2-validation';
+import { CustomValidators } from 'ng2-validation';
 import { AccountClient } from 'api/apiclient';
-import { OAuthService } from 'app/services/o-auth.service';
-import { ToastrService } from '../../../../../node_modules/ngx-toastr';
+import { OAuthService } from '../../../services/o-auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { LoaderService } from '../../../loader/loader.service';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'page-sign-in-1',
   templateUrl: './sign-in-1.component.html',
   styleUrls: ['./sign-in-1.component.scss']
 })
 export class PageSignIn1Component implements OnInit {
+  @ViewChild('signInDiv', { read: ViewContainerRef })
+  signInDiv: ViewContainerRef;
   public form: FormGroup;
   model = new LoginModel();
   constructor(
@@ -21,7 +23,8 @@ export class PageSignIn1Component implements OnInit {
     private fb: FormBuilder,
     private accountClient: AccountClient,
     private oAuthService: OAuthService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private loaderService: LoaderService
   ) {
     const token = this.oAuthService.getToken();
     if (token && token.length > 0) {
@@ -41,7 +44,10 @@ export class PageSignIn1Component implements OnInit {
   }
 
   onSubmit() {
+    if (this.form.valid) {
+    this.loaderService.start(this.signInDiv);
     this.accountClient.login(this.model).subscribe(e => {
+      this.loaderService.stop();
       if (e.successful) {
         this.toastrService.success('Login Done Successfully', 'Alert');
         this.oAuthService.setAuthorizationHeader(e.token);
@@ -56,5 +62,6 @@ export class PageSignIn1Component implements OnInit {
         this.toastrService.error(error, 'Alert');
       }
     });
+  }
   }
 }

@@ -1,8 +1,8 @@
-import { OAuthService } from 'app/services/o-auth.service';
+import { OAuthService } from './services/o-auth.service';
 import { SharedService } from './layouts/shared-service';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { NgModule, Injector } from '@angular/core';
+import { NgModule, Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -128,11 +128,13 @@ import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
 import { AccountClient } from 'api/apiclient';
-import { HttpClientModule } from '../../node_modules/@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { Globals } from './globals';
 
 import { ToastrModule } from 'ngx-toastr';
 import { AuthenticationGuard } from './services/authentication.guard';
+import { LoaderComponent } from './loader/loader.component';
+import { LoaderService } from './loader/loader.service';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -189,7 +191,7 @@ import { AuthenticationGuard } from './services/authentication.guard';
     AppComponent,
     DefaultLayoutComponent,
     ExtraLayoutComponent,
-
+    LoaderComponent,
     NavbarComponent,
     SidebarComponent,
     LogoComponent,
@@ -266,10 +268,11 @@ import { AuthenticationGuard } from './services/authentication.guard';
     FooterComponent,
     AdditionNavbarComponent
   ],
-  entryComponents: [DialogResultComponent, CalendarDialogComponent],
+  entryComponents: [DialogResultComponent, CalendarDialogComponent, LoaderComponent],
   bootstrap: [AppComponent],
   exports: [],
-  providers: [SharedService, OAuthService, AccountClient, AuthenticationGuard]
+  providers: [SharedService, OAuthService, AccountClient, AuthenticationGuard, LoaderService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {
   constructor(private injector: Injector) {

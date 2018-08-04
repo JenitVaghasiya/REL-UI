@@ -1,4 +1,4 @@
-<card [title]="'Sign in with your app id to continue'" [align]="'center'">
+<card #signInDiv [title]="'Sign in with your app id to continue'" [align]="'center'">
     <form (ngSubmit)="onSubmit()">
       <mat-form-field>
         <input matInput placeholder="Username" value="" [(ngModel)]="model.email" [formControl]="form.controls['username']">

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '../../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 import { OAuthService } from '../../services/o-auth.service';
-import { ToastrService } from '../../../../node_modules/ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   moduleId: module.id,
