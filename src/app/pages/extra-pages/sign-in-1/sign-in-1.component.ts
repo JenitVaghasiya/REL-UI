@@ -50,6 +50,9 @@ export class PageSignIn1Component implements OnInit {
       if (e.successful) {
         this.toastrService.success('Login Done Successfully', 'Alert');
         this.oAuthService.setAuthorizationHeader(e.data.token);
+        sessionStorage.setItem('firstName', e.data.firstName ? e.data.firstName : '');
+        sessionStorage.setItem('lastName', e.data.lastName ? e.data.lastName : '');
+        sessionStorage.setItem('email', e.data.email ? e.data.email : '');
         this.authClient.testApiGet(123).subscribe(item => {
           if (item === 'value') {
             this.toastrService.success('Authorised as super admin', 'Alert');

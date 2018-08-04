@@ -40,7 +40,7 @@ export class PageForgotComponent implements OnInit {
     this.authClient.forgotPassword(this.email).subscribe(e => {
       this.loaderService.stop();
       if (e.successful) {
-        this.toastrService.success('Email sent Successfully', 'Alert');
+        this.toastrService.success('Email link sent successfully, Please check your email', 'Alert');
 
       } else {
         let error = '';

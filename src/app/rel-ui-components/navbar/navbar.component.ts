@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { OAuthService } from '../../services/o-auth.service';
-import { ToastrService } from 'ngx-toastr';
 import { TokenService } from '../../services/token.service';
+import { UserInfoModel } from 'models/custom.model';
 
 @Component({
   moduleId: module.id,
@@ -15,11 +14,14 @@ export class NavbarComponent implements OnInit {
   @Input() title: string;
   @Input() openedSidebar = false;
   @Output() sidebarState = new EventEmitter();
+  userInfoModel: UserInfoModel = new UserInfoModel();
 
-  constructor( private router: Router,    private oAuthService: OAuthService,
-    private toastrService: ToastrService, private tokenService: TokenService ) {
-      this.tokenService.getUserInfo();
-    }
+  constructor(
+    private router: Router,
+    private tokenService: TokenService
+  ) {
+    this.userInfoModel = this.tokenService.getUserInfo();
+  }
 
   open(event) {
     const clickedComponent = event.target.closest('.nav-item');
@@ -49,6 +51,7 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(['/registration/sign-in']);
   }
 }

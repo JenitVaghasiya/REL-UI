@@ -1,4 +1,5 @@
-export class TokenInfoModel {
-  name = '';
-  uniqueName = '';
+export class UserInfoModel {
+  firstName = '';
+  lastName = '';
+  email = '';
 }

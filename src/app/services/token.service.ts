@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from './o-auth.service';
-import { TokenInfoModel } from 'models/custom.model';
+import { UserInfoModel } from 'models/custom.model';
 import * as moment from 'moment';
 
 @Injectable()
 export class TokenService {
   jwtDecode = require('jwt-decode');
   constructor(private router: Router, private oAuthService: OAuthService) {}
-  getUserInfo(): TokenInfoModel {
+  getUserInfo(): UserInfoModel {
     const token = this.oAuthService.getToken();
-    const decoded = token && token.length > 0 ? this.jwtDecode(token) : null;
-    if (decoded) {
-      const userInfoModel: TokenInfoModel = new TokenInfoModel();
+
+    if (token && token.length > 0) {
+      const userInfoModel: UserInfoModel = new UserInfoModel();
+      userInfoModel.firstName = sessionStorage.getItem('firstName');
+      userInfoModel.lastName = sessionStorage.getItem('lastName');
+      userInfoModel.email = sessionStorage.getItem('email');
       return userInfoModel;
     }
     return null;
