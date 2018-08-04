@@ -125,7 +125,7 @@ import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.co
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
-import { AccountClient } from 'api/apiclient';
+import { AuthClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
@@ -276,7 +276,7 @@ import { AppHttpInterceptor } from './interceptor/app-http-interceptor';
   providers: [
     SharedService,
     OAuthService,
-    AccountClient,
+    AuthClient,
     AuthenticationGuard,
     LoaderService,
     TokenService,

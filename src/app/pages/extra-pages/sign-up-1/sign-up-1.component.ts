@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RegisterModel, AccountClient } from 'api/apiclient';
+import { RegisterModel, AuthClient } from 'api/apiclient';
 import { OAuthService } from '../../../services/o-auth.service';
 import { CustomValidators } from 'ng2-validation';
 import { ToastrService } from 'ngx-toastr';
@@ -22,7 +22,7 @@ export class PageSignUp1Component implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private accountClient: AccountClient,
+    private authClient: AuthClient,
     private oAuthService: OAuthService,
     private toastrService: ToastrService,
     private loaderService: LoaderService
@@ -43,7 +43,7 @@ export class PageSignUp1Component implements OnInit {
 
   onSubmit() {
     this.loaderService.start(this.signUpDiv);
-    this.accountClient.register(this.model).subscribe(e => {
+    this.authClient.register(this.model).subscribe(e => {
       this.loaderService.stop();
       if (e.successful) {
         this.toastrService.success('Registration Done Successfully', 'Alert');
