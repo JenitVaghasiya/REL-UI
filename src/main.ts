@@ -6,6 +6,8 @@ import { environment } from 'environments/environment';
 import 'hammerjs';
 import 'chart.js';
 
+declare const require;
+
 if (environment.production) {
   enableProdMode();
 }

@@ -127,13 +127,15 @@ import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
 import { AccountClient } from 'api/apiclient';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
 import { ToastrModule } from 'ngx-toastr';
 import { AuthenticationGuard } from './services/authentication.guard';
 import { LoaderComponent } from './loader/loader.component';
 import { LoaderService } from './loader/loader.service';
+import { TokenService } from './services/token.service';
+import { AppHttpInterceptor } from './interceptor/app-http-interceptor';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -184,7 +186,7 @@ import { LoaderService } from './loader/loader.service';
       enableHtml: true,
       easeTime: 300,
       preventDuplicates: true
-    }),
+    })
   ],
   declarations: [
     AppComponent,
@@ -266,11 +268,23 @@ import { LoaderService } from './loader/loader.service';
     FooterComponent,
     AdditionNavbarComponent
   ],
-  entryComponents: [DialogResultComponent, CalendarDialogComponent, LoaderComponent],
+  entryComponents: [
+    DialogResultComponent,
+    CalendarDialogComponent,
+    LoaderComponent
+  ],
   bootstrap: [AppComponent],
   exports: [],
-  providers: [SharedService, OAuthService, AccountClient, AuthenticationGuard, LoaderService],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [
+    SharedService,
+    OAuthService,
+    AccountClient,
+    AuthenticationGuard,
+    LoaderService,
+    TokenService,
+    { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
   constructor(private injector: Injector) {

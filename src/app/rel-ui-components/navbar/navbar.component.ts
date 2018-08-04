@@ -2,9 +2,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from '../../services/o-auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   moduleId: module.id,
+  // tslint:disable-next-line:component-selector
   selector: 'navbar',
   templateUrl: 'navbar.component.html',
   styleUrls: ['navbar.component.scss']
@@ -15,7 +17,9 @@ export class NavbarComponent implements OnInit {
   @Output() sidebarState = new EventEmitter();
 
   constructor( private router: Router,    private oAuthService: OAuthService,
-    private toastrService: ToastrService) {}
+    private toastrService: ToastrService, private tokenService: TokenService ) {
+      this.tokenService.getUserInfo();
+    }
 
   open(event) {
     const clickedComponent = event.target.closest('.nav-item');

@@ -19,7 +19,6 @@ export class OAuthService {
       return localStorage.getItem('token');
     } else {
       return '';
-      // this.router.navigate(['/registration/sign-in']);
     }
   }
 

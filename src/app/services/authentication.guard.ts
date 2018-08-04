@@ -5,17 +5,16 @@ import {
   Router,
   ResolveEnd
 } from '@angular/router';
-import { OAuthService } from './o-auth.service';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
   // jwtUser: any;
   // isValid = false;
 
-  constructor(private router: Router, private oAuthService: OAuthService) {}
+  constructor(private router: Router, private tokenService: TokenService) {}
   canActivate(route: ActivatedRouteSnapshot) {
-    const token = this.oAuthService.getToken();
-    if (token && token.length > 0) {
+    if (!this.tokenService.isTokenExpired()) {
       return true;
     } else {
       this.router.navigate(['/registration/sign-in']);

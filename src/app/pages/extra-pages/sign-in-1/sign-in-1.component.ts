@@ -57,7 +57,6 @@ export class PageSignIn1Component implements OnInit {
           (item, i) =>
             (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
         );
-        console.log(error);
         this.toastrService.error(error, 'Alert');
       }
     });
