@@ -49,7 +49,12 @@ export class PageSignIn1Component implements OnInit {
       this.loaderService.stop();
       if (e.successful) {
         this.toastrService.success('Login Done Successfully', 'Alert');
-        this.oAuthService.setAuthorizationHeader(e.token);
+        this.oAuthService.setAuthorizationHeader(e.data.token);
+        this.authClient.testApiGet(123).subscribe(item => {
+          if (item === 'value') {
+            this.toastrService.success('Authorised as super admin', 'Alert');
+          }
+        });
         this.router.navigate(['/rel/dashboard']);
       } else {
         let error = '';

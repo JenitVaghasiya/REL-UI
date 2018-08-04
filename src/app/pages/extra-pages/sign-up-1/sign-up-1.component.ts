@@ -43,6 +43,7 @@ export class PageSignUp1Component implements OnInit {
 
   onSubmit() {
     this.loaderService.start(this.signUpDiv);
+    this.model.userName = this.model.email;
     this.authClient.register(this.model).subscribe(e => {
       this.loaderService.stop();
       if (e.successful) {

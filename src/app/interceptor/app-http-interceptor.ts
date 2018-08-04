@@ -43,17 +43,18 @@ export class AppHttpInterceptor implements HttpInterceptor {
             );
           } else if (err.status === 403) {
             // alert('You are not authorized to get data.');
-            if (err.error) {
-              this.toastrService.error(
-                err.error,
-                'Alert'
-              );
-            } else {
+            // console.log(err.error.text());
+            // if (err.error) {
+            //   this.toastrService.error(
+            //     err.error,
+            //     'Alert'
+            //   );
+            // } else {
               this.toastrService.error(
                 'You are not authorized to get data.',
                 'Alert'
               );
-            }
+            // }
           } else if (
             err.status === 400 ||
             err.status === 500 ||

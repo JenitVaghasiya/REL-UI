@@ -1,12 +1,16 @@
-<card [title]="'Reset Your Password'" [align]="'center'">
+<card #forgotDiv [title]="'Reset Your Password'" [align]="'center'">
   <form (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <input matInput placeholder="Email" value="">
+      <input matInput placeholder="Email address" value="" [(ngModel)]="email" [formControl]="form.controls['email']">
+      <mat-error *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched">
+        You must include a valid email address.
+      </mat-error>
     </mat-form-field>
 
-    <p class="text-left small">Enter your email address that you used to register. We'll send you an email with your username and a link to reset your password.</p>
+    <p class="text-left small">Enter your email address that you used to register. We'll send you an email with your username and a link to reset your
+      password.</p>
 
-    <button mat-raised-button color="primary" type="submit" color="accent">Reset</button>
+    <button mat-raised-button color="primary" [disabled]="!form.valid" type="submit" color="accent">Reset</button>
 
     <div class="additional-info">
       <a href="/registration/sign-in">Sign In</a>
