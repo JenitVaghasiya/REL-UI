@@ -75,7 +75,6 @@ import { PageInputComponent } from './pages/material-components/input/input.comp
 import { PageListComponent } from './pages/material-components/list/list.component';
 import { PageMenuComponent } from './pages/material-components/menu/menu.component';
 import { PageProgressBarComponent } from './pages/material-components/progress-bar/progress-bar.component';
-import { PageProgressSpinnerComponent } from './pages/material-components/progress-spinner/progress-spinner.component';
 import { PageRadioButtonComponent } from './pages/material-components/radio-button/radio-button.component';
 import { PageSelectComponent } from './pages/material-components/select/select.component';
 import { PageSliderComponent } from './pages/material-components/slider/slider.component';
@@ -216,7 +215,6 @@ import { LoaderService } from './loader/loader.service';
     PageListComponent,
     PageMenuComponent,
     PageProgressBarComponent,
-    PageProgressSpinnerComponent,
     PageRadioButtonComponent,
     PageSelectComponent,
     PageSliderComponent,

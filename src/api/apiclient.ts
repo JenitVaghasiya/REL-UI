@@ -72,7 +72,7 @@ export class AccountClient extends BaseClient implements IAccountClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
     login(model: LoginModel): Observable<ServiceResponse> {
@@ -86,7 +86,7 @@ export class AccountClient extends BaseClient implements IAccountClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -109,8 +109,8 @@ export class AccountClient extends BaseClient implements IAccountClient {
 
     protected processLogin(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -140,7 +140,7 @@ export class AccountClient extends BaseClient implements IAccountClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -163,8 +163,8 @@ export class AccountClient extends BaseClient implements IAccountClient {
 
     protected processRegister(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -187,14 +187,14 @@ export class AccountClient extends BaseClient implements IAccountClient {
         let url_ = this.baseUrl + "/api/auth/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -217,8 +217,8 @@ export class AccountClient extends BaseClient implements IAccountClient {
 
     protected processTestApiGet(response: HttpResponseBase): Observable<string> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -254,7 +254,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
     create(account: AccountForCreationDto): Observable<FileResponse> {
@@ -268,7 +268,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -291,8 +291,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processCreate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -313,14 +313,14 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
         let url_ = this.baseUrl + "/api/accounts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -343,8 +343,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processGetAccount(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -365,14 +365,14 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
         let url_ = this.baseUrl + "/api/accounts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -395,8 +395,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -417,7 +417,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
         let url_ = this.baseUrl + "/api/accounts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(account);
@@ -427,7 +427,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -450,8 +450,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -485,21 +485,21 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
     getInstitution(id: string): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/checklists/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -522,8 +522,8 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 
     protected processGetInstitution(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -544,14 +544,14 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
         let url_ = this.baseUrl + "/api/checklists/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -574,8 +574,8 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 
     protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -596,7 +596,7 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
         let url_ = this.baseUrl + "/api/checklists/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(checkList);
@@ -606,7 +606,7 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -629,8 +629,8 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 
     protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -658,7 +658,7 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -681,8 +681,8 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 
     protected processCreate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -714,24 +714,24 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
     get(checkListId: string, id: string): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/{id}";
         if (checkListId === undefined || checkListId === null)
             throw new Error("The parameter 'checkListId' must be defined.");
-        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
+        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId));
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -754,8 +754,8 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
 
     protected processGet(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -776,7 +776,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
         let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems";
         if (checkListId === undefined || checkListId === null)
             throw new Error("The parameter 'checkListId' must be defined.");
-        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
+        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId));
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(checkListItem);
@@ -786,7 +786,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -809,8 +809,8 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
 
     protected processCreate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -844,21 +844,21 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
     getInstitution(id: string): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/institutions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -881,8 +881,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 
     protected processGetInstitution(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -903,14 +903,14 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         let url_ = this.baseUrl + "/api/institutions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -933,8 +933,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 
     protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -955,7 +955,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         let url_ = this.baseUrl + "/api/institutions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(institution);
@@ -965,7 +965,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -988,8 +988,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 
     protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1017,7 +1017,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -1040,8 +1040,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 
     protected processCreate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1093,7 +1093,7 @@ export class LoginModel implements ILoginModel {
         data["email"] = this.email;
         data["password"] = this.password;
         data["rememberMe"] = this.rememberMe;
-        return data; 
+        return data;
     }
 }
 
@@ -1145,7 +1145,7 @@ export class ServiceResponse implements IServiceResponse {
         }
         data["successful"] = this.successful;
         data["token"] = this.token;
-        return data; 
+        return data;
     }
 }
 
@@ -1227,7 +1227,7 @@ export class ValidationFailure implements IValidationFailure {
             }
         }
         data["resourceName"] = this.resourceName;
-        return data; 
+        return data;
     }
 }
 
@@ -1244,9 +1244,9 @@ export interface IValidationFailure {
 }
 
 export enum Severity {
-    Error = 0, 
-    Warning = 1, 
-    Info = 2, 
+    Error = 0,
+    Warning = 1,
+    Info = 2,
 }
 
 export class RegisterModel implements IRegisterModel {
@@ -1292,7 +1292,7 @@ export class RegisterModel implements IRegisterModel {
         data["email"] = this.email;
         data["password"] = this.password;
         data["confirmPassword"] = this.confirmPassword;
-        return data; 
+        return data;
     }
 }
 
@@ -1348,7 +1348,7 @@ export class AccountForCreationDto implements IAccountForCreationDto {
         data["city"] = this.city;
         data["state"] = this.state;
         data["zipCode"] = this.zipCode;
-        return data; 
+        return data;
     }
 }
 
@@ -1404,7 +1404,7 @@ export class AccountForUpdateDto implements IAccountForUpdateDto {
         data["city"] = this.city;
         data["state"] = this.state;
         data["zipCode"] = this.zipCode;
-        return data; 
+        return data;
     }
 }
 
@@ -1445,7 +1445,7 @@ export class CheckListForCreationDto implements ICheckListForCreationDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        return data; 
+        return data;
     }
 }
 
@@ -1481,7 +1481,7 @@ export class CheckListForUpdateDto implements ICheckListForUpdateDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        return data; 
+        return data;
     }
 }
 
@@ -1526,7 +1526,7 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
         data["order"] = this.order;
         data["prompt"] = this.prompt;
         data["answerSetId"] = this.answerSetId;
-        return data; 
+        return data;
     }
 }
 
@@ -1565,7 +1565,7 @@ export class InstitutionForCreationDto implements IInstitutionForCreationDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        return data; 
+        return data;
     }
 }
 
@@ -1601,7 +1601,7 @@ export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        return data; 
+        return data;
     }
 }
 
@@ -1618,10 +1618,10 @@ export interface FileResponse {
 
 export class SwaggerException extends Error {
     message: string;
-    status: number; 
-    response: string; 
+    status: number;
+    response: string;
     headers: { [key: string]: any; };
-    result: any; 
+    result: any;
 
     constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
         super();
@@ -1653,12 +1653,12 @@ function blobToText(blob: any): Observable<string> {
             observer.next("");
             observer.complete();
         } else {
-            let reader = new FileReader(); 
-            reader.onload = function() { 
+            let reader = new FileReader();
+            reader.onload = function() {
                 observer.next(this.result);
                 observer.complete();
             }
-            reader.readAsText(blob); 
+            reader.readAsText(blob);
         }
     });
 }

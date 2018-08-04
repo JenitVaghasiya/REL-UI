@@ -45,7 +45,7 @@
         </mat-error>
     </div>
 
-    <button mat-raised-button color="primary" type="submit" color="accent">Sign Up</button>
+    <button mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">Sign Up</button>
 
     <div class="additional-info">
       Already have an account?

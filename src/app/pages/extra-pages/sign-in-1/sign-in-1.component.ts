@@ -44,7 +44,6 @@ export class PageSignIn1Component implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.valid) {
     this.loaderService.start(this.signInDiv);
     this.accountClient.login(this.model).subscribe(e => {
       this.loaderService.stop();
@@ -62,6 +61,5 @@ export class PageSignIn1Component implements OnInit {
         this.toastrService.error(error, 'Alert');
       }
     });
-  }
   }
 }

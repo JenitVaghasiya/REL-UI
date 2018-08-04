@@ -42,24 +42,21 @@ export class PageSignUp1Component implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      this.loaderService.start(this.signUpDiv);
-      this.accountClient.register(this.model).subscribe(e => {
-        this.loaderService.stop();
-        if (e.successful) {
-          this.toastrService.success('Registration Done Successfully', 'Alert');
-          this.oAuthService.setAuthorizationHeader(e.token);
-          this.router.navigate(['/rel/dashboard']);
-        } else {
-          let error = '';
-          e.errorMessages.map(
-            (item, i) =>
-              (error +=
-                i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
-          );
-          this.toastrService.error(error, 'Alert');
-        }
-      });
-    }
+    this.loaderService.start(this.signUpDiv);
+    this.accountClient.register(this.model).subscribe(e => {
+      this.loaderService.stop();
+      if (e.successful) {
+        this.toastrService.success('Registration Done Successfully', 'Alert');
+        this.oAuthService.setAuthorizationHeader(e.token);
+        this.router.navigate(['/rel/dashboard']);
+      } else {
+        let error = '';
+        e.errorMessages.map(
+          (item, i) =>
+            (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+        );
+        this.toastrService.error(error, 'Alert');
+      }
+    });
   }
 }
