@@ -72,7 +72,7 @@ export class AccountClient extends BaseClient implements IAccountClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     login(model: LoginModel): Observable<ServiceResponse> {
@@ -254,7 +254,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     create(account: AccountForCreationDto): Observable<FileResponse> {
@@ -485,7 +485,7 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     getInstitution(id: string): Observable<FileResponse> {
@@ -714,7 +714,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     get(checkListId: string, id: string): Observable<FileResponse> {
@@ -844,7 +844,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         super();
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+        this.baseUrl = baseUrl ? baseUrl : "https://realestateloansapi.azurewebsites.net";
     }
 
     getInstitution(id: string): Observable<FileResponse> {
