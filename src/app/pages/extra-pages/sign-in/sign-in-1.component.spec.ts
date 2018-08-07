@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageDashboard2Component } from './dashboard-2.component';
+import { PageSignInComponent } from './sign-in.component';
 
-describe('PageDashboard2Component', () => {
-  let component: PageDashboard2Component;
-  let fixture: ComponentFixture<PageDashboard2Component>;
+describe('PageSignInComponent', () => {
+  let component: PageSignInComponent;
+  let fixture: ComponentFixture<PageSignInComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageDashboard2Component ]
+      declarations: [ PageSignInComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageDashboard2Component);
+    fixture = TestBed.createComponent(PageSignInComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

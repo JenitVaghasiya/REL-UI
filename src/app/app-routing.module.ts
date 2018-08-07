@@ -5,7 +5,6 @@ import { DefaultLayoutComponent } from './layouts/default/default.component';
 import { ExtraLayoutComponent } from './layouts/extra/extra.component';
 
 import { PageDashboardComponent } from './pages/dashboard/dashboard.component';
-import { PageDashboard2Component } from './pages/dashboard-2/dashboard-2.component';
 import { PageButtonComponent } from './pages/material-components/button/button.component';
 import { PageCardComponent } from './pages/material-components/card/card.component';
 import { PageCheckboxComponent } from './pages/material-components/checkbox/checkbox.component';
@@ -34,8 +33,8 @@ import { PageFileComponent } from './pages/rel-ui-components/file/file.component
 import { PageTypographyComponent } from './pages/typography/typography.component';
 import { PageNotFoundComponent } from './pages/not-found/not-found.component';
 
-import { PageSignIn1Component } from './pages/extra-pages/sign-in-1/sign-in-1.component';
-import { PageSignUp1Component } from './pages/extra-pages/sign-up-1/sign-up-1.component';
+import { PageSignInComponent } from './pages/extra-pages/sign-in/sign-in.component';
+import { PageSignUpComponent } from './pages/extra-pages/sign-up/sign-up.component';
 import { PageForgotComponent } from './pages/extra-pages/forgot/forgot.component';
 import { PageConfirmComponent } from './pages/extra-pages/confirm/confirm.component';
 import { Page404Component } from './pages/extra-pages/page-404/page-404.component';
@@ -71,7 +70,6 @@ const defaultRoutes: Routes = [
     component: PageDashboardComponent,
     canActivate: [AuthenticationGuard]
   },
-  { path: 'dashboard-2', component: PageDashboard2Component },
   { path: 'typography', component: PageTypographyComponent },
   { path: 'widgets', component: PageWidgetsComponent },
   { path: 'calendar', component: PageCalendarComponent },
@@ -116,15 +114,15 @@ const defaultRoutes: Routes = [
   { path: 'pagination-table', component: PagePaginationTableComponent },
   { path: 'form-elements', component: PageFormElementsComponent },
   { path: 'form-layout', component: PageFormLayoutComponent },
-  { path: 'form-validation', component: PageFormValidationComponent },
+  // { path: 'form-validation', component: PageFormValidatiosnComponent },
   { path: 'google-map', component: PageGoogleMapComponent },
   { path: 'leaflet-map', component: PageLeafletMapComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
 const extraRoutes: Routes = [
-  { path: 'sign-in', component: PageSignIn1Component },
-  { path: 'sign-up', component: PageSignUp1Component },
+  { path: 'sign-in', component: PageSignInComponent },
+  { path: 'sign-up', component: PageSignUpComponent },
   { path: 'forgot', component: PageForgotComponent },
   { path: 'confirm', component: PageConfirmComponent },
   { path: 'page-404', component: Page404Component },

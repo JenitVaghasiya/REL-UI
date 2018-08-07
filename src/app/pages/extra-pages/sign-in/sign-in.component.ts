@@ -9,11 +9,11 @@ import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
 
 @Component({
-  selector: 'page-sign-in-1',
-  templateUrl: './sign-in-1.component.html',
-  styleUrls: ['./sign-in-1.component.scss']
+  selector: 'page-sign-in',
+  templateUrl: './sign-in.component.html',
+  styleUrls: ['./sign-in.component.scss']
 })
-export class PageSignIn1Component implements OnInit {
+export class PageSignInComponent implements OnInit {
   @ViewChild('signInDiv', { read: ViewContainerRef })
   signInDiv: ViewContainerRef;
   public form: FormGroup;

@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Router } from '../../../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 import { AuthClient } from 'api/apiclient';
 import { OAuthService } from '../../../services/o-auth.service';
-import { ToastrService } from '../../../../../node_modules/ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
-import { CustomValidators } from '../../../../../node_modules/ng2-validation';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'page-forgot',

@@ -8,11 +8,11 @@ import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
 
 @Component({
-  selector: 'page-sign-up-1',
-  templateUrl: './sign-up-1.component.html',
-  styleUrls: ['./sign-up-1.component.scss']
+  selector: 'page-sign-up',
+  templateUrl: './sign-up.component.html',
+  styleUrls: ['./sign-up.component.scss']
 })
-export class PageSignUp1Component implements OnInit {
+export class PageSignUpComponent implements OnInit {
   @ViewChild('signUpDiv', { read: ViewContainerRef })
   signUpDiv: ViewContainerRef;
 

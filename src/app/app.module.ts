@@ -62,7 +62,6 @@ import { NIHTimelineComponent } from './rel-ui-components/ni-h-timeline/ni-h-tim
 
 // RELUI Pages
 import { PageDashboardComponent } from './pages/dashboard/dashboard.component';
-import { PageDashboard2Component } from './pages/dashboard-2/dashboard-2.component';
 import { PageButtonComponent } from './pages/material-components/button/button.component';
 import { PageCardComponent } from './pages/material-components/card/card.component';
 import { PageCheckboxComponent } from './pages/material-components/checkbox/checkbox.component';
@@ -93,8 +92,8 @@ import { PageTypographyComponent } from './pages/typography/typography.component
 import { PageNotFoundComponent } from './pages/not-found/not-found.component';
 
 // Extra pages
-import { PageSignIn1Component } from './pages/extra-pages/sign-in-1/sign-in-1.component';
-import { PageSignUp1Component } from './pages/extra-pages/sign-up-1/sign-up-1.component';
+import { PageSignInComponent } from './pages/extra-pages/sign-in/sign-in.component';
+import { PageSignUpComponent } from './pages/extra-pages/sign-up/sign-up.component';
 import { PageForgotComponent } from './pages/extra-pages/forgot/forgot.component';
 import { PageConfirmComponent } from './pages/extra-pages/confirm/confirm.component';
 import { Page404Component } from './pages/extra-pages/page-404/page-404.component';
@@ -203,7 +202,6 @@ import { AppHttpInterceptor } from './interceptor/app-http-interceptor';
     NIHTimelineComponent,
 
     PageDashboardComponent,
-    PageDashboard2Component,
     PageButtonComponent,
     PageCardComponent,
     PageCheckboxComponent,
@@ -233,8 +231,8 @@ import { AppHttpInterceptor } from './interceptor/app-http-interceptor';
     PageTypographyComponent,
     PageNotFoundComponent,
 
-    PageSignIn1Component,
-    PageSignUp1Component,
+    PageSignInComponent,
+    PageSignUpComponent,
     PageForgotComponent,
     PageConfirmComponent,
     Page404Component,

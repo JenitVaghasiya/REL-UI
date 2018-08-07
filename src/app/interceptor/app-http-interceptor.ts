@@ -7,9 +7,9 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastrService } from '../../../node_modules/ngx-toastr';
-import { Observable } from '../../../node_modules/rxjs';
-import { tap } from '../../../node_modules/rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { LoaderService } from '../loader/loader.service';
 
 /** Pass untouched request through to the next request handler. */
