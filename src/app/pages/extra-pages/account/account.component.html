@@ -1,0 +1,48 @@
+<card #accountDiv [title]="'Create Account'" [align]="'center'">
+  <form (ngSubmit)="onSubmit()">
+      <mat-form-field>
+          <input matInput placeholder="Name" value="" [(ngModel)]="model.name" [formControl]="form.controls['name']">
+          <mat-error *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched">
+            You must include name.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Street 1" value="" [(ngModel)]="model.street1" [formControl]="form.controls['street1']">
+          <mat-error *ngIf="form.controls['street1'].hasError('required') && form.controls['street1'].touched">
+            You must include street 1.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Street 2" value="" [(ngModel)]="model.street2" [formControl]="form.controls['street2']">
+          <mat-error *ngIf=" form.controls['street1'].touched">
+            You must include name.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="City" value="" [(ngModel)]="model.city" [formControl]="form.controls['city']">
+          <mat-error *ngIf="form.controls['city'].hasError('required') && form.controls['city'].touched">
+            You must include include city.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="State" value="" [(ngModel)]="model.state" [formControl]="form.controls['state']">
+          <mat-error *ngIf="form.controls['state'].hasError('required') && form.controls['state'].touched">
+            You must include State.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Zip Code" value="" [(ngModel)]="model.zipCode" [formControl]="form.controls['zipCode']">
+          <mat-error *ngIf="form.controls['zipCode'].hasError('required') && form.controls['zipCode'].touched">
+            You must include Zip Code.
+          </mat-error>
+        </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">Sign Up</button>
+
+    <div class="additional-info">
+      Already have an account?
+      <a href="/registration/sign-in">sign in</a>
+    </div>
+  </form>
+</card>

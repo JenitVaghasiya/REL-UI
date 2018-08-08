@@ -124,7 +124,7 @@ import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.co
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
-import { AuthClient } from 'api/apiclient';
+import { AuthClient, AccountsClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
@@ -134,6 +134,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { LoaderService } from './loader/loader.service';
 import { TokenService } from './services/token.service';
 import { AppHttpInterceptor } from './interceptor/app-http-interceptor';
+import { AccountComponent } from './pages/extra-pages/account/account.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -262,7 +263,8 @@ import { AppHttpInterceptor } from './interceptor/app-http-interceptor';
     PageLeafletMapComponent,
     PageWidgetsComponent,
     FooterComponent,
-    AdditionNavbarComponent
+    AdditionNavbarComponent,
+    AccountComponent
   ],
   entryComponents: [
     DialogResultComponent,
@@ -275,6 +277,7 @@ import { AppHttpInterceptor } from './interceptor/app-http-interceptor';
     SharedService,
     OAuthService,
     AuthClient,
+    AccountsClient,
     AuthenticationGuard,
     LoaderService,
     TokenService,

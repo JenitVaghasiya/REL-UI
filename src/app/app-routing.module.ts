@@ -63,6 +63,7 @@ import { PageGoogleMapComponent } from './pages/maps/google-map/google-map.compo
 import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.component';
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { AuthenticationGuard } from './services/authentication.guard';
+import { AccountComponent } from './pages/extra-pages/account/account.component';
 
 const defaultRoutes: Routes = [
   {
@@ -126,7 +127,8 @@ const extraRoutes: Routes = [
   { path: 'forgot', component: PageForgotComponent },
   { path: 'confirm', component: PageConfirmComponent },
   { path: 'page-404', component: Page404Component },
-  { path: 'page-500', component: Page500Component }
+  { path: 'page-500', component: Page500Component },
+  { path: 'account', component: AccountComponent }
 ];
 
 const routes: Routes = [

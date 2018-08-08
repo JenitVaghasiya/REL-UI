@@ -53,11 +53,11 @@ export class PageSignInComponent implements OnInit {
         sessionStorage.setItem('firstName', e.data.firstName ? e.data.firstName : '');
         sessionStorage.setItem('lastName', e.data.lastName ? e.data.lastName : '');
         sessionStorage.setItem('email', e.data.email ? e.data.email : '');
-        this.authClient.testApiGet(123).subscribe(item => {
-          if (item === 'value') {
-            this.toastrService.success('Authorised as super admin', 'Alert');
-          }
-        });
+        // this.authClient.testApiGet(123).subscribe(item => {
+        //   if (item === 'value') {
+        //     this.toastrService.success('Authorised as super admin', 'Alert');
+        //   }
+        // });
         this.router.navigate(['/rel/dashboard']);
       } else {
         let error = '';
