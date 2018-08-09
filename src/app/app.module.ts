@@ -137,6 +137,7 @@ import { AppHttpInterceptor } from './interceptor/app-http-interceptor';
 import { AccountComponent } from './pages/extra-pages/account/account.component';
 import { UsersComponent } from './pages/users/users.component';
 import { UserInviteDialogComponent } from './pages/users/user-invite-dialog/user-invite-dialog.component';
+import { ResetComponent } from './pages/extra-pages/reset/reset.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -269,7 +270,8 @@ import { UserInviteDialogComponent } from './pages/users/user-invite-dialog/user
 
     AccountComponent,
     UsersComponent,
-    UserInviteDialogComponent
+    UserInviteDialogComponent,
+    ResetComponent
   ],
   entryComponents: [
     DialogResultComponent,

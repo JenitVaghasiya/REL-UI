@@ -65,6 +65,7 @@ import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { AuthenticationGuard } from './services/authentication.guard';
 import { AccountComponent } from './pages/extra-pages/account/account.component';
 import { UsersComponent } from './pages/users/users.component';
+import { ResetComponent } from './pages/extra-pages/reset/reset.component';
 
 const defaultRoutes: Routes = [
   {
@@ -130,6 +131,7 @@ const extraRoutes: Routes = [
   { path: 'sign-in', component: PageSignInComponent },
   { path: 'sign-up', component: PageSignUpComponent },
   { path: 'forgot', component: PageForgotComponent },
+  { path: 'resetpassword', component: ResetComponent },
   { path: 'confirm', component: PageConfirmComponent },
   { path: 'page-404', component: Page404Component },
   { path: 'page-500', component: Page500Component },

@@ -4,7 +4,7 @@ import {
   FormGroup,
   FormBuilder,
   Validators
-} from '../../../../../node_modules/@angular/forms';
+} from '@angular/forms';
 import {
   InviteUserModel,
   ManageUserClient,
@@ -12,9 +12,9 @@ import {
   AccountDto,
   AspNetRoleDto
 } from 'api/apiclient';
-import { ToastrService } from '../../../../../node_modules/ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
-import { CustomValidators } from '../../../../../node_modules/ng2-validation';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   moduleId: module.id,
