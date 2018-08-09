@@ -48,8 +48,22 @@ export class PageSignUpComponent implements OnInit {
       this.loaderService.stop();
       if (e.successful) {
         this.toastrService.success('Registration Done Successfully', 'Alert');
-        this.oAuthService.setAuthorizationHeader(e.token);
-        this.router.navigate(['/rel/dashboard']);
+        if (e.data) {
+          if (e.data.token) {
+            this.oAuthService.setAuthorizationHeader(e.data.token);
+          }
+          sessionStorage.setItem(
+            'firstName',
+            e.data.firstName ? e.data.firstName : ''
+          );
+          sessionStorage.setItem(
+            'lastName',
+            e.data.lastName ? e.data.lastName : ''
+          );
+          sessionStorage.setItem('email', e.data.email ? e.data.email : '');
+        }
+
+        this.router.navigate(['/registration/account']);
       } else {
         let error = '';
         e.errorMessages.map(

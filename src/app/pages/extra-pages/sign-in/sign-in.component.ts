@@ -27,7 +27,8 @@ export class PageSignInComponent implements OnInit {
     private loaderService: LoaderService
   ) {
     const token = this.oAuthService.getToken();
-    if (token && token.length > 0) {
+    const accountId = this.oAuthService.getAccountId();
+    if (token && token.length > 0 && accountId && accountId.length > 0) {
       this.router.navigate(['/rel/dashboard']);
     }
   }
@@ -49,16 +50,25 @@ export class PageSignInComponent implements OnInit {
       this.loaderService.stop();
       if (e.successful) {
         this.toastrService.success('Login Done Successfully', 'Alert');
-        this.oAuthService.setAuthorizationHeader(e.data.token);
-        sessionStorage.setItem('firstName', e.data.firstName ? e.data.firstName : '');
-        sessionStorage.setItem('lastName', e.data.lastName ? e.data.lastName : '');
+        if (e.data.token) {
+          this.oAuthService.setAuthorizationHeader(e.data.token);
+        }
+
+        sessionStorage.setItem(
+          'firstName',
+          e.data.firstName ? e.data.firstName : ''
+        );
+        sessionStorage.setItem(
+          'lastName',
+          e.data.lastName ? e.data.lastName : ''
+        );
         sessionStorage.setItem('email', e.data.email ? e.data.email : '');
-        // this.authClient.testApiGet(123).subscribe(item => {
-        //   if (item === 'value') {
-        //     this.toastrService.success('Authorised as super admin', 'Alert');
-        //   }
-        // });
-        this.router.navigate(['/rel/dashboard']);
+        if (e.data.accountId) {
+          this.oAuthService.setAccountId(e.data.accountId);
+          this.router.navigate(['/rel/dashboard']);
+        } else {
+          this.router.navigate(['/registration/account']);
+        }
       } else {
         let error = '';
         e.errorMessages.map(

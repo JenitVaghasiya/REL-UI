@@ -359,11 +359,9 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
 export interface IAuthClient {
     login(model: LoginModel): Observable<ServiceResponseOfProfileViewModel>;
-    register(model: RegisterModel): Observable<ServiceResponse>;
+    register(model: RegisterModel): Observable<ServiceResponseOfProfileViewModel>;
     forgotPassword(email: string): Observable<ServiceResponse>;
     resetPassword(email: string, password: string, confirmPassword: string, code: string, userId: string): Observable<ServiceResponse>;
-    updatePasswordOfInvitedUser(password: string, oldPassword: string, userId: string): Observable<ServiceResponse>;
-    getRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto>;
 }
 
 @Injectable()
@@ -432,7 +430,7 @@ export class AuthClient extends BaseClient implements IAuthClient {
         return Observable.of<ServiceResponseOfProfileViewModel>(<any>null);
     }
 
-    register(model: RegisterModel): Observable<ServiceResponse> {
+    register(model: RegisterModel): Observable<ServiceResponseOfProfileViewModel> {
         let url_ = this.baseUrl + "/api/auth/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -457,14 +455,14 @@ export class AuthClient extends BaseClient implements IAuthClient {
                 try {
                     return this.processRegister(<any>response_);
                 } catch (e) {
-                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfProfileViewModel>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfProfileViewModel>><any>Observable.throw(response_);
         });
     }
 
-    protected processRegister(response: HttpResponseBase): Observable<ServiceResponse> {
+    protected processRegister(response: HttpResponseBase): Observable<ServiceResponseOfProfileViewModel> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -475,7 +473,7 @@ export class AuthClient extends BaseClient implements IAuthClient {
             return blobToText(responseBlob).flatMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            result200 = resultData200 ? ServiceResponseOfProfileViewModel.fromJS(resultData200) : <any>null;
             return Observable.of(result200);
             });
         } else if (status !== 200 && status !== 204) {
@@ -483,7 +481,7 @@ export class AuthClient extends BaseClient implements IAuthClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<ServiceResponse>(<any>null);
+        return Observable.of<ServiceResponseOfProfileViewModel>(<any>null);
     }
 
     forgotPassword(email: string): Observable<ServiceResponse> {
@@ -605,125 +603,13 @@ export class AuthClient extends BaseClient implements IAuthClient {
         }
         return Observable.of<ServiceResponse>(<any>null);
     }
-
-    updatePasswordOfInvitedUser(password: string, oldPassword: string, userId: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/auth/updatepasswordofinviteduser?";
-        if (password === undefined)
-            throw new Error("The parameter 'password' must be defined.");
-        else
-            url_ += "password=" + encodeURIComponent("" + password) + "&"; 
-        if (oldPassword === undefined)
-            throw new Error("The parameter 'oldPassword' must be defined.");
-        else
-            url_ += "oldPassword=" + encodeURIComponent("" + oldPassword) + "&"; 
-        if (userId !== undefined)
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("post", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processUpdatePasswordOfInvitedUser(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdatePasswordOfInvitedUser(<any>response_);
-                } catch (e) {
-                    return <Observable<ServiceResponse>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<ServiceResponse>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processUpdatePasswordOfInvitedUser(response: HttpResponseBase): Observable<ServiceResponse> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
-            return Observable.of(result200);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<ServiceResponse>(<any>null);
-    }
-
-    getRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto> {
-        let url_ = this.baseUrl + "/api/auth/getroles";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("post", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processGetRoles(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetRoles(<any>response_);
-                } catch (e) {
-                    return <Observable<ServiceResponseOfListOfAspNetRoleDto>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<ServiceResponseOfListOfAspNetRoleDto>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetRoles(response: HttpResponseBase): Observable<ServiceResponseOfListOfAspNetRoleDto> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponseOfListOfAspNetRoleDto.fromJS(resultData200) : <any>null;
-            return Observable.of(result200);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<ServiceResponseOfListOfAspNetRoleDto>(<any>null);
-    }
 }
 
 export interface ICheckListClient {
     getInstitution(id: string): Observable<FileResponse>;
+    create(checkList: CheckListForCreationDto): Observable<FileResponse>;
     delete(id: string): Observable<FileResponse>;
     update(checkList: CheckListForUpdateDto, id: string): Observable<FileResponse>;
-    create(checkList: CheckListForCreationDto): Observable<FileResponse>;
 }
 
 @Injectable()
@@ -739,10 +625,11 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
     }
 
     getInstitution(id: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/{id}";
-        if (id === undefined || id === null)
+        let url_ = this.baseUrl + "/api/checklists/GetCheckList?";
+        if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -771,113 +658,6 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
     }
 
     protected processGetInstitution(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<FileResponse>(<any>null);
-    }
-
-    delete(id: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("delete", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processDelete(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDelete(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<FileResponse>(<any>null);
-    }
-
-    update(checkList: CheckListForUpdateDto, id: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(checkList);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("put", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processUpdate(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdate(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -948,6 +728,115 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
         }
         return Observable.of<FileResponse>(<any>null);
     }
+
+    delete(id: string): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/checklists/delete?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("delete", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processDelete(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<FileResponse>(<any>null);
+    }
+
+    update(checkList: CheckListForUpdateDto, id: string): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/checklists/update?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(checkList);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("put", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processUpdate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<FileResponse>(<any>null);
+    }
 }
 
 export interface ICheckListItemsClient {
@@ -968,13 +857,14 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     }
 
     get(checkListId: string, id: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/{id}";
+        let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/GetListItem?";
         if (checkListId === undefined || checkListId === null)
             throw new Error("The parameter 'checkListId' must be defined.");
         url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
-        if (id === undefined || id === null)
+        if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1023,7 +913,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     }
 
     create(checkListId: string, checkListItem: CheckListItemForCreationDto): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems";
+        let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/Create";
         if (checkListId === undefined || checkListId === null)
             throw new Error("The parameter 'checkListId' must be defined.");
         url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
@@ -1080,9 +970,9 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
 
 export interface IInstitutionClient {
     getInstitution(id: string): Observable<FileResponse>;
+    create(institution: InstitutionForCreationDto): Observable<FileResponse>;
     delete(id: string): Observable<FileResponse>;
     update(institution: InstitutionForUpdateDto, id: string): Observable<FileResponse>;
-    create(institution: InstitutionForCreationDto): Observable<FileResponse>;
 }
 
 @Injectable()
@@ -1098,10 +988,11 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     }
 
     getInstitution(id: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/institutions/{id}";
-        if (id === undefined || id === null)
+        let url_ = this.baseUrl + "/api/institutions/GetInstitution?";
+        if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1149,115 +1040,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         return Observable.of<FileResponse>(<any>null);
     }
 
-    delete(id: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/institutions/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("delete", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processDelete(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDelete(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<FileResponse>(<any>null);
-    }
-
-    update(institution: InstitutionForUpdateDto, id: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/institutions/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(institution);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("put", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processUpdate(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdate(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<FileResponse>(<any>null);
-    }
-
     create(institution: InstitutionForCreationDto): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/institutions";
+        let url_ = this.baseUrl + "/api/institutions/Create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(institution);
@@ -1307,11 +1091,123 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         }
         return Observable.of<FileResponse>(<any>null);
     }
+
+    delete(id: string): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/institutions/Delete?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("delete", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processDelete(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<FileResponse>(<any>null);
+    }
+
+    update(institution: InstitutionForUpdateDto, id: string): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/institutions/Update?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(institution);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("put", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processUpdate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<FileResponse>(<any>null);
+    }
 }
 
 export interface IManageUserClient {
     inviteUser(model: InviteUserModel): Observable<ServiceResponse>;
-    getRegisterdUsers(): Observable<ServiceResponseOfListOfUserModel>;
+    getRegisterdUsersByAccount(accountId: string): Observable<ServiceResponseOfListOfUserModel>;
+    updatePasswordOfInvitedUser(password: string, oldPassword: string, userId: string): Observable<ServiceResponse>;
+    getRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto>;
+    updateUserDetail(role: string, isConfirmed: boolean): Observable<ServiceResponseOfListOfUserModel>;
 }
 
 @Injectable()
@@ -1327,7 +1223,7 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
     }
 
     inviteUser(model: InviteUserModel): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/ManageUser/inviteuser";
+        let url_ = this.baseUrl + "/api/manageuser/inviteuser";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -1380,8 +1276,12 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
         return Observable.of<ServiceResponse>(<any>null);
     }
 
-    getRegisterdUsers(): Observable<ServiceResponseOfListOfUserModel> {
-        let url_ = this.baseUrl + "/api/ManageUser/getregisterdusers";
+    getRegisterdUsersByAccount(accountId: string): Observable<ServiceResponseOfListOfUserModel> {
+        let url_ = this.baseUrl + "/api/manageuser/getregisterdusersbyaccount?";
+        if (accountId === undefined)
+            throw new Error("The parameter 'accountId' must be defined.");
+        else
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1396,11 +1296,11 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
         return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
             return this.http.request("post", url_, transformedOptions_);
         }).flatMap((response_: any) => {
-            return this.processGetRegisterdUsers(response_);
+            return this.processGetRegisterdUsersByAccount(response_);
         }).catch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetRegisterdUsers(<any>response_);
+                    return this.processGetRegisterdUsersByAccount(<any>response_);
                 } catch (e) {
                     return <Observable<ServiceResponseOfListOfUserModel>><any>Observable.throw(e);
                 }
@@ -1409,7 +1309,178 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
         });
     }
 
-    protected processGetRegisterdUsers(response: HttpResponseBase): Observable<ServiceResponseOfListOfUserModel> {
+    protected processGetRegisterdUsersByAccount(response: HttpResponseBase): Observable<ServiceResponseOfListOfUserModel> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfUserModel.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfListOfUserModel>(<any>null);
+    }
+
+    updatePasswordOfInvitedUser(password: string, oldPassword: string, userId: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/manageuser/updatepasswordofinviteduser?";
+        if (password === undefined)
+            throw new Error("The parameter 'password' must be defined.");
+        else
+            url_ += "password=" + encodeURIComponent("" + password) + "&"; 
+        if (oldPassword === undefined)
+            throw new Error("The parameter 'oldPassword' must be defined.");
+        else
+            url_ += "oldPassword=" + encodeURIComponent("" + oldPassword) + "&"; 
+        if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processUpdatePasswordOfInvitedUser(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdatePasswordOfInvitedUser(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdatePasswordOfInvitedUser(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    getRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto> {
+        let url_ = this.baseUrl + "/api/manageuser/getroles";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetRoles(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRoles(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfListOfAspNetRoleDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfListOfAspNetRoleDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetRoles(response: HttpResponseBase): Observable<ServiceResponseOfListOfAspNetRoleDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfAspNetRoleDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfListOfAspNetRoleDto>(<any>null);
+    }
+
+    updateUserDetail(role: string, isConfirmed: boolean): Observable<ServiceResponseOfListOfUserModel> {
+        let url_ = this.baseUrl + "/api/manageuser/updateuserdetail?";
+        if (role === undefined)
+            throw new Error("The parameter 'role' must be defined.");
+        else
+            url_ += "role=" + encodeURIComponent("" + role) + "&"; 
+        if (isConfirmed === undefined || isConfirmed === null)
+            throw new Error("The parameter 'isConfirmed' must be defined and cannot be null.");
+        else
+            url_ += "isConfirmed=" + encodeURIComponent("" + isConfirmed) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processUpdateUserDetail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateUserDetail(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfListOfUserModel>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfListOfUserModel>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdateUserDetail(response: HttpResponseBase): Observable<ServiceResponseOfListOfUserModel> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1491,7 +1562,6 @@ export interface IAccountForCreationDto {
 export class ServiceResponse implements IServiceResponse {
     errorMessages?: ValidationFailure[];
     successful: boolean;
-    token?: string;
 
     constructor(data?: IServiceResponse) {
         if (data) {
@@ -1510,7 +1580,6 @@ export class ServiceResponse implements IServiceResponse {
                     this.errorMessages.push(ValidationFailure.fromJS(item));
             }
             this.successful = data["successful"];
-            this.token = data["token"];
         }
     }
 
@@ -1529,7 +1598,6 @@ export class ServiceResponse implements IServiceResponse {
                 data["errorMessages"].push(item.toJSON());
         }
         data["successful"] = this.successful;
-        data["token"] = this.token;
         return data; 
     }
 }
@@ -1537,7 +1605,6 @@ export class ServiceResponse implements IServiceResponse {
 export interface IServiceResponse {
     errorMessages?: ValidationFailure[];
     successful: boolean;
-    token?: string;
 }
 
 /** Defines a validation failure */
@@ -1993,7 +2060,6 @@ export interface IProfileViewModel {
 }
 
 export class RegisterModel implements IRegisterModel {
-    accountId: string;
     userName: string;
     firstName: string;
     lastName: string;
@@ -2012,7 +2078,6 @@ export class RegisterModel implements IRegisterModel {
 
     init(data?: any) {
         if (data) {
-            this.accountId = data["accountId"];
             this.userName = data["userName"];
             this.firstName = data["firstName"];
             this.lastName = data["lastName"];
@@ -2031,7 +2096,6 @@ export class RegisterModel implements IRegisterModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["accountId"] = this.accountId;
         data["userName"] = this.userName;
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
@@ -2043,102 +2107,12 @@ export class RegisterModel implements IRegisterModel {
 }
 
 export interface IRegisterModel {
-    accountId: string;
     userName: string;
     firstName: string;
     lastName: string;
     email: string;
     password: string;
     confirmPassword?: string;
-}
-
-export class ServiceResponseOfListOfAspNetRoleDto extends ServiceResponse implements IServiceResponseOfListOfAspNetRoleDto {
-    data?: AspNetRoleDto[];
-
-    constructor(data?: IServiceResponseOfListOfAspNetRoleDto) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            if (data["data"] && data["data"].constructor === Array) {
-                this.data = [];
-                for (let item of data["data"])
-                    this.data.push(AspNetRoleDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ServiceResponseOfListOfAspNetRoleDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ServiceResponseOfListOfAspNetRoleDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (this.data && this.data.constructor === Array) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IServiceResponseOfListOfAspNetRoleDto extends IServiceResponse {
-    data?: AspNetRoleDto[];
-}
-
-export class AspNetRoleDto implements IAspNetRoleDto {
-    id: string;
-    concurrencyStamp?: string;
-    name?: string;
-    normalizedName?: string;
-
-    constructor(data?: IAspNetRoleDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.concurrencyStamp = data["concurrencyStamp"];
-            this.name = data["name"];
-            this.normalizedName = data["normalizedName"];
-        }
-    }
-
-    static fromJS(data: any): AspNetRoleDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new AspNetRoleDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["concurrencyStamp"] = this.concurrencyStamp;
-        data["name"] = this.name;
-        data["normalizedName"] = this.normalizedName;
-        return data; 
-    }
-}
-
-export interface IAspNetRoleDto {
-    id: string;
-    concurrencyStamp?: string;
-    name?: string;
-    normalizedName?: string;
 }
 
 export class CheckListForCreationDto implements ICheckListForCreationDto {
@@ -2480,6 +2454,95 @@ export interface IUserModel {
     emailConfirmed: boolean;
     role?: string;
     roleId?: string;
+}
+
+export class ServiceResponseOfListOfAspNetRoleDto extends ServiceResponse implements IServiceResponseOfListOfAspNetRoleDto {
+    data?: AspNetRoleDto[];
+
+    constructor(data?: IServiceResponseOfListOfAspNetRoleDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            if (data["data"] && data["data"].constructor === Array) {
+                this.data = [];
+                for (let item of data["data"])
+                    this.data.push(AspNetRoleDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfListOfAspNetRoleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfListOfAspNetRoleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.data && this.data.constructor === Array) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfListOfAspNetRoleDto extends IServiceResponse {
+    data?: AspNetRoleDto[];
+}
+
+export class AspNetRoleDto implements IAspNetRoleDto {
+    id: string;
+    concurrencyStamp?: string;
+    name?: string;
+    normalizedName?: string;
+
+    constructor(data?: IAspNetRoleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.concurrencyStamp = data["concurrencyStamp"];
+            this.name = data["name"];
+            this.normalizedName = data["normalizedName"];
+        }
+    }
+
+    static fromJS(data: any): AspNetRoleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AspNetRoleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["concurrencyStamp"] = this.concurrencyStamp;
+        data["name"] = this.name;
+        data["normalizedName"] = this.normalizedName;
+        return data; 
+    }
+}
+
+export interface IAspNetRoleDto {
+    id: string;
+    concurrencyStamp?: string;
+    name?: string;
+    normalizedName?: string;
 }
 
 export interface FileResponse {

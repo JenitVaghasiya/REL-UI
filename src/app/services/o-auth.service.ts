@@ -25,4 +25,10 @@ export class OAuthService {
   public setAuthorizationHeader(value) {
     localStorage.setItem('token', value);
   }
+  public setAccountId(value) {
+    localStorage.setItem('RelAccountId', value);
+  }
+  public getAccountId() {
+    return localStorage.getItem('RelAccountId');
+  }
 }
