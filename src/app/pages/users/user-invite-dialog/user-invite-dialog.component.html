@@ -1,0 +1,35 @@
+<card #signInDiv [title]="'Sign in with your app id to continue'" [align]="'center'">
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-select placeholder="Account" [(ngModel)]="model.accountId" [formControl]="form.controls['accountId']">
+        <mat-option *ngFor="let item of accountList" [value]="item.id">
+          {{ item.name }}
+        </mat-option>
+      </mat-select>
+      <!-- <mat-error *ngIf="form.controls['accountId'].hasError('required') && form.controls['accountId'].touched">
+                    Please select account.
+                </mat-error> -->
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Email" value="" [(ngModel)]="model.email" [formControl]="form.controls['email']">
+      <mat-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">
+        You must include email.
+      </mat-error>
+      <mat-error *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched">
+        You must include a valid email address.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Role" [(ngModel)]="model.roleId" [formControl]="form.controls['roleId']">
+        <mat-option *ngFor="let item of roleList" [value]="item.id">
+          {{ item.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls['roleId'].hasError('required') && form.controls['roleId'].touched">
+        Please select role.
+      </mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">Invite</button>
+    <button mat-raised-button (click)="dialogRef.close('flase')">Cancle</button>
+  </form>
+</card>

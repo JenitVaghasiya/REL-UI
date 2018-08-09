@@ -58,12 +58,13 @@ import { PageFilteringTableComponent } from './pages/tables/filtering-table/filt
 import { PagePaginationTableComponent } from './pages/tables/pagination-table/pagination-table.component';
 import { PageFormElementsComponent } from './pages/forms/form-elements/form-elements.component';
 import { PageFormLayoutComponent } from './pages/forms/form-layout/form-layout.component';
-import { PageFormValidationComponent } from './pages/forms/form-validation/form-validation.component';
+// import { PageFormValidationComponent } from './pages/forms/form-validation/form-validation.component';
 import { PageGoogleMapComponent } from './pages/maps/google-map/google-map.component';
 import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.component';
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { AuthenticationGuard } from './services/authentication.guard';
 import { AccountComponent } from './pages/extra-pages/account/account.component';
+import { UsersComponent } from './pages/users/users.component';
 
 const defaultRoutes: Routes = [
   {
@@ -118,7 +119,10 @@ const defaultRoutes: Routes = [
   // { path: 'form-validation', component: PageFormValidatiosnComponent },
   { path: 'google-map', component: PageGoogleMapComponent },
   { path: 'leaflet-map', component: PageLeafletMapComponent },
+
+  // newly added
   { path: 'account', component: AccountComponent },
+  { path: 'users', component: UsersComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

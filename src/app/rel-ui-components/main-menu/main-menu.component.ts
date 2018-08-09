@@ -10,23 +10,23 @@ import { MainMenuService } from './main-menu.service';
   styleUrls: ['main-menu.component.scss'],
   providers: [MainMenuService]
 })
-export class MainMenuComponent {
+export class MainMenuComponent implements OnInit {
   mainMenuItems: MainMenuItem[];
 
   constructor(private mainMenuService: MainMenuService) { }
-
-  getMainMenuItems(): void {
-    this.mainMenuService.getMainMenuItems().then(mainMenuItems => this.mainMenuItems = mainMenuItems);
-  }
 
   ngOnInit(): void {
     this.getMainMenuItems();
   }
 
+  getMainMenuItems(): void {
+    this.mainMenuService.getMainMenuItems().then(mainMenuItems => this.mainMenuItems = mainMenuItems);
+  }
+
   toggle(event: Event, item: any, el: any) {
     event.preventDefault();
 
-    let items: any[] = el.mainMenuItems;
+    const items: any[] = el.mainMenuItems;
 
     if (item.active) {
       item.active = false;

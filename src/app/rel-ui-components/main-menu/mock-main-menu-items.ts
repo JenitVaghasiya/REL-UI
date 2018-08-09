@@ -17,7 +17,7 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     icon: 'fa fa-home',
     active: false,
     groupTitle: false,
-    sub: [],
+    sub: '',
     // sub: [
     //   {
     //     title: 'Dashboard 1',
@@ -29,6 +29,27 @@ export const MAINMENUITEMS: MainMenuItem[] = [
     //   }
     // ],
     routing: '/rel/dashboard',
+    externalLink: '',
+    budge: '',
+    budgeColor: '#f44236'
+  },
+  {
+    title: 'User Management',
+    icon: 'fa fa-user',
+    active: false,
+    groupTitle: false,
+    sub: '',
+    // sub: [
+    //   {
+    //     title: 'Dashboard 1',
+    //     routing: '/rel/dashboard'
+    //   },
+    //   {
+    //     title: 'Dashboard 2',
+    //     routing: '/rel/dashboard-2'
+    //   }
+    // ],
+    routing: '/rel/users',
     externalLink: '',
     budge: '',
     budgeColor: '#f44236'

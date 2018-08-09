@@ -124,7 +124,7 @@ import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.co
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
-import { AuthClient, AccountsClient } from 'api/apiclient';
+import { AuthClient, AccountsClient, ManageUserClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
@@ -135,6 +135,8 @@ import { LoaderService } from './loader/loader.service';
 import { TokenService } from './services/token.service';
 import { AppHttpInterceptor } from './interceptor/app-http-interceptor';
 import { AccountComponent } from './pages/extra-pages/account/account.component';
+import { UsersComponent } from './pages/users/users.component';
+import { UserInviteDialogComponent } from './pages/users/user-invite-dialog/user-invite-dialog.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -264,12 +266,16 @@ import { AccountComponent } from './pages/extra-pages/account/account.component'
     PageWidgetsComponent,
     FooterComponent,
     AdditionNavbarComponent,
-    AccountComponent
+
+    AccountComponent,
+    UsersComponent,
+    UserInviteDialogComponent
   ],
   entryComponents: [
     DialogResultComponent,
     CalendarDialogComponent,
-    LoaderComponent
+    LoaderComponent,
+    UserInviteDialogComponent
   ],
   bootstrap: [AppComponent],
   exports: [],
@@ -278,6 +284,7 @@ import { AccountComponent } from './pages/extra-pages/account/account.component'
     OAuthService,
     AuthClient,
     AccountsClient,
+    ManageUserClient,
     AuthenticationGuard,
     LoaderService,
     TokenService,
