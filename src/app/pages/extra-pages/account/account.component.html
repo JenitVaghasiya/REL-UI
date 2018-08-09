@@ -14,7 +14,7 @@
         </mat-form-field>
         <mat-form-field>
           <input matInput placeholder="Street 2" value="" [(ngModel)]="model.street2" [formControl]="form.controls['street2']">
-          <mat-error *ngIf=" form.controls['street1'].touched">
+          <mat-error *ngIf=" form.controls['street2'].touched">
             You must include name.
           </mat-error>
         </mat-form-field>

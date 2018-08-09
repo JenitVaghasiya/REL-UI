@@ -45,7 +45,7 @@ export class AccountComponent implements OnInit {
       this.loaderService.stop();
       if (e.successful) {
         this.toastrService.success('Account added Successfully', 'Alert');
-        this.oAuthService.setAuthorizationHeader(e.token);
+        // this.oAuthService.setAuthorizationHeader(e.token);
         this.router.navigate(['/rel/dashboard']);
       } else {
         let error = '';

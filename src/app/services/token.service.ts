@@ -22,7 +22,7 @@ export class TokenService {
   }
   getTokenDetails(): any {
     const token = this.oAuthService.getToken();
-    const decoded = token && token.length > 0 ? this.jwtDecode(token) : null;
+    const decoded = token && token.length > 0 && token !== 'null' ? this.jwtDecode(token) : null;
     if (decoded) {
       return decoded;
     }
@@ -31,7 +31,7 @@ export class TokenService {
   isTokenExpired(): boolean {
 
     const token = this.oAuthService.getToken();
-    const decoded = token && token.length > 0 ? this.jwtDecode(token) : null;
+    const decoded = token && token.length > 0 && token !== 'null' ? this.jwtDecode(token) : null;
     if (decoded) {
       const day = moment.unix(decoded.exp);
       // console.log(decoded);
