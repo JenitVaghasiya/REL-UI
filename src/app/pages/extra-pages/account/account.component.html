@@ -1,4 +1,4 @@
-<card #accountDiv [title]="'Create Account'" [align]="'center'">
+<card #accountDiv [title]="(accountId && accountId.length > 0 ? 'Update Account': 'Create Account')" [align]="'center'">
   <form (ngSubmit)="onSubmit()">
       <mat-form-field>
           <input matInput placeholder="Name" value="" [(ngModel)]="model.name" [formControl]="form.controls['name']">
@@ -38,9 +38,9 @@
           </mat-error>
         </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">Sign Up</button>
+    <button mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ accountId && accountId.length > 0 ? 'Update Account' : 'Save Account' }}</button>
 
-    <div class="additional-info">
+    <div class="additional-info" *ngIf="!(accountId && accountId.length > 0)">
       Already have an account?
       <a href="/registration/sign-in">sign in</a>
     </div>

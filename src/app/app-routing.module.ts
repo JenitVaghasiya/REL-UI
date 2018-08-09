@@ -118,6 +118,7 @@ const defaultRoutes: Routes = [
   // { path: 'form-validation', component: PageFormValidatiosnComponent },
   { path: 'google-map', component: PageGoogleMapComponent },
   { path: 'leaflet-map', component: PageLeafletMapComponent },
+  { path: 'account', component: AccountComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

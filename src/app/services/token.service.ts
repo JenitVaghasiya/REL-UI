@@ -17,8 +17,10 @@ export class TokenService {
       userInfoModel.lastName = sessionStorage.getItem('lastName');
       userInfoModel.email = sessionStorage.getItem('email');
       return userInfoModel;
+    } else {
+      return null;
     }
-    return null;
+
   }
   getTokenDetails(): any {
     const token = this.oAuthService.getToken();

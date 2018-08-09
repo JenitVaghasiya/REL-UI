@@ -49,7 +49,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {}
 
-  logout() {
+  myAccount(event) {
+    this.router.navigate(['/rel/account']);
+  }
+  logout(event) {
     localStorage.clear();
     sessionStorage.clear();
     this.router.navigate(['/registration/sign-in']);
