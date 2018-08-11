@@ -15,12 +15,17 @@ export class NavbarComponent implements OnInit {
   @Input() openedSidebar = false;
   @Output() sidebarState = new EventEmitter();
   userInfoModel: UserInfoModel = new UserInfoModel();
-
+  isSuperAdmin = false;
   constructor(
     private router: Router,
     private tokenService: TokenService
   ) {
     this.userInfoModel = this.tokenService.getUserInfo();
+    const tokenDetail = this.tokenService.getTokenDetails();
+          const roles = tokenDetail ? tokenDetail.role as Array<string> : null;
+          if (roles && roles.indexOf('superadmin') >= 0) {
+            this.isSuperAdmin = true;
+          }
   }
 
   open(event) {
@@ -47,7 +52,9 @@ export class NavbarComponent implements OnInit {
     this.sidebarState.emit();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 
   myAccount(event) {
     this.router.navigate(['/rel/account']);
