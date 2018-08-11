@@ -67,6 +67,7 @@ import { AccountComponent } from './pages/extra-pages/account/account.component'
 import { UsersComponent } from './pages/users/users.component';
 import { ResetComponent } from './pages/extra-pages/reset/reset.component';
 import { InviteResetComponent } from './pages/extra-pages/invite-reset/invite-reset.component';
+import { AccountsComponent } from './pages/extra-pages/accounts/accounts.component';
 
 const defaultRoutes: Routes = [
   {
@@ -124,6 +125,7 @@ const defaultRoutes: Routes = [
 
   // newly added
   { path: 'account', component: AccountComponent },
+  { path: 'accounts', component: AccountsComponent },
   { path: 'users', component: UsersComponent },
   { path: '**', component: PageNotFoundComponent }
 ];

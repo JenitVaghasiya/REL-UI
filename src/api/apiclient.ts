@@ -1203,7 +1203,7 @@ export interface IManageUserClient {
     getRegisterdUsersByAccount(accountId: string): Observable<ServiceResponseOfListOfUserModel>;
     updatePasswordOfInvitedUser(model: UpdatePasswordOfInvitedUserModel): Observable<ServiceResponseOfProfileViewModel>;
     getRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto>;
-    updateUserDetail(role: string, isConfirmed: boolean): Observable<ServiceResponseOfListOfUserModel>;
+    updateUserDetail(model: UserModel): Observable<ServiceResponseOfProfileViewModel>;
 }
 
 @Injectable()
@@ -1432,19 +1432,14 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
         return Observable.of<ServiceResponseOfListOfAspNetRoleDto>(<any>null);
     }
 
-    updateUserDetail(role: string, isConfirmed: boolean): Observable<ServiceResponseOfListOfUserModel> {
-        let url_ = this.baseUrl + "/api/manageuser/updateuserdetail?";
-        if (role === undefined)
-            throw new Error("The parameter 'role' must be defined.");
-        else
-            url_ += "role=" + encodeURIComponent("" + role) + "&"; 
-        if (isConfirmed === undefined || isConfirmed === null)
-            throw new Error("The parameter 'isConfirmed' must be defined and cannot be null.");
-        else
-            url_ += "isConfirmed=" + encodeURIComponent("" + isConfirmed) + "&"; 
+    updateUserDetail(model: UserModel): Observable<ServiceResponseOfProfileViewModel> {
+        let url_ = this.baseUrl + "/api/manageuser/updateuserdetail";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(model);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
@@ -1462,14 +1457,14 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
                 try {
                     return this.processUpdateUserDetail(<any>response_);
                 } catch (e) {
-                    return <Observable<ServiceResponseOfListOfUserModel>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfProfileViewModel>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<ServiceResponseOfListOfUserModel>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfProfileViewModel>><any>Observable.throw(response_);
         });
     }
 
-    protected processUpdateUserDetail(response: HttpResponseBase): Observable<ServiceResponseOfListOfUserModel> {
+    protected processUpdateUserDetail(response: HttpResponseBase): Observable<ServiceResponseOfProfileViewModel> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1480,7 +1475,7 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
             return blobToText(responseBlob).flatMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponseOfListOfUserModel.fromJS(resultData200) : <any>null;
+            result200 = resultData200 ? ServiceResponseOfProfileViewModel.fromJS(resultData200) : <any>null;
             return Observable.of(result200);
             });
         } else if (status !== 200 && status !== 204) {
@@ -1488,7 +1483,7 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<ServiceResponseOfListOfUserModel>(<any>null);
+        return Observable.of<ServiceResponseOfProfileViewModel>(<any>null);
     }
 }
 
@@ -2423,6 +2418,7 @@ export class UserModel implements IUserModel {
     emailConfirmed: boolean;
     role?: string;
     roleId?: string;
+    phoneNumber?: string;
 
     constructor(data?: IUserModel) {
         if (data) {
@@ -2443,6 +2439,7 @@ export class UserModel implements IUserModel {
             this.emailConfirmed = data["emailConfirmed"];
             this.role = data["role"];
             this.roleId = data["roleId"];
+            this.phoneNumber = data["phoneNumber"];
         }
     }
 
@@ -2463,6 +2460,7 @@ export class UserModel implements IUserModel {
         data["emailConfirmed"] = this.emailConfirmed;
         data["role"] = this.role;
         data["roleId"] = this.roleId;
+        data["phoneNumber"] = this.phoneNumber;
         return data; 
     }
 }
@@ -2476,6 +2474,7 @@ export interface IUserModel {
     emailConfirmed: boolean;
     role?: string;
     roleId?: string;
+    phoneNumber?: string;
 }
 
 export class UpdatePasswordOfInvitedUserModel implements IUpdatePasswordOfInvitedUserModel {

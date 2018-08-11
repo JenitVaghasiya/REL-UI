@@ -72,8 +72,8 @@ export class PageSignInComponent implements OnInit {
           this.router.navigate(['/rel/dashboard']);
         } else {
           const tokenDetail = this.tokenService.getTokenDetails();
-          const roles = tokenDetail ? tokenDetail.role as Array<string> : null;
-          if (roles && roles.indexOf('superadmin') >= 0) {
+          const roles = tokenDetail ? tokenDetail.role : null;
+          if (roles && roles === 'superadmin' ) {
             this.oAuthService.setAccountId('0'); // this is added for to allow proper routing to navigate with account id.
             this.router.navigate(['/rel/dashboard']);
 

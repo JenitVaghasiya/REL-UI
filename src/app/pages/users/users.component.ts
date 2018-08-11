@@ -1,47 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SharedService } from '../../layouts/shared-service';
-import { MatPaginator, MatDialogRef, MatDialog } from '@angular/material';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { DataSource } from '@angular/cdk/table';
+import {
+  MatPaginator,
+  MatDialogRef,
+  MatDialog,
+  MatTableDataSource
+} from '@angular/material';
 import { UserInviteDialogComponent } from './user-invite-dialog/user-invite-dialog.component';
-const COLORS: string[] = [
-  'maroon',
-  'red',
-  'orange',
-  'yellow',
-  'olive',
-  'green',
-  'purple',
-  'fuchsia',
-  'lime',
-  'teal',
-  'aqua',
-  'blue',
-  'navy',
-  'black',
-  'gray'
-];
-const NAMES: string[] = [
-  'Maia',
-  'Asher',
-  'Olivia',
-  'Atticus',
-  'Amelia',
-  'Jack',
-  'Charlotte',
-  'Theodore',
-  'Isla',
-  'Oliver',
-  'Isabella',
-  'Jasper',
-  'Cora',
-  'Levi',
-  'Violet',
-  'Arthur',
-  'Mia',
-  'Thomas',
-  'Elizabeth'
-];
+import { ManageUserClient, UserModel } from 'api/apiclient';
+import { OAuthService } from '../../services/o-auth.service';
+import { UserDialogComponent } from './user-dialog/user-dialog.component';
 
 @Component({
   selector: 'app-users',
@@ -50,19 +18,47 @@ const NAMES: string[] = [
 })
 export class UsersComponent implements OnInit {
   pageTitle = 'Users Management';
-  displayedColumns = ['userId', 'userName', 'progress', 'color'];
-  exampleDatabase = new ExampleDatabase();
-  dataSource: ExampleDataSource | null;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  displayedColumns: string[] = [
+    'name',
+    'email',
+    'phoneNumber',
+    'role',
+    'invited',
+    'status',
+    'action'
+  ];
+  users: UserModel[] = [];
+  dataSource = new MatTableDataSource<UserModel>(this.users);
+  @ViewChild(MatPaginator)
+  paginator: MatPaginator;
+
   dialogRef: MatDialogRef<UserInviteDialogComponent>;
+  dialogUserRef: MatDialogRef<UserDialogComponent>;
   selectedOption: string;
-  constructor(public dialog: MatDialog, private _sharedService: SharedService) {
+  constructor(
+    public dialog: MatDialog,
+    private _sharedService: SharedService,
+    public manageUserClient: ManageUserClient,
+    public oAuthService: OAuthService
+  ) {
     this._sharedService.emitChange(this.pageTitle);
 
+    let accountId = '';
+    if (sessionStorage.getItem('EditAccount')) {
+      accountId = sessionStorage.getItem('EditAccount');
+    } else {
+      accountId = this.oAuthService.getAccountId();
+    }
+    this.manageUserClient
+      .getRegisterdUsersByAccount(accountId)
+      .subscribe(res => {
+        this.users = res.data;
+        this.dataSource = new MatTableDataSource<UserModel>(this.users);
+      });
   }
 
   ngOnInit() {
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator);
+    this.dataSource.paginator = this.paginator;
   }
 
   inviteUser() {
@@ -71,75 +67,16 @@ export class UsersComponent implements OnInit {
       this.selectedOption = result;
     });
   }
-}
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  color: string;
-}
+  editUser(user: UserModel) {
+    this.dialogUserRef = this.dialog.open(UserDialogComponent, {
+      data: user
+    });
 
-/** An example database that the data source uses to retrieve data for the table. */
-export class ExampleDatabase {
-  /** Stream that emits whenever the data has been modified. */
-  dataChange: BehaviorSubject<UserData[]> = new BehaviorSubject<UserData[]>([]);
-  get data(): UserData[] { return this.dataChange.value; }
-
-  constructor() {
-    // Fill up the database with 100 users.
-    for (let i = 0; i < 100; i++) { this.addUser(); }
-  }
-
-  /** Adds a new user to the database. */
-  addUser() {
-    const copiedData = this.data.slice();
-    copiedData.push(this.createNewUser());
-    this.dataChange.next(copiedData);
-  }
-
-  /** Builds and returns a new User. */
-  private createNewUser() {
-    const name =
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-    return {
-      id: (this.data.length + 1).toString(),
-      name: name,
-      progress: Math.round(Math.random() * 100).toString(),
-      color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
-    };
-  }
-}
-
-/**
- * Data source to provide what data should be rendered in the table. Note that the data source
- * can retrieve its data in any way. In this case, the data source is provided a reference
- * to a common data base, ExampleDatabase. It is not the data source's responsibility to manage
- * the underlying data. Instead, it only needs to take the data and send the table exactly what
- * should be rendered.
- */
-export class ExampleDataSource extends DataSource<any> {
-  constructor(private _exampleDatabase: ExampleDatabase, private _paginator: MatPaginator) {
-    super();
-  }
-
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<UserData[]> {
-    const displayDataChanges = [
-      this._exampleDatabase.dataChange,
-      this._paginator.page,
-    ];
-
-    return Observable.merge(...displayDataChanges).map(() => {
-      const data = this._exampleDatabase.data.slice();
-
-      // Grab the page's slice of data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      return data.splice(startIndex, this._paginator.pageSize);
+    this.dialogUserRef.afterClosed().subscribe(result => {
+      if (result) {
+        user = result;
+      }
     });
   }
-
-  disconnect() {}
 }

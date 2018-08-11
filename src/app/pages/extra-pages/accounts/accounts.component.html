@@ -1,0 +1,46 @@
+<card title="Manage Accounts">
+
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="street1">
+      <mat-header-cell *matHeaderCellDef> Street 1 </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.street1}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="street2">
+      <mat-header-cell *matHeaderCellDef> Street 2 </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.street2}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="city">
+      <mat-header-cell *matHeaderCellDef> City </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.city}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="state">
+      <mat-header-cell *matHeaderCellDef> State </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="zipcode">
+      <mat-header-cell *matHeaderCellDef> Zip Code </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.emailConfirmed ? "Active" : "De-Activated"}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button color="primary" mat-icon-button (click)="editAccount(row)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button color="warn" mat-icon-button (click)="listUsers(row)">
+          <mat-icon>list</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator [length]="accounts.length" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[ 10, 25, 50, 100]"></mat-paginator>
+
+</card>

@@ -139,6 +139,8 @@ import { UsersComponent } from './pages/users/users.component';
 import { UserInviteDialogComponent } from './pages/users/user-invite-dialog/user-invite-dialog.component';
 import { ResetComponent } from './pages/extra-pages/reset/reset.component';
 import { InviteResetComponent } from './pages/extra-pages/invite-reset/invite-reset.component';
+import { UserDialogComponent } from './pages/users/user-dialog/user-dialog.component';
+import { AccountsComponent } from './pages/extra-pages/accounts/accounts.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -273,13 +275,17 @@ import { InviteResetComponent } from './pages/extra-pages/invite-reset/invite-re
     UsersComponent,
     UserInviteDialogComponent,
     ResetComponent,
-    InviteResetComponent
+    InviteResetComponent,
+    UserDialogComponent,
+    AccountsComponent
   ],
   entryComponents: [
     DialogResultComponent,
     CalendarDialogComponent,
     LoaderComponent,
-    UserInviteDialogComponent
+    UserInviteDialogComponent,
+    UserDialogComponent,
+    AccountsComponent
   ],
   bootstrap: [AppComponent],
   exports: [],
