@@ -85,7 +85,7 @@ const folders: any[] = [
   styleUrls: ['./dashboard.component.scss']
 })
 export class PageDashboardComponent implements OnInit {
-  pageTitle: string = 'Dashboard';
+  pageTitle = 'Dashboard';
   messages = messages;
   folders = folders;
 
@@ -164,8 +164,8 @@ export class PageDashboardComponent implements OnInit {
       pointHoverBorderColor: '#000'
     }
   ];
-  public lineChartLegend: boolean = true;
-  public lineChartType: string = 'line';
+  public lineChartLegend = true;
+  public lineChartType = 'line';
 
   // Radar
   public radarChartLabels: string[] = [
@@ -217,7 +217,7 @@ export class PageDashboardComponent implements OnInit {
       pointHoverBorderColor: '#000'
     }
   ];
-  public radarChartType: string = 'radar';
+  public radarChartType = 'radar';
 
   constructor( private _sharedService: SharedService ) {
     this._sharedService.emitChange(this.pageTitle);

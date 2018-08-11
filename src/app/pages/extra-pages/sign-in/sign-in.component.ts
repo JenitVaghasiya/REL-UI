@@ -7,6 +7,7 @@ import { AuthClient } from 'api/apiclient';
 import { OAuthService } from '../../../services/o-auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
+import { TokenService } from '../../../services/token.service';
 
 @Component({
   selector: 'page-sign-in',
@@ -24,7 +25,8 @@ export class PageSignInComponent implements OnInit {
     private authClient: AuthClient,
     private oAuthService: OAuthService,
     private toastrService: ToastrService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private tokenService: TokenService
   ) {
     const token = this.oAuthService.getToken();
     const accountId = this.oAuthService.getAccountId();
@@ -63,11 +65,21 @@ export class PageSignInComponent implements OnInit {
           e.data.lastName ? e.data.lastName : ''
         );
         sessionStorage.setItem('email', e.data.email ? e.data.email : '');
-        if (e.data.accountId) {
+        if (e.data.isInvited) {
+          this.router.navigate(['/registration/i-resetpassword']);
+        } else if (e.data.accountId) {
           this.oAuthService.setAccountId(e.data.accountId);
           this.router.navigate(['/rel/dashboard']);
         } else {
-          this.router.navigate(['/registration/account']);
+          const tokenDetail = this.tokenService.getTokenDetails();
+          const roles = tokenDetail ? tokenDetail.role as Array<string> : null;
+          if (roles && roles.indexOf('superadmin') >= 0) {
+            this.oAuthService.setAccountId('0'); // this is added for to allow proper routing to navigate with account id.
+            this.router.navigate(['/rel/dashboard']);
+
+          } else {
+            this.router.navigate(['/registration/account']);
+          }
         }
       } else {
         let error = '';

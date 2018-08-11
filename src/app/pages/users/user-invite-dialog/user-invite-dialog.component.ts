@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import {
-  FormGroup,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   InviteUserModel,
   ManageUserClient,
@@ -15,6 +11,8 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
 import { CustomValidators } from 'ng2-validation';
+import { OAuthService } from '../../../services/o-auth.service';
+import { TokenService } from '../../../services/token.service';
 
 @Component({
   moduleId: module.id,
@@ -23,8 +21,9 @@ import { CustomValidators } from 'ng2-validation';
   styleUrls: ['user-invite-dialog.component.scss']
 })
 export class UserInviteDialogComponent implements OnInit {
-  @ViewChild('signInDiv', { read: ViewContainerRef })
-  signInDiv: ViewContainerRef;
+  @ViewChild('userInviteDiv', { read: ViewContainerRef })
+  userInviteDiv: ViewContainerRef;
+  isSuperAdmin: boolean;
   public form: FormGroup;
   public model = new InviteUserModel();
   public accountList: AccountDto[] = new Array<AccountDto>();
@@ -35,13 +34,23 @@ export class UserInviteDialogComponent implements OnInit {
     private manageUserClient: ManageUserClient,
     private accountClient: AccountsClient,
     private toastrService: ToastrService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private oAuthService: OAuthService,
+    private tokenService: TokenService
   ) {
-    this.accountClient.getAccounts().subscribe(res => {
-      if (res.successful) {
-        this.accountList = res.data;
-      }
-    });
+    const tokenDetail = this.tokenService.getTokenDetails();
+    const roles = tokenDetail ? (tokenDetail.role as Array<string>) : null;
+    if (roles && roles.indexOf('superadmin') >= 0) {
+      this.isSuperAdmin = true;
+      this.accountClient.getAccounts().subscribe(res => {
+        if (res.successful) {
+          this.accountList = res.data;
+        }
+      });
+    } else {
+      this.model.accountId = this.oAuthService.getAccountId();
+    }
+
     this.manageUserClient.getRoles().subscribe(res => {
       if (res.successful) {
         this.roleList = res.data;
@@ -50,7 +59,7 @@ export class UserInviteDialogComponent implements OnInit {
   }
   ngOnInit() {
     this.form = this.fb.group({
-      // accountId: [null, Validators.compose([Validators.required])],
+      accountId: [null, Validators.compose([Validators.required])],
       email: [
         null,
         Validators.compose([Validators.required, CustomValidators.email])
@@ -59,7 +68,7 @@ export class UserInviteDialogComponent implements OnInit {
     });
   }
   onSubmit() {
-    this.loaderService.start(this.signInDiv);
+    this.loaderService.start(this.userInviteDiv);
     this.manageUserClient.inviteUser(this.model).subscribe(e => {
       this.loaderService.stop();
       if (e.successful) {

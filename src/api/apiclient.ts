@@ -64,7 +64,7 @@ export class BaseClient {
 }
 
 export interface IAccountsClient {
-    create(account: AccountForCreationDto): Observable<ServiceResponse>;
+    create(account: AccountForCreationDto): Observable<ServiceResponseOfString>;
     getAccount(id: string): Observable<ServiceResponseOfAccountDto>;
     getAccounts(): Observable<ServiceResponseOfListOfAccountDto>;
     delete(id: string): Observable<ServiceResponse>;
@@ -83,7 +83,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
-    create(account: AccountForCreationDto): Observable<ServiceResponse> {
+    create(account: AccountForCreationDto): Observable<ServiceResponseOfString> {
         let url_ = this.baseUrl + "/api/accounts/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -108,14 +108,14 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
                 try {
                     return this.processCreate(<any>response_);
                 } catch (e) {
-                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfString>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfString>><any>Observable.throw(response_);
         });
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
+    protected processCreate(response: HttpResponseBase): Observable<ServiceResponseOfString> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -126,7 +126,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
             return blobToText(responseBlob).flatMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            result200 = resultData200 ? ServiceResponseOfString.fromJS(resultData200) : <any>null;
             return Observable.of(result200);
             });
         } else if (status !== 200 && status !== 204) {
@@ -134,7 +134,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<ServiceResponse>(<any>null);
+        return Observable.of<ServiceResponseOfString>(<any>null);
     }
 
     getAccount(id: string): Observable<ServiceResponseOfAccountDto> {
@@ -361,7 +361,7 @@ export interface IAuthClient {
     login(model: LoginModel): Observable<ServiceResponseOfProfileViewModel>;
     register(model: RegisterModel): Observable<ServiceResponseOfProfileViewModel>;
     forgotPassword(email: string): Observable<ServiceResponse>;
-    resetPassword(email: string, password: string, confirmPassword: string, code: string, userId: string): Observable<ServiceResponse>;
+    resetPassword(password: string, confirmPassword: string, code: string, userId: string): Observable<ServiceResponse>;
 }
 
 @Injectable()
@@ -539,12 +539,8 @@ export class AuthClient extends BaseClient implements IAuthClient {
         return Observable.of<ServiceResponse>(<any>null);
     }
 
-    resetPassword(email: string, password: string, confirmPassword: string, code: string, userId: string): Observable<ServiceResponse> {
+    resetPassword(password: string, confirmPassword: string, code: string, userId: string): Observable<ServiceResponse> {
         let url_ = this.baseUrl + "/api/auth/resetpassword?";
-        if (email === undefined)
-            throw new Error("The parameter 'email' must be defined.");
-        else
-            url_ += "email=" + encodeURIComponent("" + email) + "&"; 
         if (password === undefined)
             throw new Error("The parameter 'password' must be defined.");
         else
@@ -1205,7 +1201,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 export interface IManageUserClient {
     inviteUser(model: InviteUserModel): Observable<ServiceResponse>;
     getRegisterdUsersByAccount(accountId: string): Observable<ServiceResponseOfListOfUserModel>;
-    updatePasswordOfInvitedUser(password: string, oldPassword: string, userId: string): Observable<ServiceResponse>;
+    updatePasswordOfInvitedUser(model: UpdatePasswordOfInvitedUserModel): Observable<ServiceResponseOfProfileViewModel>;
     getRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto>;
     updateUserDetail(role: string, isConfirmed: boolean): Observable<ServiceResponseOfListOfUserModel>;
 }
@@ -1331,21 +1327,14 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
         return Observable.of<ServiceResponseOfListOfUserModel>(<any>null);
     }
 
-    updatePasswordOfInvitedUser(password: string, oldPassword: string, userId: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/manageuser/updatepasswordofinviteduser?";
-        if (password === undefined)
-            throw new Error("The parameter 'password' must be defined.");
-        else
-            url_ += "password=" + encodeURIComponent("" + password) + "&"; 
-        if (oldPassword === undefined)
-            throw new Error("The parameter 'oldPassword' must be defined.");
-        else
-            url_ += "oldPassword=" + encodeURIComponent("" + oldPassword) + "&"; 
-        if (userId !== undefined)
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&"; 
+    updatePasswordOfInvitedUser(model: UpdatePasswordOfInvitedUserModel): Observable<ServiceResponseOfProfileViewModel> {
+        let url_ = this.baseUrl + "/api/manageuser/updatepasswordofinviteduser";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(model);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
@@ -1363,14 +1352,14 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
                 try {
                     return this.processUpdatePasswordOfInvitedUser(<any>response_);
                 } catch (e) {
-                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfProfileViewModel>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfProfileViewModel>><any>Observable.throw(response_);
         });
     }
 
-    protected processUpdatePasswordOfInvitedUser(response: HttpResponseBase): Observable<ServiceResponse> {
+    protected processUpdatePasswordOfInvitedUser(response: HttpResponseBase): Observable<ServiceResponseOfProfileViewModel> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1381,7 +1370,7 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
             return blobToText(responseBlob).flatMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            result200 = resultData200 ? ServiceResponseOfProfileViewModel.fromJS(resultData200) : <any>null;
             return Observable.of(result200);
             });
         } else if (status !== 200 && status !== 204) {
@@ -1389,7 +1378,7 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<ServiceResponse>(<any>null);
+        return Observable.of<ServiceResponseOfProfileViewModel>(<any>null);
     }
 
     getRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto> {
@@ -1605,6 +1594,39 @@ export class ServiceResponse implements IServiceResponse {
 export interface IServiceResponse {
     errorMessages?: ValidationFailure[];
     successful: boolean;
+}
+
+export class ServiceResponseOfString extends ServiceResponse implements IServiceResponseOfString {
+    data?: string;
+
+    constructor(data?: IServiceResponseOfString) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.data = data["data"];
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfString {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfString extends IServiceResponse {
+    data?: string;
 }
 
 /** Defines a validation failure */
@@ -2454,6 +2476,46 @@ export interface IUserModel {
     emailConfirmed: boolean;
     role?: string;
     roleId?: string;
+}
+
+export class UpdatePasswordOfInvitedUserModel implements IUpdatePasswordOfInvitedUserModel {
+    password: string;
+    oldPassword: string;
+
+    constructor(data?: IUpdatePasswordOfInvitedUserModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.password = data["password"];
+            this.oldPassword = data["oldPassword"];
+        }
+    }
+
+    static fromJS(data: any): UpdatePasswordOfInvitedUserModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdatePasswordOfInvitedUserModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["password"] = this.password;
+        data["oldPassword"] = this.oldPassword;
+        return data; 
+    }
+}
+
+export interface IUpdatePasswordOfInvitedUserModel {
+    password: string;
+    oldPassword: string;
 }
 
 export class ServiceResponseOfListOfAspNetRoleDto extends ServiceResponse implements IServiceResponseOfListOfAspNetRoleDto {

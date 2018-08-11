@@ -85,6 +85,7 @@ export class AccountComponent implements OnInit {
       this.accountsClient.create(this.model).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
+          this.oAuthService.setAccountId(e.data ? e.data : '');
           this.toastrService.success('Account added Successfully', 'Alert');
           // account id needed
           this.router.navigate(['/rel/dashboard']);

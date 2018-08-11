@@ -132,6 +132,7 @@ const extraRoutes: Routes = [
   { path: 'sign-up', component: PageSignUpComponent },
   { path: 'forgot', component: PageForgotComponent },
   { path: 'resetpassword', component: ResetComponent },
+  { path: 'i-resetpassword', component: ResetComponent },
   { path: 'confirm', component: PageConfirmComponent },
   { path: 'page-404', component: Page404Component },
   { path: 'page-500', component: Page500Component },
