@@ -69,7 +69,10 @@ export class UserDialogComponent implements OnInit {
         null,
         Validators.compose([Validators.required, CustomValidators.email])
       ],
-      roleId: [null, this.data ? Validators.compose([Validators.required]) : null],
+      roleId: [
+        null,
+        this.data ? Validators.compose([Validators.required]) : null
+      ],
       phoneNumber: [null],
       emailConfirmed: [null]
     });
@@ -80,6 +83,11 @@ export class UserDialogComponent implements OnInit {
       this.loaderService.stop();
       if (e.successful) {
         this.toastrService.success('User Updated Successfully', 'Alert');
+        if (!this.data) {
+          sessionStorage.setItem('firstName', this.model.firstName);
+          sessionStorage.setItem('lastName', this.model.lastName);
+          sessionStorage.setItem('phoneNumber', this.model.phoneNumber);
+        }
         this.dialogRef.close(this.model);
       } else {
         let error = '';
