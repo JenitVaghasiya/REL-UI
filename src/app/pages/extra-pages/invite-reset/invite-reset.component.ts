@@ -64,6 +64,8 @@ export class InviteResetComponent implements OnInit {
             e.data.lastName ? e.data.lastName : ''
           );
           sessionStorage.setItem('email', e.data.email ? e.data.email : '');
+          sessionStorage.setItem('phoneNumber', e.data.phoneNumber ? e.data.phoneNumber : '');
+
 
           if (e.data.accountId) {
             this.oAuthService.setAccountId(e.data.accountId);

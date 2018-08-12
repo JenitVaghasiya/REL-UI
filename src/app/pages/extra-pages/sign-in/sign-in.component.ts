@@ -65,6 +65,8 @@ export class PageSignInComponent implements OnInit {
           e.data.lastName ? e.data.lastName : ''
         );
         sessionStorage.setItem('email', e.data.email ? e.data.email : '');
+        sessionStorage.setItem('phoneNumber', e.data.phoneNumber ? e.data.phoneNumber : '');
+
         if (e.data.isInvited) {
           this.router.navigate(['/registration/i-resetpassword']);
         } else if (e.data.accountId) {

@@ -61,6 +61,9 @@ export class PageSignUpComponent implements OnInit {
             e.data.lastName ? e.data.lastName : ''
           );
           sessionStorage.setItem('email', e.data.email ? e.data.email : '');
+
+          sessionStorage.setItem('phoneNumber', e.data.phoneNumber ? e.data.phoneNumber : '');
+
         }
 
         this.router.navigate(['/registration/account']);

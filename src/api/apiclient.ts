@@ -2020,6 +2020,7 @@ export class ProfileViewModel implements IProfileViewModel {
     token?: string;
     accountId?: string;
     isInvited: boolean;
+    phoneNumber?: string;
     emailConfirmed: boolean;
 
     constructor(data?: IProfileViewModel) {
@@ -2040,6 +2041,7 @@ export class ProfileViewModel implements IProfileViewModel {
             this.token = data["token"];
             this.accountId = data["accountId"];
             this.isInvited = data["isInvited"];
+            this.phoneNumber = data["phoneNumber"];
             this.emailConfirmed = data["emailConfirmed"];
         }
     }
@@ -2060,6 +2062,7 @@ export class ProfileViewModel implements IProfileViewModel {
         data["token"] = this.token;
         data["accountId"] = this.accountId;
         data["isInvited"] = this.isInvited;
+        data["phoneNumber"] = this.phoneNumber;
         data["emailConfirmed"] = this.emailConfirmed;
         return data; 
     }
@@ -2073,6 +2076,7 @@ export interface IProfileViewModel {
     token?: string;
     accountId?: string;
     isInvited: boolean;
+    phoneNumber?: string;
     emailConfirmed: boolean;
 }
 

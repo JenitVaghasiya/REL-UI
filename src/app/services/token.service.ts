@@ -16,6 +16,7 @@ export class TokenService {
       userInfoModel.firstName = sessionStorage.getItem('firstName');
       userInfoModel.lastName = sessionStorage.getItem('lastName');
       userInfoModel.email = sessionStorage.getItem('email');
+      userInfoModel.phoneNumber = sessionStorage.getItem('phoneNumber');
       return userInfoModel;
     } else {
       return null;
