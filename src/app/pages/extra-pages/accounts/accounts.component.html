@@ -30,10 +30,10 @@
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <button color="primary" mat-icon-button (click)="editAccount(row)">
+        <button color="primary" mat-icon-button matTooltip="Edit Account" (click)="editAccount(row)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button color="warn" mat-icon-button (click)="listUsers(row)">
+        <button color="warn" mat-icon-button matTooltip="List User" (click)="listUsers(row)">
           <mat-icon>list</mat-icon>
         </button>
       </mat-cell>

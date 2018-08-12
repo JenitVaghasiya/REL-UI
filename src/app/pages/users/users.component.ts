@@ -24,8 +24,7 @@ import { LoaderService } from '../../loader/loader.service';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit, OnDestroy {
-  // @ViewChild('usersDiv', { read: ViewContainerRef })
-  // usersDiv: ViewContainerRef;
+  @ViewChild('usersDiv', { read: ViewContainerRef }) usersDiv: ViewContainerRef;
 
   pageTitle = 'Users Management';
   displayedColumns: string[] = [
@@ -53,12 +52,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     public loaderService: LoaderService
   ) {
     this._sharedService.emitChange(this.pageTitle);
-
-    // this.loaderService.start(this.usersDiv);
-    this.getUsers();
   }
 
   getUsers() {
+    this.loaderService.start(this.usersDiv);
     let accountId = '';
     if (sessionStorage.getItem('EditAccount')) {
       accountId = sessionStorage.getItem('EditAccount');
@@ -68,12 +65,14 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.manageUserClient
       .getRegisterdUsersByAccount(accountId)
       .subscribe(res => {
+        this.loaderService.stop();
         this.users = res.data;
         this.dataSource = new MatTableDataSource<UserModel>(this.users);
-        //  this.loaderService.stop();
+
       });
   }
   ngOnInit() {
+    this.getUsers();
     this.dataSource.paginator = this.paginator;
   }
 

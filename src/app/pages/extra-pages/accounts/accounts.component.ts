@@ -20,8 +20,8 @@ import { AccountDialogComponent } from '../account/account-dialog.component';
 export class AccountsComponent implements OnInit {
   pageTitle = 'Accounts Management';
 
-  // @ViewChild('accountsDiv', { read: ViewContainerRef })
-  // accountsDiv: ViewContainerRef;
+  @ViewChild('accountsDiv', { read: ViewContainerRef })
+  accountsDiv: ViewContainerRef;
 
   dialogRef: MatDialogRef<AccountDialogComponent>;
 
@@ -49,20 +49,21 @@ export class AccountsComponent implements OnInit {
   ) {
     this._sharedService.emitChange(this.pageTitle);
 
-    this.getAccounts();
   }
 
   getAccounts() {
-    // this.loaderService.start(this.accountsDiv);
+    this.loaderService.start(this.accountsDiv);
     this.accountsClient
       .getAccounts()
       .subscribe(res => {
         this.accounts = res.data;
         this.dataSource = new MatTableDataSource<AccountDto>(this.accounts);
-        // this.loaderService.stop();
+        this.loaderService.stop();
       });
   }
   ngOnInit() {
+
+    this.getAccounts();
     this.dataSource.paginator = this.paginator;
   }
 

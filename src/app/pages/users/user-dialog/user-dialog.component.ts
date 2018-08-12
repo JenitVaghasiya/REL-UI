@@ -69,7 +69,7 @@ export class UserDialogComponent implements OnInit {
         null,
         Validators.compose([Validators.required, CustomValidators.email])
       ],
-      roleId: [null, this.data ? Validators.compose([Validators.required]): null],
+      roleId: [null, this.data ? Validators.compose([Validators.required]) : null],
       phoneNumber: [null],
       emailConfirmed: [null]
     });

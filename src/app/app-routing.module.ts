@@ -124,9 +124,12 @@ const defaultRoutes: Routes = [
   { path: 'leaflet-map', component: PageLeafletMapComponent },
 
   // newly added
-  { path: 'account', component: AccountComponent },
-  { path: 'accounts', component: AccountsComponent },
-  { path: 'users', component: UsersComponent },
+  { path: 'account', component: AccountComponent,
+  canActivate: [AuthenticationGuard] },
+  { path: 'accounts', component: AccountsComponent ,
+  canActivate: [AuthenticationGuard]},
+  { path: 'users', component: UsersComponent,
+  canActivate: [AuthenticationGuard] },
   { path: '**', component: PageNotFoundComponent }
 ];
 
