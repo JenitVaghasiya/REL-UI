@@ -2,11 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from '../../services/token.service';
 import { UserInfoModel } from 'models/custom.model';
-import {
-  MatDialog,
-  MatDialogRef
-} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { UserDialogComponent } from '../../pages/users/user-dialog/user-dialog.component';
+import { AccountDialogComponent } from '../../pages/extra-pages/account/account-dialog.component';
 
 @Component({
   moduleId: module.id,
@@ -25,6 +23,8 @@ export class NavbarComponent implements OnInit {
   userInfoModel: UserInfoModel = new UserInfoModel();
   isSuperAdmin = false;
   dialogUserRef: MatDialogRef<UserDialogComponent>;
+  dialogRef: MatDialogRef<AccountDialogComponent>;
+
   constructor(
     public dialog: MatDialog,
     private router: Router,
@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
     this.userInfoModel = this.tokenService.getUserInfo();
     const tokenDetail = this.tokenService.getTokenDetails();
     const roles = tokenDetail ? tokenDetail.role : null;
-    if (roles && roles === 'superadmin' ) {
+    if (roles && roles === 'superadmin') {
       this.isSuperAdmin = true;
     }
   }
@@ -75,7 +75,11 @@ export class NavbarComponent implements OnInit {
   }
 
   myAccount(event) {
-    this.router.navigate(['/rel/account']);
+    // this.router.navigate(['/rel/account']);
+    this.dialogRef = this.dialog.open(AccountDialogComponent);
+    this.dialogRef.afterClosed().subscribe(result => {
+      // this.selectedOption = result;
+    });
   }
   logout(event) {
     localStorage.clear();

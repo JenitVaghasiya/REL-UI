@@ -40,7 +40,7 @@
 
     <button mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ accountId && accountId.length > 0 ? 'Update Account' : 'Save Account' }}</button>
 
-    <div class="additional-info" *ngIf="!(accountId && accountId.length > 0)">
+    <div class="additional-info" *ngIf="!isNewFromSuperAdmin && !(accountId && accountId.length > 0)">
       Already have an account?
       <a href="/registration/sign-in">sign in</a>
     </div>

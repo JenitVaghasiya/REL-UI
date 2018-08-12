@@ -38,6 +38,9 @@ export class UserInviteDialogComponent implements OnInit {
     private oAuthService: OAuthService,
     private tokenService: TokenService
   ) {
+
+
+
     const tokenDetail = this.tokenService.getTokenDetails();
     const roles = tokenDetail ? tokenDetail.role : null;
     if (roles && roles === 'superadmin') {
@@ -47,6 +50,9 @@ export class UserInviteDialogComponent implements OnInit {
           this.accountList = res.data;
         }
       });
+      if (sessionStorage.getItem('EditAccount')) {
+        this.model.accountId = sessionStorage.getItem('EditAccount');
+      }
     } else {
       this.model.accountId = this.oAuthService.getAccountId();
     }

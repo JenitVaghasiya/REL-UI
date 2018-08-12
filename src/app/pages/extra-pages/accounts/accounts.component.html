@@ -1,4 +1,5 @@
-<card title="Manage Accounts">
+<card #accountsDiv title="Manage Accounts">
+  <button mat-raised-button color="accent" (click)="addNewAccount()">Add New Account</button>
 
   <mat-table #table [dataSource]="dataSource">
 
@@ -24,7 +25,7 @@
     </ng-container>
     <ng-container matColumnDef="zipcode">
       <mat-header-cell *matHeaderCellDef> Zip Code </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.emailConfirmed ? "Active" : "De-Activated"}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.zipCode }} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>

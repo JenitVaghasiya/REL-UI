@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  ViewContainerRef
+} from '@angular/core';
 import { SharedService } from '../../layouts/shared-service';
 import {
   MatPaginator,
@@ -10,13 +16,17 @@ import { UserInviteDialogComponent } from './user-invite-dialog/user-invite-dial
 import { ManageUserClient, UserModel } from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
+import { LoaderService } from '../../loader/loader.service';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
+  // @ViewChild('usersDiv', { read: ViewContainerRef })
+  // usersDiv: ViewContainerRef;
+
   pageTitle = 'Users Management';
   displayedColumns: string[] = [
     'name',
@@ -39,10 +49,16 @@ export class UsersComponent implements OnInit {
     public dialog: MatDialog,
     private _sharedService: SharedService,
     public manageUserClient: ManageUserClient,
-    public oAuthService: OAuthService
+    public oAuthService: OAuthService,
+    public loaderService: LoaderService
   ) {
     this._sharedService.emitChange(this.pageTitle);
 
+    // this.loaderService.start(this.usersDiv);
+    this.getUsers();
+  }
+
+  getUsers() {
     let accountId = '';
     if (sessionStorage.getItem('EditAccount')) {
       accountId = sessionStorage.getItem('EditAccount');
@@ -54,9 +70,9 @@ export class UsersComponent implements OnInit {
       .subscribe(res => {
         this.users = res.data;
         this.dataSource = new MatTableDataSource<UserModel>(this.users);
+        //  this.loaderService.stop();
       });
   }
-
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -65,6 +81,7 @@ export class UsersComponent implements OnInit {
     this.dialogRef = this.dialog.open(UserInviteDialogComponent);
     this.dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
+      this.getUsers();
     });
   }
 
@@ -78,5 +95,8 @@ export class UsersComponent implements OnInit {
         user = result;
       }
     });
+  }
+  ngOnDestroy() {
+    sessionStorage.removeItem('EditAccount');
   }
 }

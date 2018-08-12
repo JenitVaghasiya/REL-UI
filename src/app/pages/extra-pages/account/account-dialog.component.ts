@@ -13,22 +13,17 @@ import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
 import { MatDialogRef } from '@angular/material';
 import { UserDialogComponent } from '../../users/user-dialog/user-dialog.component';
+import { AccountComponent } from './account.component';
 
 @Component({
-  selector: 'page-account',
+  selector: 'page-account-dialog',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss']
 })
-export class AccountComponent implements OnInit, OnDestroy {
-  @ViewChild('accountDiv', { read: ViewContainerRef })
-  signUpDiv: ViewContainerRef;
-  public form: FormGroup;
-  model = new AccountDto();
-  iAgreed = false;
-  accountId = '';
-  isNewFromSuperAdmin = false;
+export class AccountDialogComponent extends AccountComponent {
   constructor(
-    protected router: Router,
+    public dialogRef: MatDialogRef<UserDialogComponent> = null,
+    public router: Router,
     protected fb: FormBuilder,
     protected authClient: AuthClient,
     protected oAuthService: OAuthService,
@@ -36,47 +31,15 @@ export class AccountComponent implements OnInit, OnDestroy {
     protected loaderService: LoaderService,
     protected accountsClient: AccountsClient
   ) {
-    if (sessionStorage.getItem('AddAccount')) {
-      this.isNewFromSuperAdmin = true;
-    } else if (sessionStorage.getItem('EditAccount')) {
-      this.getAccountDetails(sessionStorage.getItem('EditAccount'));
-    } else {
-      this.getAccountDetails(this.oAuthService.getAccountId());
-    }
+    super(router,
+      fb,
+      authClient,
+      oAuthService,
+      toastrService,
+      loaderService,
+      accountsClient);
   }
-  getAccountDetails(accountId: string) {
-    this.accountId = accountId;
-    if (accountId && accountId.length > 0) {
-      this.accountsClient.getAccount(accountId).subscribe(item => {
-        this.model = item.data;
-      });
-    }
-  }
-  ngOnInit() {
-    this.form = this.fb.group({
-      name: [
-        null,
-        Validators.compose([Validators.required, Validators.maxLength(100)])
-      ],
-      street1: [
-        null,
-        Validators.compose([Validators.required, Validators.maxLength(100)])
-      ],
-      street2: [null, Validators.compose([Validators.maxLength(100)])],
-      city: [
-        null,
-        Validators.compose([Validators.required, Validators.maxLength(30)])
-      ],
-      state: [
-        null,
-        Validators.compose([Validators.required, Validators.maxLength(2)])
-      ],
-      zipCode: [
-        null,
-        Validators.compose([Validators.required, Validators.maxLength(10)])
-      ]
-    });
-  }
+
 
   onSubmit() {
     this.loaderService.start(this.signUpDiv);
@@ -87,9 +50,9 @@ export class AccountComponent implements OnInit, OnDestroy {
           this.toastrService.success('Account Updated Successfully', 'Alert');
           // account id needed
           if (sessionStorage.getItem('EditAccount')) {
-          //   this.dialogRef.close(this.model);
+            this.dialogRef.close(this.model);
           } else {
-            this.router.navigate(['/rel/dashboard']);
+            this.dialogRef.close(this.model);
           }
         } else {
           let error = '';
@@ -107,10 +70,10 @@ export class AccountComponent implements OnInit, OnDestroy {
         if (e.successful) {
           this.toastrService.success('Account added Successfully', 'Alert');
           if (sessionStorage.getItem('AddAccount')) {
-         //    this.dialogRef.close(this.model);
+            this.dialogRef.close(this.model);
           } else {
             this.oAuthService.setAccountId(e.data ? e.data : '');
-            this.router.navigate(['/rel/dashboard']);
+            this.dialogRef.close(this.model);
           }
 
         } else {
@@ -124,10 +87,5 @@ export class AccountComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  ngOnDestroy() {
-    sessionStorage.removeItem('EditAccount');
-    sessionStorage.removeItem('AddAccount');
   }
 }

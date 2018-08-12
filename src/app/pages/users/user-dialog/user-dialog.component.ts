@@ -41,12 +41,19 @@ export class UserDialogComponent implements OnInit {
     private manageUserClient: ManageUserClient,
     @Inject(MAT_DIALOG_DATA) public data: UserModel,
     private toastrService: ToastrService,
-    private loaderService: LoaderService // private tokenService: TokenService
+    private loaderService: LoaderService,
+    private tokenService: TokenService
   ) {
     if (this.data) {
       this.model = this.data;
     } else {
       // this.manageUserClient.
+      const tokenInfo = this.tokenService.getUserInfo();
+
+      this.model.email = tokenInfo.email;
+      this.model.firstName = tokenInfo.firstName;
+      this.model.lastName = tokenInfo.lastName;
+      this.model.phoneNumber = tokenInfo.phoneNumber;
     }
     this.manageUserClient.getRoles().subscribe(res => {
       if (res.successful) {
@@ -62,7 +69,7 @@ export class UserDialogComponent implements OnInit {
         null,
         Validators.compose([Validators.required, CustomValidators.email])
       ],
-      roleId: [null, Validators.compose([Validators.required])],
+      roleId: [null, this.data ? Validators.compose([Validators.required]): null],
       phoneNumber: [null],
       emailConfirmed: [null]
     });

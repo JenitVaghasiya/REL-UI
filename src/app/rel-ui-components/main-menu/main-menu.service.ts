@@ -10,7 +10,6 @@ export class MainMenuService {
   isAccountAdmin = false;
   constructor(private tokenService: TokenService) {
     const tokenDetail = this.tokenService.getTokenDetails();
-    console.log(tokenDetail.role);
     const roles = tokenDetail ? tokenDetail.role : null;
     if (roles && roles === 'superadmin') {
       this.isSuperAdmin = true;
@@ -44,7 +43,7 @@ export class MainMenuService {
       budgeColor: '#f44236'
     });
 
-    if (this.isAccountAdmin || this.isSuperAdmin) {
+    if (this.isAccountAdmin) {
       MAINMENUITEMS.push({
         title: 'Manage Users',
         icon: 'fa fa-user',
@@ -70,142 +69,6 @@ export class MainMenuService {
         budgeColor: ''
       });
     }
-
-    MAINMENUITEMS.push({
-      title: 'Widgets',
-      icon: 'fa fa-th',
-      active: false,
-      groupTitle: false,
-      sub: '',
-      routing: '', // routing: '/rel/widgets',
-      externalLink: '',
-      budge: '',
-      budgeColor: ''
-    });
-    MAINMENUITEMS.push({
-      title: 'Calendar',
-      icon: 'fa fa-calendar',
-      active: false,
-      groupTitle: false,
-      sub: '',
-      routing: '', // routing: '/rel/calendar',
-      externalLink: '',
-      budge: 'New',
-      budgeColor: '#008000'
-    });
-    MAINMENUITEMS.push({
-      title: 'UI Elements',
-      icon: '',
-      active: false,
-      groupTitle: true,
-      sub: '',
-      routing: '',
-      externalLink: '',
-      budge: '',
-      budgeColor: ''
-    });
-    MAINMENUITEMS.push({
-      title: 'Typography',
-      icon: 'fa fa-font',
-      active: false,
-      groupTitle: false,
-      sub: '',
-      routing: '/rel/typography',
-      externalLink: '',
-      budge: '',
-      budgeColor: ''
-    });
-    MAINMENUITEMS.push({
-      title: 'Tables',
-      icon: 'fa fa-table',
-      active: false,
-      groupTitle: false,
-      sub: [
-        {
-          title: 'Simple table',
-          routing: '/rel/simple-table'
-        },
-        {
-          title: 'Sorting table',
-          routing: '/rel/sorting-table'
-        },
-        {
-          title: 'Filtering table',
-          routing: '/rel/filtering-table'
-        },
-        {
-          title: 'Pagination table',
-          routing: '/rel/pagination-table'
-        },
-        {
-          title: 'Bootstrap tables',
-          routing: '/rel/bootstrap-tables'
-        }
-      ],
-      routing: '',
-      externalLink: '',
-      budge: '',
-      budgeColor: ''
-    });
-    MAINMENUITEMS.push({
-      title: 'Maps',
-      icon: 'fa fa-map-marker',
-      active: false,
-      groupTitle: false,
-      sub: [
-        {
-          title: 'Google map',
-          routing: '/rel/google-map'
-        },
-        {
-          title: 'Leaflet map',
-          routing: '/rel/leaflet-map'
-        }
-      ],
-      routing: '',
-      externalLink: '',
-      budge: '',
-      budgeColor: ''
-    });
-    MAINMENUITEMS.push({
-      title: 'Pages',
-      icon: '',
-      active: false,
-      groupTitle: true,
-      sub: '',
-      routing: '',
-      externalLink: '',
-      budge: '',
-      budgeColor: ''
-    });
-    MAINMENUITEMS.push({
-      title: 'Pages service',
-      icon: 'fa fa-edit',
-      active: false,
-      groupTitle: false,
-      sub: [
-        {
-          title: 'About Us',
-          routing: '/rel/about-us'
-        },
-        {
-          title: 'FAQ',
-          routing: '/rel/faq'
-        },
-        {
-          title: 'TimeLine',
-          routing: '/rel/timeline'
-        },
-        {
-          title: 'Invoice',
-          routing: '/rel/invoice'
-        }
-      ],
-      routing: '',
-      externalLink: '',
-      budge: 'New',
-      budgeColor: '#008000'
-    });
 
     return Promise.resolve(MAINMENUITEMS);
   }
