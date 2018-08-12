@@ -189,7 +189,7 @@
 
       <div class="dropdown-menu mini-menu">
         <ul>
-          <li *ngIf="!isSuperAdmin">
+          <li *ngIf="!isSuperAdmin && isAccountAdmin">
             <a class="hover-pointer" (click)="myAccount($event)">
               <i class="fa fa-home"></i> My Account</a>
           </li>

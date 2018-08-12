@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
   sidebarState = new EventEmitter();
   userInfoModel: UserInfoModel = new UserInfoModel();
   isSuperAdmin = false;
+  isAccountAdmin = false;
   dialogUserRef: MatDialogRef<UserDialogComponent>;
   dialogRef: MatDialogRef<AccountDialogComponent>;
 
@@ -36,6 +37,10 @@ export class NavbarComponent implements OnInit {
     if (roles && roles === 'superadmin') {
       this.isSuperAdmin = true;
     }
+    if (roles && roles === 'accountadmin') {
+      this.isAccountAdmin = true;
+    }
+
   }
 
   open(event) {

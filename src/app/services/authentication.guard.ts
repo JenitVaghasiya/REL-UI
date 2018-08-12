@@ -9,12 +9,21 @@ import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
-  // jwtUser: any;
-  // isValid = false;
 
   constructor(private router: Router, private tokenService: TokenService) {}
   canActivate(route: ActivatedRouteSnapshot) {
-    if (!this.tokenService.isTokenExpired()) {
+    const tokendetails = this.tokenService.getTokenDetails();
+    const expectedRole: Array<string> = route.data.expectedRole ? route.data.expectedRole : [];
+    if (!this.tokenService.isTokenExpired() && tokendetails) {
+
+      if (expectedRole && expectedRole.length > 0) {
+        if (expectedRole.indexOf(tokendetails.role) >= 0 && tokendetails.role) {
+          return true;
+        } else {
+          this.router.navigate(['/registration/unauthorized']);
+          return false;
+        }
+      }
       return true;
     } else {
       this.router.navigate(['/registration/sign-in']);
@@ -22,77 +31,12 @@ export class AuthenticationGuard implements CanActivate {
     }
   }
 
-  // canActivate(route: ActivatedRouteSnapshot) {
-  //   const expectedRole = route.data.expectedRole ? route.data.expectedRole : [];
-  //   const allRoleFunction = route.data.isAllExpectedRole
-  //     ? route.data.isAllExpectedRole
-  //     : false;
-  //   const redirectRoute = route.data.redirectRoute;
-  //   // const anyRoleFunction = route.data.any ? route.data.any : false;
-
-  //   return this._AppService
-  //     .getJwtDetails()
-  //     .catch((resCatch: Response): Observable<Response> => {
-  //       this.router.navigate(['./app/unauthorized']);
-  //       throw resCatch;
-  //     })
-  //     .map((res: any) => {
-  //       this.jwtUser = res;
-  //       if (
-  //         this.jwtUser &&
-  //         this.jwtUser.userCode &&
-  //         this.jwtUser.userCode.length > 0
-  //       ) {
-  //         sessionStorage.removeItem('token');
-  //         sessionStorage.setItem('token', this.jwtUser.token);
-  //         const jwtDecode = require('jwt-decode');
-  //         const decoded = jwtDecode(sessionStorage.getItem('token'));
-  //         // if (route.url.toString().toLowerCase() === 'app,login') {
-  //         //   this.defaultRoute(<string>decoded['user.functions']);
-  //         // } else {
-  //           if (
-  //             !this.checkAuthorize(
-  //               allRoleFunction,
-  //               expectedRole,
-  //               (<string>decoded['user.functions']).split(',')
-  //             )
-  //           ) {
-  //             if (redirectRoute) {
-  //               this.router.navigate([redirectRoute]);
-  //             } else {
-  //               this.router.navigate(['./app/unauthorized']);
-  //             }
-  //           }
-  //         // }
-  //         return this.checkAuthorize(
-  //           allRoleFunction,
-  //           expectedRole,
-  //           (<string>decoded['user.functions']).split(',')
-  //         );
-  //       }
-  //     })
-  //     .take(1);
-  // }
-  // checkAuthorize(
-  //   allRoleFunction: boolean,
+  // checkAuthorizeUser(
   //   expectedRole: string[],
   //   availableRole: string[]
   // ): boolean {
   //   let valid = false;
-  //   if (allRoleFunction) {
-  //     expectedRole.forEach((element: string) => {
-  //       if (
-  //         availableRole.findIndex(
-  //           a => a.toUpperCase() === element.toUpperCase()
-  //         ) === -1
-  //       ) {
-  //         valid = false;
-  //         return false;
-  //       } else {
-  //         valid = true;
-  //       }
-  //     });
-  //   } else {
+
   //     expectedRole.forEach((element: string) => {
   //       if (
   //         availableRole.findIndex(
@@ -103,7 +47,6 @@ export class AuthenticationGuard implements CanActivate {
   //         return true;
   //       }
   //     });
-  //   }
   //   return valid;
   // }
 }

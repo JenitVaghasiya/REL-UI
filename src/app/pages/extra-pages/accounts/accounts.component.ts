@@ -7,7 +7,7 @@ import {
 } from '@angular/material';
 import { AccountsClient, AccountDto } from 'api/apiclient';
 import { OAuthService } from '../../../services/o-auth.service';
-import { Router } from '../../../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 import { SharedService } from '../../../layouts/shared-service';
 import { LoaderService } from '../../../loader/loader.service';
 import { AccountDialogComponent } from '../account/account-dialog.component';

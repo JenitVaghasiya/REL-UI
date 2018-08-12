@@ -142,6 +142,7 @@ import { InviteResetComponent } from './pages/extra-pages/invite-reset/invite-re
 import { UserDialogComponent } from './pages/users/user-dialog/user-dialog.component';
 import { AccountsComponent } from './pages/extra-pages/accounts/accounts.component';
 import { AccountDialogComponent } from './pages/extra-pages/account/account-dialog.component';
+import { Page403Component } from './pages/extra-pages/page-403/page-403.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -279,7 +280,8 @@ import { AccountDialogComponent } from './pages/extra-pages/account/account-dial
     InviteResetComponent,
     UserDialogComponent,
     AccountsComponent,
-    AccountDialogComponent
+    AccountDialogComponent,
+    Page403Component
   ],
   entryComponents: [
     DialogResultComponent,

@@ -68,6 +68,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { ResetComponent } from './pages/extra-pages/reset/reset.component';
 import { InviteResetComponent } from './pages/extra-pages/invite-reset/invite-reset.component';
 import { AccountsComponent } from './pages/extra-pages/accounts/accounts.component';
+import { Page403Component } from './pages/extra-pages/page-403/page-403.component';
 
 const defaultRoutes: Routes = [
   {
@@ -124,12 +125,30 @@ const defaultRoutes: Routes = [
   { path: 'leaflet-map', component: PageLeafletMapComponent },
 
   // newly added
-  { path: 'account', component: AccountComponent,
-  canActivate: [AuthenticationGuard] },
-  { path: 'accounts', component: AccountsComponent ,
-  canActivate: [AuthenticationGuard]},
-  { path: 'users', component: UsersComponent,
-  canActivate: [AuthenticationGuard] },
+  {
+    path: 'account',
+    component: AccountComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['superadmin', 'accountadmin']
+    }
+  },
+  {
+    path: 'accounts',
+    component: AccountsComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['superadmin']
+    }
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['accountadmin', 'superadmin']
+    }
+  },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -142,7 +161,8 @@ const extraRoutes: Routes = [
   { path: 'confirm', component: PageConfirmComponent },
   { path: 'page-404', component: Page404Component },
   { path: 'page-500', component: Page500Component },
-  { path: 'account', component: AccountComponent }
+  { path: 'account', component: AccountComponent },
+  { path: 'unauthorized', component: Page403Component }
 ];
 
 const routes: Routes = [
