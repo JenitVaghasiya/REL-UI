@@ -1,0 +1,47 @@
+<card #userDiv [title]="'Edit Institution'" [align]="'center'">
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="First Name" [(ngModel)]="model.firstName" [formControl]="form.controls['firstName']">
+      <mat-error *ngIf="form.controls['firstName'].hasError('required') && form.controls['firstName'].touched">
+        You must include First Name
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Last Name"  [(ngModel)]="model.lastName" [formControl]="form.controls['lastName']">
+      <mat-error *ngIf="form.controls['lastName'].hasError('required') && form.controls['lastName'].touched">
+        You must include Last Name
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Phone Number"  [(ngModel)]="model.phoneNumber" [formControl]="form.controls['phoneNumber']">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Email" readonly="readonly" [(ngModel)]="model.email" [formControl]="form.controls['email']">
+      <mat-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">
+        You must include email.
+      </mat-error>
+      <mat-error *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched">
+        You must include a valid email address.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="data">
+      <mat-select placeholder="Role" name="roleId" [(ngModel)]="model.roleId" [formControl]="form.controls['roleId']">
+        <mat-option *ngFor="let role of roleList" [value]="role.id">
+          {{ role.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls['roleId'].hasError('required') && form.controls['roleId'].touched">
+        Please select role.
+      </mat-error>
+    </mat-form-field >
+    <div *ngIf="data" style="text-align: left;padding: 10px;">
+        <mat-checkbox   [(ngModel)]="model.emailConfirmed" [formControl]="form.controls['emailConfirmed']">
+            <span>Is Active</span>
+          </mat-checkbox>
+
+    </div>
+
+    <button mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">Save</button>
+    <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>
+  </form>
+</card>

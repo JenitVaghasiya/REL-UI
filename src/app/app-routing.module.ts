@@ -69,6 +69,7 @@ import { ResetComponent } from './pages/extra-pages/reset/reset.component';
 import { InviteResetComponent } from './pages/extra-pages/invite-reset/invite-reset.component';
 import { AccountsComponent } from './pages/extra-pages/accounts/accounts.component';
 import { Page403Component } from './pages/extra-pages/page-403/page-403.component';
+import { InstitutionsComponent } from './pages/institutions/institutions.component';
 
 const defaultRoutes: Routes = [
   {
@@ -144,6 +145,14 @@ const defaultRoutes: Routes = [
   {
     path: 'users',
     component: UsersComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['accountadmin', 'superadmin']
+    }
+  },
+  {
+    path: 'institutions',
+    component: InstitutionsComponent,
     canActivate: [AuthenticationGuard],
     data: {
       expectedRole: ['accountadmin', 'superadmin']

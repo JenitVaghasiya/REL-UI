@@ -143,6 +143,8 @@ import { UserDialogComponent } from './pages/users/user-dialog/user-dialog.compo
 import { AccountsComponent } from './pages/extra-pages/accounts/accounts.component';
 import { AccountDialogComponent } from './pages/extra-pages/account/account-dialog.component';
 import { Page403Component } from './pages/extra-pages/page-403/page-403.component';
+import { InstitutionDialogComponent } from './pages/institutions/institution-dialog/institution-dialog.component';
+import { InstitutionsComponent } from './pages/institutions/institutions.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -281,7 +283,9 @@ import { Page403Component } from './pages/extra-pages/page-403/page-403.componen
     UserDialogComponent,
     AccountsComponent,
     AccountDialogComponent,
-    Page403Component
+    Page403Component,
+    InstitutionDialogComponent,
+    InstitutionsComponent
   ],
   entryComponents: [
     DialogResultComponent,
@@ -290,7 +294,8 @@ import { Page403Component } from './pages/extra-pages/page-403/page-403.componen
     UserInviteDialogComponent,
     UserDialogComponent,
     AccountsComponent,
-    AccountDialogComponent
+    AccountDialogComponent,
+    InstitutionDialogComponent
   ],
   bootstrap: [AppComponent],
   exports: [],
