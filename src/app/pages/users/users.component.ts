@@ -10,14 +10,19 @@ import {
   MatPaginator,
   MatDialogRef,
   MatDialog,
-  MatTableDataSource
+  MatTableDataSource,
+  MatSort
 } from '@angular/material';
 import { UserInviteDialogComponent } from './user-invite-dialog/user-invite-dialog.component';
-import { ManageUserClient, UserModel } from 'api/apiclient';
+import { ManageUserClient, UserModel, ServiceResponseOfListOfUserModel } from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
 import { LoaderService } from '../../loader/loader.service';
-
+// import { Observable } from 'rxjs';
+// import { of } from 'rxjs/observable/of';
+import { merge } from 'rxjs/observable/merge';
+import { startWith, switchMap, map, catchError, observeOn } from 'rxjs/operators';
+import { Observable } from '../../../../node_modules/rxjs';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -36,14 +41,22 @@ export class UsersComponent implements OnInit, OnDestroy {
     'status',
     'action'
   ];
-  users: UserModel[] = [];
-  dataSource = new MatTableDataSource<UserModel>(this.users);
+  users= new MatTableDataSource<UserModel>([]);
+  AllUsers: ServiceResponseOfListOfUserModel = null;
+  // dataSource = new MatTableDataSource<UserModel>(this.users);
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
   dialogRef: MatDialogRef<UserInviteDialogComponent>;
   dialogUserRef: MatDialogRef<UserDialogComponent>;
   selectedOption: string;
+
+  resultsLength = 0;
+  isLoadingResults = true;
+  isRateLimitReached = false;
+
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
@@ -55,31 +68,67 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   getUsers() {
-    this.loaderService.start(this.usersDiv);
+    // this.loaderService.start(this.usersDiv);
     let accountId = '';
     if (sessionStorage.getItem('EditAccount')) {
       accountId = sessionStorage.getItem('EditAccount');
     } else {
       accountId = this.oAuthService.getAccountId();
     }
-    this.manageUserClient
-      .getRegisterdUsersByAccount(accountId)
-      .subscribe(res => {
-        this.loaderService.stop();
-        this.users = res.data;
-        this.dataSource = new MatTableDataSource<UserModel>(this.users);
+    // this.manageUserClient
+    //   .getRegisterdUsersByAccount(accountId)
+    //   .subscribe(res => {
+    //     this.loaderService.stop();
+    //     this.AllUsers = res.data;
+    //     // this.dataSource = new MatTableDataSource<UserModel>(this.users);
+    //   });
 
-      });
+    // If the user changes the sort order, reset back to the first page.
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          // console.log(this.sort.active);
+          // console.log(this.sort.direction);
+          // console.log(this.paginator.pageIndex);
+        return this.AllUsers ? Observable.of<ServiceResponseOfListOfUserModel>(this.AllUsers) :
+         this.manageUserClient.getRegisterdUsersByAccount(accountId)
+          // return this.exampleDatabase!.getRepoIssues(
+            // this.sort.active, this.sort.direction, this.paginator.pageIndex);
+        }),
+        map(data => {
+          this.AllUsers = !this.AllUsers ?  data : this.AllUsers;
+          this.resultsLength = data.data.length;
+          // below is for static data pagination
+          const startPoint = this.paginator.pageIndex * 5;
+          const finalForDisplay = data.data.slice( startPoint, startPoint + this.paginator.pageSize);
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          this.isRateLimitReached = false;
+          return finalForDisplay;
+        }),
+        catchError(() => {
+          this.isLoadingResults = false;
+          // Catch if the GitHub API has reached its rate limit. Return empty data.
+          this.isRateLimitReached = true;
+          return Observable.of([]);
+        })
+      ).subscribe(data => this.users = new MatTableDataSource<UserModel>(data));
   }
+
   ngOnInit() {
     this.getUsers();
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
   }
 
   inviteUser() {
     this.dialogRef = this.dialog.open(UserInviteDialogComponent);
     this.dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
+      this.AllUsers = null;
       this.getUsers();
     });
   }
@@ -91,7 +140,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     this.dialogUserRef.afterClosed().subscribe(result => {
       if (result) {
-        user = result;
+        // user = result;
+        this.AllUsers = null;
+        this.getUsers();
       }
     });
   }

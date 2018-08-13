@@ -1,7 +1,10 @@
 <card #accountsDiv title="Manage Accounts">
   <button mat-raised-button color="accent" (click)="addNewAccount()">Add New Account</button>
 
-  <mat-table #table [dataSource]="dataSource">
+  <div *ngIf="isLoadingResults">
+    <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
+  </div>
+  <mat-table #table [dataSource]="accounts" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
 
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
@@ -42,6 +45,6 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator #paginator [length]="accounts.length" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[ 10, 25, 50, 100]"></mat-paginator>
+  <mat-paginator #paginator [length]="resultsLength" [pageIndex]="0" [pageSize]="5" [pageSizeOptions]="[ 5, 25, 50, 100]"></mat-paginator>
 
 </card>
