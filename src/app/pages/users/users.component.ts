@@ -125,7 +125,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   inviteUser() {
-    this.dialogRef = this.dialog.open(UserInviteDialogComponent);
+    this.dialogRef = this.dialog.open(UserInviteDialogComponent, { disableClose: true });
     this.dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
       this.AllUsers = null;
@@ -135,7 +135,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   editUser(user: UserModel) {
     this.dialogUserRef = this.dialog.open(UserDialogComponent, {
-      data: user
+      data: user, disableClose: true
     });
 
     this.dialogUserRef.afterClosed().subscribe(result => {

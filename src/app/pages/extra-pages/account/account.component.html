@@ -24,7 +24,6 @@
             You must include include city.
           </mat-error>
         </mat-form-field>
-
         <mat-form-field>
           <input matInput placeholder="State" value="" [(ngModel)]="model.state" [formControl]="form.controls['state']">
           <mat-error *ngIf="form.controls['state'].hasError('required') && form.controls['state'].touched">
@@ -37,9 +36,13 @@
             You must include Zip Code.
           </mat-error>
         </mat-form-field>
-
-    <button mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ accountId && accountId.length > 0 ? 'Update Account' : 'Save Account' }}</button>
-
+<div *ngIf="dialogRef?.id">
+  <button mat-raised-button type="submit" color="accent" [disabled]="!form.valid">{{ accountId && accountId.length > 0 ? 'Update Account' : 'Save Account' }}</button>
+    <button mat-raised-button type="button" (click)="dialogRef.close(null)" >Close</button>
+</div>
+<div *ngIf="!dialogRef?.id">
+  <button mat-raised-button class="full-button" type="submit" color="accent" [disabled]="!form.valid">{{ accountId && accountId.length > 0 ? 'Update Account' : 'Save Account' }}</button>
+</div>
     <div class="additional-info" *ngIf="!isNewFromSuperAdmin && !(accountId && accountId.length > 0)">
       Already have an account?
       <a href="/registration/sign-in">sign in</a>

@@ -130,7 +130,7 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
 
   editInstitution(institution: UserModel) {
     this.dialogRef = this.dialog.open(InstitutionDialogComponent, {
-      data: institution
+      data: institution,  disableClose: true
     });
 
     this.dialogRef.afterClosed().subscribe(result => {

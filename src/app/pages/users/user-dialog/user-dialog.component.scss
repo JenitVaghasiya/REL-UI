@@ -4,3 +4,8 @@
 ::ng-deep .mat-dialog-container {
   padding: 15px;
 }
+
+:host  card {
+  margin: 0 auto;
+  max-width: 400px;
+}

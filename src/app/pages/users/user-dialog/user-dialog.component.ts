@@ -8,9 +8,7 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
-  InviteUserModel,
   ManageUserClient,
-  AccountsClient,
   AccountDto,
   AspNetRoleDto,
   UserModel
@@ -18,7 +16,6 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
 import { CustomValidators } from 'ng2-validation';
-import { OAuthService } from '../../../services/o-auth.service';
 import { TokenService } from '../../../services/token.service';
 
 @Component({

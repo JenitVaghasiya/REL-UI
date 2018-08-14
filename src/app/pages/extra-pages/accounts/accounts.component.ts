@@ -130,7 +130,7 @@ export class AccountsComponent implements OnInit {
 
   editAccount(account: AccountDto) {
     sessionStorage.setItem('EditAccount', account.id);
-    this.dialogRef = this.dialog.open(AccountDialogComponent);
+    this.dialogRef = this.dialog.open(AccountDialogComponent, { disableClose: true });
     this.dialogRef.afterClosed().subscribe(result => {
       // this.selectedOption = result;
       this.AllAccounts = null;
@@ -140,7 +140,7 @@ export class AccountsComponent implements OnInit {
 
   addNewAccount() {
     sessionStorage.setItem('AddAccount', 'true');
-    this.dialogRef = this.dialog.open(AccountDialogComponent);
+    this.dialogRef = this.dialog.open(AccountDialogComponent, { disableClose: true });
     this.dialogRef.afterClosed().subscribe(result => {
       // this.selectedOption = result;
       this.AllAccounts = null;

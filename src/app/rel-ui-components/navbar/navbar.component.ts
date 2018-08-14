@@ -70,7 +70,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {}
   updateProfile() {
     this.dialogUserRef = this.dialog.open(UserDialogComponent, {
-      data: null
+      data: null, disableClose: true
     });
 
     this.dialogUserRef.afterClosed().subscribe(result => {
@@ -81,7 +81,7 @@ export class NavbarComponent implements OnInit {
 
   myAccount(event) {
     // this.router.navigate(['/rel/account']);
-    this.dialogRef = this.dialog.open(AccountDialogComponent);
+    this.dialogRef = this.dialog.open(AccountDialogComponent, { disableClose: true });
     this.dialogRef.afterClosed().subscribe(result => {
       // this.selectedOption = result;
     });
