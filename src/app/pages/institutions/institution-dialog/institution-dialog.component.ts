@@ -58,16 +58,10 @@ export class InstitutionDialogComponent implements OnInit {
         this.model.accountId = this.oAuthService.getAccountId();
       }
     } else {
-      // this.manageUserClient.
       const accountId = this.oAuthService.getAccountId();
       this.model.id = null;
-      this.model.accountId = accountId;
+      this.model.accountId = !this.isSuperAdmin ? accountId : null;
     }
-    // this.manageUserClient.getRoles().subscribe(res => {
-    //   if (res.successful) {
-    //     this.roleList = res.data;
-    //   }
-    // });
   }
   ngOnInit() {
     this.form = this.fb.group({

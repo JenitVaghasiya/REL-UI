@@ -1,6 +1,11 @@
 <card #usersDiv title="Manage Institutions">
     <button mat-raised-button color="accent" (click)="addInstition()">Add Institution</button>
-
+    <mat-slide-toggle style="padding-left: 15px;"
+          color="primary"
+          [(checked)]="includeMasterList" (change)="updateList($event.checked)"
+          >
+         {{ includeMasterList ? 'Include Master List' : 'My List' }}
+      </mat-slide-toggle>
     <div *ngIf="isLoadingResults">
       <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
     </div>

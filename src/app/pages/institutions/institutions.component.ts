@@ -61,7 +61,7 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
   isRateLimitReached = false;
   @ViewChild(MatSort)
   sort: MatSort;
-
+  includeMasterList = true;
   userInfoModel: UserInfoModel = new UserInfoModel();
   constructor(
     public dialog: MatDialog,
@@ -85,6 +85,9 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
       accountId = '';
     }
     if (roles && roles === 'accountadmin') {
+      // if (!this.includeMasterList) {
+        console.log(this.oAuthService.getAccountId());
+      // }
       accountId =  this.oAuthService.getAccountId();
     }
 
@@ -140,6 +143,10 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.getInstitutions();
+  }
+  updateList(checked: any) {
+    this.includeMasterList = checked;
     this.getInstitutions();
   }
 
