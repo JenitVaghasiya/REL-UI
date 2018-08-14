@@ -969,6 +969,7 @@ export interface IInstitutionClient {
     create(institution: InstitutionForCreationDto): Observable<FileResponse>;
     delete(id: string): Observable<FileResponse>;
     update(institution: InstitutionForUpdateDto, id: string): Observable<FileResponse>;
+    getInstitutionList(accountId: string): Observable<ServiceResponseOfListOfInstitutionDto>;
 }
 
 @Injectable()
@@ -1195,6 +1196,61 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
             });
         }
         return Observable.of<FileResponse>(<any>null);
+    }
+
+    getInstitutionList(accountId: string): Observable<ServiceResponseOfListOfInstitutionDto> {
+        let url_ = this.baseUrl + "/api/institutions/getinstitutionlist?";
+        if (accountId === undefined)
+            throw new Error("The parameter 'accountId' must be defined.");
+        else
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetInstitutionList(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInstitutionList(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfListOfInstitutionDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfListOfInstitutionDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetInstitutionList(response: HttpResponseBase): Observable<ServiceResponseOfListOfInstitutionDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfInstitutionDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfListOfInstitutionDto>(<any>null);
     }
 }
 
@@ -2258,6 +2314,7 @@ export interface ICheckListItemForCreationDto {
 
 export class InstitutionForCreationDto implements IInstitutionForCreationDto {
     name: string;
+    accountId?: string;
 
     constructor(data?: IInstitutionForCreationDto) {
         if (data) {
@@ -2271,6 +2328,7 @@ export class InstitutionForCreationDto implements IInstitutionForCreationDto {
     init(data?: any) {
         if (data) {
             this.name = data["name"];
+            this.accountId = data["accountId"];
         }
     }
 
@@ -2284,12 +2342,14 @@ export class InstitutionForCreationDto implements IInstitutionForCreationDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["accountId"] = this.accountId;
         return data; 
     }
 }
 
 export interface IInstitutionForCreationDto {
     name: string;
+    accountId?: string;
 }
 
 export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
@@ -2326,6 +2386,91 @@ export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
 
 export interface IInstitutionForUpdateDto {
     name: string;
+}
+
+export class ServiceResponseOfListOfInstitutionDto extends ServiceResponse implements IServiceResponseOfListOfInstitutionDto {
+    data?: InstitutionDto[];
+
+    constructor(data?: IServiceResponseOfListOfInstitutionDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            if (data["data"] && data["data"].constructor === Array) {
+                this.data = [];
+                for (let item of data["data"])
+                    this.data.push(InstitutionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfListOfInstitutionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfListOfInstitutionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.data && this.data.constructor === Array) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfListOfInstitutionDto extends IServiceResponse {
+    data?: InstitutionDto[];
+}
+
+export class InstitutionDto implements IInstitutionDto {
+    id: string;
+    name: string;
+    accountId?: string;
+
+    constructor(data?: IInstitutionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.accountId = data["accountId"];
+        }
+    }
+
+    static fromJS(data: any): InstitutionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InstitutionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["accountId"] = this.accountId;
+        return data; 
+    }
+}
+
+export interface IInstitutionDto {
+    id: string;
+    name: string;
+    accountId?: string;
 }
 
 export class InviteUserModel implements IInviteUserModel {

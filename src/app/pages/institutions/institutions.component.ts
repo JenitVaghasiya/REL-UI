@@ -15,9 +15,9 @@ import {
 } from '@angular/material';
 
 import {
-  ManageUserClient,
-  UserModel,
-  ServiceResponseOfListOfUserModel
+  InstitutionClient,
+  InstitutionDto,
+  ServiceResponseOfListOfInstitutionDto
 } from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
 import { InstitutionDialogComponent } from './institution-dialog/institution-dialog.component';
@@ -32,6 +32,9 @@ import {
 } from 'rxjs/operators';
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs';
+import { TokenService } from '../../services/token.service';
+import { UserInfoModel } from 'models/custom.model';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-institutions',
   templateUrl: './institutions.component.html',
@@ -44,15 +47,11 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
   pageTitle = 'Institutions Management';
   displayedColumns: string[] = [
     'name',
-    'email',
-    'phoneNumber',
-    'role',
-    'invited',
-    'status',
+    'accountname',
     'action'
   ];
-  institutions = new MatTableDataSource<UserModel>([]);
-  AllInstitutions: ServiceResponseOfListOfUserModel = null;
+  institutions = new MatTableDataSource<InstitutionDto>([]);
+  AllInstitutions: ServiceResponseOfListOfInstitutionDto = null;
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
   dialogRef: MatDialogRef<InstitutionDialogComponent>;
@@ -63,24 +62,32 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort)
   sort: MatSort;
 
+  userInfoModel: UserInfoModel = new UserInfoModel();
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
-    public manageUserClient: ManageUserClient,
+    public institutionClient: InstitutionClient,
     public oAuthService: OAuthService,
-    public loaderService: LoaderService
+    public loaderService: LoaderService,
+    public tokenService: TokenService,
+    public toastrService: ToastrService
   ) {
     this._sharedService.emitChange(this.pageTitle);
   }
 
   getInstitutions() {
     // this.loaderService.start(this.InstitutionsDiv);
+    const tokenDetail = this.tokenService.getTokenDetails();
+    const roles = tokenDetail ? tokenDetail.role : null;
     let accountId = '';
-    if (sessionStorage.getItem('EditAccount')) {
-      accountId = sessionStorage.getItem('EditAccount');
-    } else {
-      accountId = this.oAuthService.getAccountId();
+
+    if (roles && roles === 'superadmin') {
+      accountId = '';
     }
+    if (roles && roles === 'accountadmin') {
+      accountId =  this.oAuthService.getAccountId();
+    }
+
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
     merge(this.sort.sortChange, this.paginator.page)
@@ -89,14 +96,22 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.AllInstitutions
-            ? Observable.of<ServiceResponseOfListOfUserModel>(
+            ? Observable.of<ServiceResponseOfListOfInstitutionDto>(
                 this.AllInstitutions
               )
-            : this.manageUserClient.getRegisterdUsersByAccount(accountId);
+            : this.institutionClient.getInstitutionList(accountId);
           // return this.exampleDatabase!.getRepoIssues(
           // this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),
         map(data => {
+          if (!data.successful) {
+             let error = '';
+          data.errorMessages.map(
+            (item, i) =>
+              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
+          this.toastrService.error(error.toString(), 'Alert');
+          }
           this.AllInstitutions = !this.AllInstitutions
             ? data
             : this.AllInstitutions;
@@ -120,7 +135,7 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(
-        data => (this.institutions = new MatTableDataSource<UserModel>(data))
+        data => (this.institutions = new MatTableDataSource<InstitutionDto>(data))
       );
   }
 
@@ -128,7 +143,11 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
     this.getInstitutions();
   }
 
-  editInstitution(institution: UserModel) {
+  editInstitution(institution: InstitutionDto, pickAndCreate = false) {
+    if (pickAndCreate) {
+      institution.id = null;
+      institution.accountId = null;
+    }
     this.dialogRef = this.dialog.open(InstitutionDialogComponent, {
       data: institution,  disableClose: true
     });
@@ -140,7 +159,18 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
       }
     });
   }
-  addInstition() {}
+  addInstition() {
+    this.dialogRef = this.dialog.open(InstitutionDialogComponent, {
+      data: null,  disableClose: true
+    });
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.AllInstitutions = null;
+        this.getInstitutions();
+      }
+    });
+  }
   ngOnDestroy() {
     sessionStorage.removeItem('EditAccount');
   }

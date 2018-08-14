@@ -124,7 +124,7 @@ import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.co
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
-import { AuthClient, AccountsClient, ManageUserClient } from 'api/apiclient';
+import { AuthClient, AccountsClient, ManageUserClient, InstitutionClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
@@ -308,6 +308,7 @@ import { InstitutionsComponent } from './pages/institutions/institutions.compone
     AuthenticationGuard,
     LoaderService,
     TokenService,
+    InstitutionClient,
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

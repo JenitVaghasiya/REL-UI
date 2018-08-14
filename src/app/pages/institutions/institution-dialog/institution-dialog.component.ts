@@ -8,15 +8,16 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
-  ManageUserClient,
   AccountDto,
   AspNetRoleDto,
-  UserModel
+  InstitutionDto,
+  InstitutionClient
 } from 'api/apiclient';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
 import { CustomValidators } from 'ng2-validation';
 import { TokenService } from '../../../services/token.service';
+import { OAuthService } from '../../../services/o-auth.service';
 
 @Component({
   moduleId: module.id,
@@ -28,72 +29,89 @@ export class InstitutionDialogComponent implements OnInit {
   @ViewChild('userDiv', { read: ViewContainerRef })
   userInviteDiv: ViewContainerRef;
   isSuperAdmin: boolean;
+  isAccountAdmin: boolean;
   public form: FormGroup;
-  public model = new UserModel();
+  public model = new InstitutionDto();
   public accountList: AccountDto[] = new Array<AccountDto>();
   public roleList: AspNetRoleDto[] = new Array<AspNetRoleDto>();
   constructor(
     public dialogRef: MatDialogRef<InstitutionDialogComponent>,
     private fb: FormBuilder,
-    private manageUserClient: ManageUserClient,
-    @Inject(MAT_DIALOG_DATA) public data: UserModel,
+    private institutionClient: InstitutionClient,
+    @Inject(MAT_DIALOG_DATA) public data: InstitutionDto,
     private toastrService: ToastrService,
     private loaderService: LoaderService,
+    private oAuthService: OAuthService,
     private tokenService: TokenService
   ) {
+    const tokenDetail = this.tokenService.getTokenDetails();
+    const roles = tokenDetail ? tokenDetail.role : null;
+    if (roles && roles === 'superadmin') {
+      this.isSuperAdmin = true;
+    }
+    if (roles && roles === 'accountadmin') {
+      this.isAccountAdmin = true;
+    }
     if (this.data) {
       this.model = this.data;
+      if (!this.model.accountId && !this.isSuperAdmin && this.isAccountAdmin) {
+        this.model.accountId = this.oAuthService.getAccountId();
+      }
     } else {
       // this.manageUserClient.
-      const tokenInfo = this.tokenService.getUserInfo();
-
-      this.model.email = tokenInfo.email;
-      this.model.firstName = tokenInfo.firstName;
-      this.model.lastName = tokenInfo.lastName;
-      this.model.phoneNumber = tokenInfo.phoneNumber;
+      const accountId = this.oAuthService.getAccountId();
+      this.model.id = null;
+      this.model.accountId = accountId;
     }
-    this.manageUserClient.getRoles().subscribe(res => {
-      if (res.successful) {
-        this.roleList = res.data;
-      }
-    });
+    // this.manageUserClient.getRoles().subscribe(res => {
+    //   if (res.successful) {
+    //     this.roleList = res.data;
+    //   }
+    // });
   }
   ngOnInit() {
     this.form = this.fb.group({
-      firstName: [null, Validators.compose([Validators.required])],
-      lastName: [null, Validators.compose([Validators.required])],
-      email: [
-        null,
-        Validators.compose([Validators.required, CustomValidators.email])
-      ],
-      roleId: [
-        null,
-        this.data ? Validators.compose([Validators.required]) : null
-      ],
-      phoneNumber: [null],
-      emailConfirmed: [null]
+      name: [null, Validators.compose([Validators.required])]
     });
   }
   onSubmit() {
     this.loaderService.start(this.userInviteDiv);
-    this.manageUserClient.updateUserDetail(this.model).subscribe(e => {
-      this.loaderService.stop();
-      if (e.successful) {
-        this.toastrService.success('Institution Updated Successfully', 'Alert');
-        if (!this.data) {
-          sessionStorage.setItem('firstName', this.model.firstName);
-          sessionStorage.setItem('lastName', this.model.lastName);
-          sessionStorage.setItem('phoneNumber', this.model.phoneNumber);
+    if (!this.model.id) {
+      this.institutionClient.create(this.model).subscribe(e => {
+        this.loaderService.stop();
+        if (e.status === 202 || e.status === 200) {
+          this.toastrService.success(
+            'Institution Created Successfully',
+            'Alert'
+          );
+          this.dialogRef.close(this.model);
+        } else {
+          // let error = '';
+          // e.errorMessages.map(
+          //   (item, i) =>
+          //     (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          // );
+          this.toastrService.error(e.status.toString(), 'Alert');
         }
-        this.dialogRef.close(this.model);
-      } else {
-        let error = '';
-        e.errorMessages.map(
-          (item, i) =>
-            (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
-        );
-        this.toastrService.error(error, 'Alert');
-      }
-    });
+      });
+    } else {
+      this.institutionClient.update(this.model, this.model.id).subscribe(e => {
+        this.loaderService.stop();
+        if (e.status === 202 || e.status === 200) {
+          this.toastrService.success(
+            'Institution Updated Successfully',
+            'Alert'
+          );
+          this.dialogRef.close(this.model);
+        } else {
+          // let error = '';
+          // e.errorMessages.map(
+          //   (item, i) =>
+          //     (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          // );
+          this.toastrService.error(e.status.toString(), 'Alert');
+        }
+      });
+    }
   }
 }

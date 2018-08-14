@@ -9,28 +9,11 @@
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef  disableClear> Name </mat-header-cell>
           <!-- mat-sort-header -->
-          <mat-cell *matCellDef="let row"> {{row.firstName}} {{row.lastName}} </mat-cell>
+          <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="email">
-          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="phoneNumber">
-          <mat-header-cell *matHeaderCellDef> Phone Number </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.phoneNumber}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="role">
-          <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.role}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="invited">
-          <mat-header-cell *matHeaderCellDef> Invited  </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.isInvited ? "Invited" : ""}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="status">
-          <mat-header-cell *matHeaderCellDef> Status  </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.emailConfirmed ? "Active" : "De-Activated"}} </mat-cell>
+        <ng-container matColumnDef="accountname">
+          <mat-header-cell *matHeaderCellDef> Account Name </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.accountId}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
@@ -38,7 +21,7 @@
             <button matTooltip="Edit Institution" mat-icon-button (click)="editInstitution(row)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button matTooltip="Pick up & Create Institution" mat-icon-button (click)="editInstitution(row)">
+            <button matTooltip="Pick up & Create Institution" *ngIf="row.accountId" mat-icon-button (click)="editInstitution(row, true)">
               <mat-icon>add</mat-icon>
             </button>
           </mat-cell>

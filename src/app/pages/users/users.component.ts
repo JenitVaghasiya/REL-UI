@@ -14,14 +14,24 @@ import {
   MatSort
 } from '@angular/material';
 import { UserInviteDialogComponent } from './user-invite-dialog/user-invite-dialog.component';
-import { ManageUserClient, UserModel, ServiceResponseOfListOfUserModel } from 'api/apiclient';
+import {
+  ManageUserClient,
+  UserModel,
+  ServiceResponseOfListOfUserModel
+} from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
 import { LoaderService } from '../../loader/loader.service';
 // import { Observable } from 'rxjs';
 // import { of } from 'rxjs/observable/of';
 import { merge } from 'rxjs/observable/merge';
-import { startWith, switchMap, map, catchError, observeOn } from 'rxjs/operators';
+import {
+  startWith,
+  switchMap,
+  map,
+  catchError,
+  observeOn
+} from 'rxjs/operators';
 import { Observable } from '../../../../node_modules/rxjs';
 @Component({
   selector: 'app-users',
@@ -29,7 +39,8 @@ import { Observable } from '../../../../node_modules/rxjs';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit, OnDestroy {
-  @ViewChild('usersDiv', { read: ViewContainerRef }) usersDiv: ViewContainerRef;
+  @ViewChild('usersDiv', { read: ViewContainerRef })
+  usersDiv: ViewContainerRef;
 
   pageTitle = 'Users Management';
   displayedColumns: string[] = [
@@ -41,7 +52,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     'status',
     'action'
   ];
-  users= new MatTableDataSource<UserModel>([]);
+  users = new MatTableDataSource<UserModel>([]);
   AllUsers: ServiceResponseOfListOfUserModel = null;
   // dataSource = new MatTableDataSource<UserModel>(this.users);
   @ViewChild(MatPaginator)
@@ -55,7 +66,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort)
+  sort: MatSort;
 
   constructor(
     public dialog: MatDialog,
@@ -84,7 +96,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     //   });
 
     // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
@@ -94,17 +106,29 @@ export class UsersComponent implements OnInit, OnDestroy {
           // console.log(this.sort.active);
           // console.log(this.sort.direction);
           // console.log(this.paginator.pageIndex);
-        return this.AllUsers ? Observable.of<ServiceResponseOfListOfUserModel>(this.AllUsers) :
-         this.manageUserClient.getRegisterdUsersByAccount(accountId)
+          return this.AllUsers
+            ? Observable.of<ServiceResponseOfListOfUserModel>(this.AllUsers)
+            : this.manageUserClient.getRegisterdUsersByAccount(accountId);
           // return this.exampleDatabase!.getRepoIssues(
-            // this.sort.active, this.sort.direction, this.paginator.pageIndex);
+          // this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),
         map(data => {
-          this.AllUsers = !this.AllUsers ?  data : this.AllUsers;
+          if (!data.successful) {
+            let error = '';
+            data.errorMessages.map(
+              (item, i) =>
+                (error +=
+                  i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+            );
+          }
+          this.AllUsers = !this.AllUsers ? data : this.AllUsers;
           this.resultsLength = data.data.length;
           // below is for static data pagination
           const startPoint = this.paginator.pageIndex * 5;
-          const finalForDisplay = data.data.slice( startPoint, startPoint + this.paginator.pageSize);
+          const finalForDisplay = data.data.slice(
+            startPoint,
+            startPoint + this.paginator.pageSize
+          );
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
@@ -116,7 +140,10 @@ export class UsersComponent implements OnInit, OnDestroy {
           this.isRateLimitReached = true;
           return Observable.of([]);
         })
-      ).subscribe(data => this.users = new MatTableDataSource<UserModel>(data));
+      )
+      .subscribe(
+        data => (this.users = new MatTableDataSource<UserModel>(data))
+      );
   }
 
   ngOnInit() {
@@ -125,7 +152,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   inviteUser() {
-    this.dialogRef = this.dialog.open(UserInviteDialogComponent, { disableClose: true });
+    this.dialogRef = this.dialog.open(UserInviteDialogComponent, {
+      disableClose: true
+    });
     this.dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
       this.AllUsers = null;
@@ -135,7 +164,8 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   editUser(user: UserModel) {
     this.dialogUserRef = this.dialog.open(UserDialogComponent, {
-      data: user, disableClose: true
+      data: user,
+      disableClose: true
     });
 
     this.dialogUserRef.afterClosed().subscribe(result => {

@@ -99,6 +99,14 @@ export class AccountsComponent implements OnInit {
           // this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),
         map(data => {
+          if (!data.successful) {
+            let error = '';
+            data.errorMessages.map(
+              (item, i) =>
+                (error +=
+                  i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+            );
+          }
           this.AllAccounts = !this.AllAccounts ? data : this.AllAccounts;
           this.resultsLength = data.data.length;
           // below is for static data pagination
@@ -130,7 +138,9 @@ export class AccountsComponent implements OnInit {
 
   editAccount(account: AccountDto) {
     sessionStorage.setItem('EditAccount', account.id);
-    this.dialogRef = this.dialog.open(AccountDialogComponent, { disableClose: true });
+    this.dialogRef = this.dialog.open(AccountDialogComponent, {
+      disableClose: true
+    });
     this.dialogRef.afterClosed().subscribe(result => {
       // this.selectedOption = result;
       this.AllAccounts = null;
@@ -140,7 +150,9 @@ export class AccountsComponent implements OnInit {
 
   addNewAccount() {
     sessionStorage.setItem('AddAccount', 'true');
-    this.dialogRef = this.dialog.open(AccountDialogComponent, { disableClose: true });
+    this.dialogRef = this.dialog.open(AccountDialogComponent, {
+      disableClose: true
+    });
     this.dialogRef.afterClosed().subscribe(result => {
       // this.selectedOption = result;
       this.AllAccounts = null;
