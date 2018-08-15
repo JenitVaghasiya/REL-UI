@@ -63,11 +63,11 @@ import { PageGoogleMapComponent } from './pages/maps/google-map/google-map.compo
 import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.component';
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { AuthenticationGuard } from './services/authentication.guard';
-import { AccountComponent } from './pages/extra-pages/account/account.component';
+import { AccountComponent } from './pages/accounts/account/account.component';
 import { UsersComponent } from './pages/users/users.component';
 import { ResetComponent } from './pages/extra-pages/reset/reset.component';
 import { InviteResetComponent } from './pages/extra-pages/invite-reset/invite-reset.component';
-import { AccountsComponent } from './pages/extra-pages/accounts/accounts.component';
+import { AccountsComponent } from './pages/accounts/accounts.component';
 import { Page403Component } from './pages/extra-pages/page-403/page-403.component';
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
 

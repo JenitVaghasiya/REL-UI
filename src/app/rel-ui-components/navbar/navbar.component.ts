@@ -4,7 +4,7 @@ import { TokenService } from '../../services/token.service';
 import { UserInfoModel } from 'models/custom.model';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { UserDialogComponent } from '../../pages/users/user-dialog/user-dialog.component';
-import { AccountDialogComponent } from '../../pages/extra-pages/account/account-dialog.component';
+import { AccountDialogComponent } from '../../pages/accounts/account/account-dialog.component';
 
 @Component({
   moduleId: module.id,

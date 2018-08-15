@@ -7,12 +7,11 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthClient, AccountDto, AccountsClient } from 'api/apiclient';
+import { AuthClient, AccountDto, AccountsClient, StateDto } from 'api/apiclient';
 import { OAuthService } from '../../../services/o-auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
-import { MatDialogRef } from '@angular/material';
-import { UserDialogComponent } from '../../users/user-dialog/user-dialog.component';
+
 
 @Component({
   selector: 'page-account',
@@ -24,9 +23,11 @@ export class AccountComponent implements OnInit, OnDestroy {
   signUpDiv: ViewContainerRef;
   public form: FormGroup;
   model = new AccountDto();
+  stateList = new Array<StateDto>();
   iAgreed = false;
   accountId = '';
   isNewFromSuperAdmin = false;
+  dialogRef = null;
   constructor(
     protected router: Router,
     protected fb: FormBuilder,
@@ -44,6 +45,11 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.getAccountDetails(this.oAuthService.getAccountId());
     }
 
+    this.accountsClient.getStateList().subscribe(res => {
+      if (res.successful) {
+        this.stateList = res.data;
+      }
+    });
 
     this.form = this.fb.group({
       name: [

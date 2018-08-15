@@ -11,20 +11,19 @@ import {
   AccountDto,
   ServiceResponseOfListOfAccountDto
 } from 'api/apiclient';
-import { OAuthService } from '../../../services/o-auth.service';
+import { OAuthService } from '../../services/o-auth.service';
 import { Router } from '@angular/router';
-import { SharedService } from '../../../layouts/shared-service';
-import { LoaderService } from '../../../loader/loader.service';
-import { AccountDialogComponent } from '../account/account-dialog.component';
+import { SharedService } from '../../layouts/shared-service';
+import { LoaderService } from '../../loader/loader.service';
 import { merge } from 'rxjs/observable/merge';
 import {
   startWith,
   switchMap,
   map,
-  catchError,
-  observeOn
+  catchError
 } from 'rxjs/operators';
-import { Observable } from '../../../../../node_modules/rxjs';
+import { Observable } from '../../../../node_modules/rxjs';
+import { AccountDialogComponent } from './account/account-dialog.component';
 
 @Component({
   selector: 'app-accounts',

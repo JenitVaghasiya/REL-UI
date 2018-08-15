@@ -25,9 +25,14 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="State" value="" [(ngModel)]="model.state" [formControl]="form.controls['state']">
+          <!-- <input matInput placeholder="State" value="" [(ngModel)]="model.state" [formControl]="form.controls['state']"> -->
+          <mat-select placeholder="State" name="state" [(ngModel)]="model.state" [formControl]="form.controls['state']">
+            <mat-option *ngFor="let state of stateList" [value]="state.code">
+              {{ state.name }}
+            </mat-option>
+          </mat-select>
           <mat-error *ngIf="form.controls['state'].hasError('required') && form.controls['state'].touched">
-            You must include State.
+            please select State.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
