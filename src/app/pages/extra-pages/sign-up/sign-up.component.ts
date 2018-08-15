@@ -26,7 +26,10 @@ export class PageSignUpComponent implements OnInit {
     private oAuthService: OAuthService,
     private toastrService: ToastrService,
     private loaderService: LoaderService
-  ) {}
+  ) {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
   ngOnInit() {
     this.form = this.fb.group({
       firstName: [null, Validators.compose([Validators.required])],

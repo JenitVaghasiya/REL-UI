@@ -51,6 +51,17 @@ export class AccountComponent implements OnInit, OnDestroy {
       }
     });
 
+
+  }
+  getAccountDetails(accountId: string) {
+    this.accountId = accountId;
+    if (accountId && accountId.length > 0) {
+      this.accountsClient.getAccount(accountId).subscribe(item => {
+        this.model = item.data ? item.data : new  AccountDto();
+      });
+    }
+  }
+  ngOnInit() {
     this.form = this.fb.group({
       name: [
         null,
@@ -75,17 +86,6 @@ export class AccountComponent implements OnInit, OnDestroy {
       ]
     });
   }
-  getAccountDetails(accountId: string) {
-    this.accountId = accountId;
-    if (accountId && accountId.length > 0) {
-      this.accountsClient.getAccount(accountId).subscribe(item => {
-        this.model = item.data;
-      });
-    }
-  }
-  ngOnInit() {
-
-  }
 
   onSubmit() {
     this.loaderService.start(this.signUpDiv);
@@ -95,11 +95,10 @@ export class AccountComponent implements OnInit, OnDestroy {
         if (e.successful) {
           this.toastrService.success('Account Updated Successfully', 'Alert');
           // account id needed
-          if (sessionStorage.getItem('EditAccount')) {
-          //   this.dialogRef.close(this.model);
-          } else {
+          // if (sessionStorage.getItem('EditAccount')) {
+          // } else {
             this.router.navigate(['/rel/dashboard']);
-          }
+          // }
         } else {
           let error = '';
           e.errorMessages.map(
@@ -115,12 +114,11 @@ export class AccountComponent implements OnInit, OnDestroy {
         this.loaderService.stop();
         if (e.successful) {
           this.toastrService.success('Account added Successfully', 'Alert');
-          if (sessionStorage.getItem('AddAccount')) {
-         //    this.dialogRef.close(this.model);
-          } else {
+          // if (sessionStorage.getItem('AddAccount')) {
+          // } else {
             this.oAuthService.setAccountId(e.data ? e.data : '');
             this.router.navigate(['/rel/dashboard']);
-          }
+          // }
 
         } else {
           let error = '';
