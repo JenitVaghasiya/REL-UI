@@ -73,37 +73,37 @@ export class InstitutionDialogComponent implements OnInit {
     if (!this.model.id) {
       this.institutionClient.create(this.model).subscribe(e => {
         this.loaderService.stop();
-        if (e.status === 202 || e.status === 200) {
+        if (e.successful) {
           this.toastrService.success(
             'Institution Created Successfully',
             'Alert'
           );
           this.dialogRef.close(this.model);
         } else {
-          // let error = '';
-          // e.errorMessages.map(
-          //   (item, i) =>
-          //     (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
-          // );
-          this.toastrService.error(e.status.toString(), 'Alert');
+          let error = '';
+          e.errorMessages.map(
+            (item, i) =>
+              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
+          this.toastrService.error(error, 'Alert');
         }
       });
     } else {
       this.institutionClient.update(this.model, this.model.id).subscribe(e => {
         this.loaderService.stop();
-        if (e.status === 202 || e.status === 200) {
+        if (e.successful) {
           this.toastrService.success(
             'Institution Updated Successfully',
             'Alert'
           );
           this.dialogRef.close(this.model);
         } else {
-          // let error = '';
-          // e.errorMessages.map(
-          //   (item, i) =>
-          //     (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
-          // );
-          this.toastrService.error(e.status.toString(), 'Alert');
+          let error = '';
+          e.errorMessages.map(
+            (item, i) =>
+              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
+          this.toastrService.error(error, 'Alert');
         }
       });
     }

@@ -35,6 +35,7 @@ import { Observable } from 'rxjs';
 import { TokenService } from '../../services/token.service';
 import { UserInfoModel } from 'models/custom.model';
 import { ToastrService } from 'ngx-toastr';
+import Utility from 'utility/utility';
 @Component({
   selector: 'app-institutions',
   templateUrl: './institutions.component.html',
@@ -62,6 +63,7 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort)
   sort: MatSort;
   includeMasterList = true;
+  isSuperadmin = false;
   userInfoModel: UserInfoModel = new UserInfoModel();
   constructor(
     public dialog: MatDialog,
@@ -83,12 +85,10 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
 
     if (roles && roles === 'superadmin') {
       accountId = '';
+      this.isSuperadmin = true;
     }
     if (roles && roles === 'accountadmin') {
-      // if (!this.includeMasterList) {
-        console.log(this.oAuthService.getAccountId());
-      // }
-      accountId =  this.oAuthService.getAccountId();
+      accountId = this.includeMasterList ? '' :  this.oAuthService.getAccountId();
     }
 
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
@@ -99,12 +99,10 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.AllInstitutions
-            ? Observable.of<ServiceResponseOfListOfInstitutionDto>(
-                this.AllInstitutions
-              )
-            : this.institutionClient.getInstitutionList(accountId);
-          // return this.exampleDatabase!.getRepoIssues(
-          // this.sort.active, this.sort.direction, this.paginator.pageIndex);
+          ? Observable.of<ServiceResponseOfListOfInstitutionDto>(
+              this.AllInstitutions
+            )
+          : this.institutionClient.getInstitutionList(accountId);
         }),
         map(data => {
           if (!data.successful) {
@@ -147,16 +145,18 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
   }
   updateList(checked: any) {
     this.includeMasterList = checked;
+    this.AllInstitutions = null;
     this.getInstitutions();
   }
 
   editInstitution(institution: InstitutionDto, pickAndCreate = false) {
+    const objIns = Utility.deepClone(institution);
     if (pickAndCreate) {
-      institution.id = null;
-      institution.accountId = null;
+      objIns.id = null;
+      objIns.accountId = null;
     }
     this.dialogRef = this.dialog.open(InstitutionDialogComponent, {
-      data: institution,  disableClose: true
+      data: objIns,  disableClose: true
     });
 
     this.dialogRef.afterClosed().subscribe(result => {

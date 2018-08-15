@@ -43,16 +43,8 @@ export class AccountComponent implements OnInit, OnDestroy {
     } else {
       this.getAccountDetails(this.oAuthService.getAccountId());
     }
-  }
-  getAccountDetails(accountId: string) {
-    this.accountId = accountId;
-    if (accountId && accountId.length > 0) {
-      this.accountsClient.getAccount(accountId).subscribe(item => {
-        this.model = item.data;
-      });
-    }
-  }
-  ngOnInit() {
+
+
     this.form = this.fb.group({
       name: [
         null,
@@ -76,6 +68,17 @@ export class AccountComponent implements OnInit, OnDestroy {
         Validators.compose([Validators.required, Validators.maxLength(10)])
       ]
     });
+  }
+  getAccountDetails(accountId: string) {
+    this.accountId = accountId;
+    if (accountId && accountId.length > 0) {
+      this.accountsClient.getAccount(accountId).subscribe(item => {
+        this.model = item.data;
+      });
+    }
+  }
+  ngOnInit() {
+
   }
 
   onSubmit() {

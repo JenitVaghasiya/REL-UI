@@ -1,6 +1,6 @@
 {
   "name": "rel-ui",
-  "version": "2.6.0",
+  "version": "1.0.0",
   "description": "REL UI",
   "private": true,
   "scripts": {
@@ -28,6 +28,7 @@
     "@angular/platform-browser-dynamic": "5.0.3",
     "@angular/router": "5.0.3",
     "@types/leaflet": "1.2.2",
+    "@types/underscore": "^1.8.8",
     "angular-calendar": "0.22.1",
     "chart.js": "2.7.1",
     "core-js": "2.5.1",
@@ -39,6 +40,7 @@
     "ng2-validation": "4.2.0",
     "ngx-toastr": "^8.10.0",
     "rxjs": "5.5.2",
+    "underscore": "^1.9.1",
     "zone.js": "0.8.18"
   },
   "devDependencies": {

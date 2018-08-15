@@ -1,6 +1,6 @@
 <card #usersDiv title="Manage Institutions">
     <button mat-raised-button color="accent" (click)="addInstition()">Add Institution</button>
-    <mat-slide-toggle style="padding-left: 15px;"
+    <mat-slide-toggle *ngIf="!this.isSuperadmin" style="padding-left: 15px;"
           color="primary"
           [(checked)]="includeMasterList" (change)="updateList($event.checked)"
           >
@@ -18,16 +18,16 @@
         </ng-container>
         <ng-container matColumnDef="accountname">
           <mat-header-cell *matHeaderCellDef> Account Name </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.accountId}} </mat-cell>
+          <mat-cell *matCellDef="let row"> {{row.accountName}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
           <mat-cell *matCellDef="let row">
-            <button matTooltip="Edit Institution" mat-icon-button (click)="editInstitution(row)">
+            <button matTooltip="Edit" *ngIf="this.isSuperadmin ||  (this.isSuperadmin && !row.accountId) || (!this.isSuperadmin && row.accountId)" mat-icon-button (click)="editInstitution(row)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button matTooltip="Pick up & Create Institution" *ngIf="row.accountId" mat-icon-button (click)="editInstitution(row, true)">
-              <mat-icon>add</mat-icon>
+            <button color="accent" matTooltip="Pick up & Create" *ngIf="!row.accountId" mat-icon-button (click)="editInstitution(row, true)">
+              <mat-icon>library_add</mat-icon>
             </button>
           </mat-cell>
         </ng-container>

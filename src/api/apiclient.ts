@@ -69,6 +69,7 @@ export interface IAccountsClient {
     getAccounts(): Observable<ServiceResponseOfListOfAccountDto>;
     delete(id: string): Observable<ServiceResponse>;
     update(account: AccountForUpdateDto, id: string): Observable<ServiceResponse>;
+    getStateList(): Observable<ServiceResponseOfListOfStateDto>;
 }
 
 @Injectable()
@@ -354,6 +355,57 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
             });
         }
         return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    getStateList(): Observable<ServiceResponseOfListOfStateDto> {
+        let url_ = this.baseUrl + "/api/accounts/getstatelist";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetStateList(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStateList(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfListOfStateDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfListOfStateDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetStateList(response: HttpResponseBase): Observable<ServiceResponseOfListOfStateDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfStateDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfListOfStateDto>(<any>null);
     }
 }
 
@@ -965,10 +1017,10 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
 }
 
 export interface IInstitutionClient {
-    getInstitution(id: string): Observable<FileResponse>;
-    create(institution: InstitutionForCreationDto): Observable<FileResponse>;
-    delete(id: string): Observable<FileResponse>;
-    update(institution: InstitutionForUpdateDto, id: string): Observable<FileResponse>;
+    getInstitution(id: string): Observable<ServiceResponseOfInstitutionDto>;
+    create(institution: InstitutionForCreationDto): Observable<ServiceResponse>;
+    delete(id: string): Observable<ServiceResponse>;
+    update(institution: InstitutionForUpdateDto, id: string): Observable<ServiceResponse>;
     getInstitutionList(accountId: string): Observable<ServiceResponseOfListOfInstitutionDto>;
 }
 
@@ -984,7 +1036,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
-    getInstitution(id: string): Observable<FileResponse> {
+    getInstitution(id: string): Observable<ServiceResponseOfInstitutionDto> {
         let url_ = this.baseUrl + "/api/institutions/GetInstitution?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
@@ -1010,34 +1062,36 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
                 try {
                     return this.processGetInstitution(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfInstitutionDto>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfInstitutionDto>><any>Observable.throw(response_);
         });
     }
 
-    protected processGetInstitution(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetInstitution(response: HttpResponseBase): Observable<ServiceResponseOfInstitutionDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfInstitutionDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).flatMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<FileResponse>(<any>null);
+        return Observable.of<ServiceResponseOfInstitutionDto>(<any>null);
     }
 
-    create(institution: InstitutionForCreationDto): Observable<FileResponse> {
+    create(institution: InstitutionForCreationDto): Observable<ServiceResponse> {
         let url_ = this.baseUrl + "/api/institutions/Create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1062,34 +1116,36 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
                 try {
                     return this.processCreate(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
         });
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).flatMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<FileResponse>(<any>null);
+        return Observable.of<ServiceResponse>(<any>null);
     }
 
-    delete(id: string): Observable<FileResponse> {
+    delete(id: string): Observable<ServiceResponse> {
         let url_ = this.baseUrl + "/api/institutions/Delete?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
@@ -1115,34 +1171,36 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
                 try {
                     return this.processDelete(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
         });
     }
 
-    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
+    protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).flatMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<FileResponse>(<any>null);
+        return Observable.of<ServiceResponse>(<any>null);
     }
 
-    update(institution: InstitutionForUpdateDto, id: string): Observable<FileResponse> {
+    update(institution: InstitutionForUpdateDto, id: string): Observable<ServiceResponse> {
         let url_ = this.baseUrl + "/api/institutions/Update?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
@@ -1171,31 +1229,33 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
                 try {
                     return this.processUpdate(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
         });
     }
 
-    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
+    protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).flatMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<FileResponse>(<any>null);
+        return Observable.of<ServiceResponse>(<any>null);
     }
 
     getInstitutionList(accountId: string): Observable<ServiceResponseOfListOfInstitutionDto> {
@@ -1991,6 +2051,91 @@ export interface IAccountForUpdateDto {
     zipCode: string;
 }
 
+export class ServiceResponseOfListOfStateDto extends ServiceResponse implements IServiceResponseOfListOfStateDto {
+    data?: StateDto[];
+
+    constructor(data?: IServiceResponseOfListOfStateDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            if (data["data"] && data["data"].constructor === Array) {
+                this.data = [];
+                for (let item of data["data"])
+                    this.data.push(StateDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfListOfStateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfListOfStateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.data && this.data.constructor === Array) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfListOfStateDto extends IServiceResponse {
+    data?: StateDto[];
+}
+
+export class StateDto implements IStateDto {
+    id?: string;
+    code: string;
+    name: string;
+
+    constructor(data?: IStateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.code = data["code"];
+            this.name = data["name"];
+        }
+    }
+
+    static fromJS(data: any): StateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IStateDto {
+    id?: string;
+    code: string;
+    name: string;
+}
+
 export class LoginModel implements ILoginModel {
     email: string;
     password: string;
@@ -2312,6 +2457,87 @@ export interface ICheckListItemForCreationDto {
     answerSetId: string;
 }
 
+export class ServiceResponseOfInstitutionDto extends ServiceResponse implements IServiceResponseOfInstitutionDto {
+    data?: InstitutionDto;
+
+    constructor(data?: IServiceResponseOfInstitutionDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.data = data["data"] ? InstitutionDto.fromJS(data["data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfInstitutionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfInstitutionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfInstitutionDto extends IServiceResponse {
+    data?: InstitutionDto;
+}
+
+export class InstitutionDto implements IInstitutionDto {
+    id: string;
+    name: string;
+    accountId?: string;
+    accountName?: string;
+
+    constructor(data?: IInstitutionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.accountId = data["accountId"];
+            this.accountName = data["accountName"];
+        }
+    }
+
+    static fromJS(data: any): InstitutionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InstitutionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["accountId"] = this.accountId;
+        data["accountName"] = this.accountName;
+        return data; 
+    }
+}
+
+export interface IInstitutionDto {
+    id: string;
+    name: string;
+    accountId?: string;
+    accountName?: string;
+}
+
 export class InstitutionForCreationDto implements IInstitutionForCreationDto {
     name: string;
     accountId?: string;
@@ -2427,50 +2653,6 @@ export class ServiceResponseOfListOfInstitutionDto extends ServiceResponse imple
 
 export interface IServiceResponseOfListOfInstitutionDto extends IServiceResponse {
     data?: InstitutionDto[];
-}
-
-export class InstitutionDto implements IInstitutionDto {
-    id: string;
-    name: string;
-    accountId?: string;
-
-    constructor(data?: IInstitutionDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-            this.accountId = data["accountId"];
-        }
-    }
-
-    static fromJS(data: any): InstitutionDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new InstitutionDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["accountId"] = this.accountId;
-        return data; 
-    }
-}
-
-export interface IInstitutionDto {
-    id: string;
-    name: string;
-    accountId?: string;
 }
 
 export class InviteUserModel implements IInviteUserModel {
