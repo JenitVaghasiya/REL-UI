@@ -26,8 +26,7 @@ import {
   startWith,
   switchMap,
   map,
-  catchError,
-  observeOn
+  catchError
 } from 'rxjs/operators';
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs';
@@ -36,6 +35,7 @@ import { UserInfoModel } from 'models/custom.model';
 import { ToastrService } from 'ngx-toastr';
 import Utility from 'utility/utility';
 import { CheckListDialogComponent } from './checklist-dialog/checklist-dialog.component';
+
 @Component({
   selector: 'app-check-list',
   templateUrl: './checklists.component.html',

@@ -15,7 +15,6 @@ import {
 } from 'api/apiclient';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
-import { CustomValidators } from 'ng2-validation';
 import { TokenService } from '../../../services/token.service';
 import { OAuthService } from '../../../services/o-auth.service';
 
