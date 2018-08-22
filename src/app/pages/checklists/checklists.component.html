@@ -1,15 +1,9 @@
-<card #usersDiv title="Manage Institutions">
-    <button mat-raised-button color="accent" (click)="addInstition()">Add Institution</button>
-    <mat-slide-toggle *ngIf="!this.isSuperadmin" style="padding-left: 15px;"
-          color="primary"
-          [(checked)]="includeMasterList" (change)="updateList($event.checked)"
-          >
-         {{ includeMasterList ? 'Include Master List' : 'My List' }}
-      </mat-slide-toggle>
+<card #checkListDiv title="Manage CheckList">
+    <button mat-raised-button color="accent" (click)="addInstition()">Add CheckList</button>
     <div *ngIf="isLoadingResults">
       <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
     </div>
-    <mat-table #table [dataSource]="institutions" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+    <mat-table #table [dataSource]="checkLists" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
 
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef  disableClear> Name </mat-header-cell>
@@ -28,15 +22,11 @@
           <mat-header-cell *matHeaderCellDef> Modified Date </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy h:mm a'}} </mat-cell>
         </ng-container>
-
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
           <mat-cell *matCellDef="let row">
-            <button matTooltip="Edit" *ngIf="this.isSuperadmin ||  (this.isSuperadmin && !row.accountId) || (!this.isSuperadmin && row.accountId)" mat-icon-button (click)="editInstitution(row)">
+            <button matTooltip="Edit"  mat-icon-button (click)="editCheckList(row)">
               <mat-icon>edit</mat-icon>
-            </button>
-            <button color="accent" matTooltip="Pick up & Create" *ngIf="!row.accountId" mat-icon-button (click)="editInstitution(row, true)">
-              <mat-icon>library_add</mat-icon>
             </button>
           </mat-cell>
         </ng-container>

@@ -124,7 +124,7 @@ import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.co
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
-import { AuthClient, AccountsClient, ManageUserClient, InstitutionClient } from 'api/apiclient';
+import { AuthClient, AccountsClient, ManageUserClient, InstitutionClient, CheckListClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
@@ -145,6 +145,8 @@ import { AccountDialogComponent } from './pages/accounts/account/account-dialog.
 import { Page403Component } from './pages/extra-pages/page-403/page-403.component';
 import { InstitutionDialogComponent } from './pages/institutions/institution-dialog/institution-dialog.component';
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
+import { CheckListComponent } from './pages/checklists/checklists.component';
+import { CheckListDialogComponent } from './pages/checklists/checklist-dialog/checklist-dialog.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -285,7 +287,9 @@ import { InstitutionsComponent } from './pages/institutions/institutions.compone
     AccountDialogComponent,
     Page403Component,
     InstitutionDialogComponent,
-    InstitutionsComponent
+    InstitutionsComponent,
+    CheckListComponent,
+    CheckListDialogComponent
   ],
   entryComponents: [
     DialogResultComponent,
@@ -295,7 +299,9 @@ import { InstitutionsComponent } from './pages/institutions/institutions.compone
     UserDialogComponent,
     AccountsComponent,
     AccountDialogComponent,
-    InstitutionDialogComponent
+    InstitutionDialogComponent,
+    CheckListComponent,
+    CheckListDialogComponent
   ],
   bootstrap: [AppComponent],
   exports: [],
@@ -309,6 +315,7 @@ import { InstitutionsComponent } from './pages/institutions/institutions.compone
     LoaderService,
     TokenService,
     InstitutionClient,
+    CheckListClient,
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

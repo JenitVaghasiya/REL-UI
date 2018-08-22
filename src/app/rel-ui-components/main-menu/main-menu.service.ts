@@ -83,6 +83,20 @@ export class MainMenuService {
       });
     }
 
+    if (this.isAccountAdmin) {
+      MAINMENUITEMS.push({
+        title: 'Manage CheckList',
+        icon: 'fa fa-list-alt',
+        active: false,
+        groupTitle: false,
+        sub: '',
+        routing: '/rel/checklists',
+        externalLink: '',
+        budge: '',
+        budgeColor: ''
+      });
+    }
+
     return Promise.resolve(MAINMENUITEMS);
   }
 }

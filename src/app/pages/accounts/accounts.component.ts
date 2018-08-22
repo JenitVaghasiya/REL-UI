@@ -162,4 +162,9 @@ export class AccountsComponent implements OnInit {
     sessionStorage.setItem('EditAccount', account.id);
     this.router.navigate(['/rel/users']);
   }
+
+  listCheckList(account: AccountDto) {
+    sessionStorage.setItem('AccountCheckList', account.id);
+    this.router.navigate(['/rel/checklists']);
+  }
 }

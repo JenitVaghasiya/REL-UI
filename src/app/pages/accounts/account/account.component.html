@@ -42,11 +42,11 @@
           </mat-error>
         </mat-form-field>
 <div *ngIf="dialogRef?.id">
-  <button mat-raised-button type="submit" color="accent" [disabled]="!form.valid">{{ accountId && accountId.length > 0 ? 'Update Account' : 'Save Account' }}</button>
+  <button class="btn-margin-top" mat-raised-button type="submit" color="accent" [disabled]="!form.valid">{{ accountId && accountId.length > 0 ? 'Update Account' : 'Save Account' }}</button>
     <button mat-raised-button type="button" (click)="dialogRef.close(null)" >Close</button>
 </div>
 <div *ngIf="!dialogRef?.id">
-  <button mat-raised-button class="full-button" type="submit" color="accent" [disabled]="!form.valid">{{ accountId && accountId.length > 0 ? 'Update Account' : 'Save Account' }}</button>
+  <button class="btn-margin-top" mat-raised-button class="full-button" type="submit" color="accent" [disabled]="!form.valid">{{ accountId && accountId.length > 0 ? 'Update Account' : 'Save Account' }}</button>
 </div>
     <div class="additional-info" *ngIf="!isNewFromSuperAdmin && !(accountId && accountId.length > 0)">
       Already have an account?

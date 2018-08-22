@@ -15,12 +15,11 @@ import {
 } from '@angular/material';
 
 import {
-  InstitutionClient,
-  InstitutionDto,
-  ServiceResponseOfListOfInstitutionDto
+  CheckListDto,
+  ServiceResponseOfListOfCheckListDto,
+  CheckListClient
 } from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
-import { InstitutionDialogComponent } from './institution-dialog/institution-dialog.component';
 import { LoaderService } from '../../loader/loader.service';
 import { merge } from 'rxjs/observable/merge';
 import {
@@ -36,16 +35,17 @@ import { TokenService } from '../../services/token.service';
 import { UserInfoModel } from 'models/custom.model';
 import { ToastrService } from 'ngx-toastr';
 import Utility from 'utility/utility';
+import { CheckListDialogComponent } from './checklist-dialog/checklist-dialog.component';
 @Component({
-  selector: 'app-institutions',
-  templateUrl: './institutions.component.html',
-  styleUrls: ['./institutions.component.scss']
+  selector: 'app-check-list',
+  templateUrl: './checklists.component.html',
+  styleUrls: ['./checklists.component.scss']
 })
-export class InstitutionsComponent implements OnInit, OnDestroy {
-  @ViewChild('InstitutionsDiv', { read: ViewContainerRef })
-  InstitutionsDiv: ViewContainerRef;
+export class CheckListComponent implements OnInit, OnDestroy {
+  @ViewChild('checkListDiv', { read: ViewContainerRef })
+  checkListDiv: ViewContainerRef;
 
-  pageTitle = 'Institutions Management';
+  pageTitle = 'CheckList Management';
   displayedColumns: string[] = [
     'name',
     'accountname',
@@ -53,24 +53,23 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
     'modifiedDate',
     'action'
   ];
-  institutions = new MatTableDataSource<InstitutionDto>([]);
-  AllInstitutions: ServiceResponseOfListOfInstitutionDto = null;
+  checkLists = new MatTableDataSource<CheckListDto>([]);
+  AllCheckList: ServiceResponseOfListOfCheckListDto = null;
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
-  dialogRef: MatDialogRef<InstitutionDialogComponent>;
+  dialogRef: MatDialogRef<CheckListDialogComponent>;
   selectedOption: string;
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
   @ViewChild(MatSort)
   sort: MatSort;
-  includeMasterList = true;
   isSuperadmin = false;
   userInfoModel: UserInfoModel = new UserInfoModel();
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
-    public institutionClient: InstitutionClient,
+    public checkListClient: CheckListClient,
     public oAuthService: OAuthService,
     public loaderService: LoaderService,
     public tokenService: TokenService,
@@ -79,18 +78,14 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
     this._sharedService.emitChange(this.pageTitle);
   }
 
-  getInstitutions() {
-    // this.loaderService.start(this.InstitutionsDiv);
+  getCheckList() {
     const tokenDetail = this.tokenService.getTokenDetails();
     const roles = tokenDetail ? tokenDetail.role : null;
     let accountId = '';
-
-    if (roles && roles === 'superadmin') {
-      accountId = '';
-      this.isSuperadmin = true;
-    }
-    if (roles && roles === 'accountadmin') {
-      accountId = this.includeMasterList ? '' :  this.oAuthService.getAccountId();
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountCheckList')) {
+      accountId = sessionStorage.getItem('AccountCheckList');
+    } else {
+      accountId = this.oAuthService.getAccountId();
     }
 
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
@@ -100,11 +95,11 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.AllInstitutions
-          ? Observable.of<ServiceResponseOfListOfInstitutionDto>(
-              this.AllInstitutions
+          return this.AllCheckList
+          ? Observable.of<ServiceResponseOfListOfCheckListDto>(
+              this.AllCheckList
             )
-          : this.institutionClient.getInstitutionList(accountId);
+          : this.checkListClient.getListOfCheckList(accountId);
         }),
         map(data => {
           if (!data.successful) {
@@ -115,9 +110,9 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
           );
           this.toastrService.error(error.toString(), 'Alert');
           }
-          this.AllInstitutions = !this.AllInstitutions
+          this.AllCheckList = !this.AllCheckList
             ? data
-            : this.AllInstitutions;
+            : this.AllCheckList;
           this.resultsLength = data.data.length;
           // below is for static data pagination
           const startPoint = this.paginator.pageIndex * 5;
@@ -138,45 +133,36 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(
-        data => (this.institutions = new MatTableDataSource<InstitutionDto>(data))
+        data => (this.checkLists = new MatTableDataSource<CheckListDto>(data))
       );
   }
 
   ngOnInit() {
-    this.getInstitutions();
-  }
-  updateList(checked: any) {
-    this.includeMasterList = checked;
-    this.AllInstitutions = null;
-    this.getInstitutions();
+    this.getCheckList();
   }
 
-  editInstitution(institution: InstitutionDto, pickAndCreate = false) {
-    const objIns = Utility.deepClone(institution);
-    if (pickAndCreate) {
-      objIns.id = null;
-      objIns.accountId = null;
-    }
-    this.dialogRef = this.dialog.open(InstitutionDialogComponent, {
+  editCheckList(checkList: CheckListDto) {
+    const objIns = Utility.deepClone(checkList);
+    this.dialogRef = this.dialog.open(CheckListDialogComponent, {
       data: objIns,  disableClose: true
     });
 
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.AllInstitutions = null;
-        this.getInstitutions();
+        this.AllCheckList = null;
+        this.getCheckList();
       }
     });
   }
   addInstition() {
-    this.dialogRef = this.dialog.open(InstitutionDialogComponent, {
+    this.dialogRef = this.dialog.open(CheckListDialogComponent, {
       data: null,  disableClose: true
     });
 
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.AllInstitutions = null;
-        this.getInstitutions();
+        this.AllCheckList = null;
+        this.getCheckList();
       }
     });
   }

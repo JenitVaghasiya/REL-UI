@@ -654,10 +654,11 @@ export class AuthClient extends BaseClient implements IAuthClient {
 }
 
 export interface ICheckListClient {
-    getInstitution(id: string): Observable<FileResponse>;
-    create(checkList: CheckListForCreationDto): Observable<FileResponse>;
-    delete(id: string): Observable<FileResponse>;
-    update(checkList: CheckListForUpdateDto, id: string): Observable<FileResponse>;
+    create(checkList: CheckListForCreationDto): Observable<ServiceResponse>;
+    delete(id: string): Observable<ServiceResponse>;
+    update(checkList: CheckListForUpdateDto, id: string): Observable<ServiceResponse>;
+    getCheckList(id: string): Observable<ServiceResponseOfCheckListDto>;
+    getListOfCheckList(accountId: string): Observable<ServiceResponseOfListOfCheckListDto>;
 }
 
 @Injectable()
@@ -672,60 +673,7 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
-    getInstitution(id: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/GetCheckList?";
-        if (id === undefined)
-            throw new Error("The parameter 'id' must be defined.");
-        else
-            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("get", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processGetInstitution(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetInstitution(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetInstitution(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<FileResponse>(<any>null);
-    }
-
-    create(checkList: CheckListForCreationDto): Observable<FileResponse> {
+    create(checkList: CheckListForCreationDto): Observable<ServiceResponse> {
         let url_ = this.baseUrl + "/api/checklists";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -750,34 +698,36 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
                 try {
                     return this.processCreate(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
         });
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<FileResponse> {
+    protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).flatMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<FileResponse>(<any>null);
+        return Observable.of<ServiceResponse>(<any>null);
     }
 
-    delete(id: string): Observable<FileResponse> {
+    delete(id: string): Observable<ServiceResponse> {
         let url_ = this.baseUrl + "/api/checklists/delete?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
@@ -803,34 +753,36 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
                 try {
                     return this.processDelete(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
         });
     }
 
-    protected processDelete(response: HttpResponseBase): Observable<FileResponse> {
+    protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).flatMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<FileResponse>(<any>null);
+        return Observable.of<ServiceResponse>(<any>null);
     }
 
-    update(checkList: CheckListForUpdateDto, id: string): Observable<FileResponse> {
+    update(checkList: CheckListForUpdateDto, id: string): Observable<ServiceResponse> {
         let url_ = this.baseUrl + "/api/checklists/update?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
@@ -859,31 +811,143 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
                 try {
                     return this.processUpdate(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
         });
     }
 
-    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
+    protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).flatMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<FileResponse>(<any>null);
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    getCheckList(id: string): Observable<ServiceResponseOfCheckListDto> {
+        let url_ = this.baseUrl + "/api/checklists/getchecklist?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetCheckList(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCheckList(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfCheckListDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfCheckListDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetCheckList(response: HttpResponseBase): Observable<ServiceResponseOfCheckListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfCheckListDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfCheckListDto>(<any>null);
+    }
+
+    getListOfCheckList(accountId: string): Observable<ServiceResponseOfListOfCheckListDto> {
+        let url_ = this.baseUrl + "/api/checklists/getlistofchecklist?";
+        if (accountId === undefined)
+            throw new Error("The parameter 'accountId' must be defined.");
+        else
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetListOfCheckList(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListOfCheckList(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfListOfCheckListDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfListOfCheckListDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetListOfCheckList(response: HttpResponseBase): Observable<ServiceResponseOfListOfCheckListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfCheckListDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfListOfCheckListDto>(<any>null);
     }
 }
 
@@ -1017,10 +1081,10 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
 }
 
 export interface IInstitutionClient {
-    getInstitution(id: string): Observable<ServiceResponseOfInstitutionDto>;
     create(institution: InstitutionForCreationDto): Observable<ServiceResponse>;
     delete(id: string): Observable<ServiceResponse>;
     update(institution: InstitutionForUpdateDto, id: string): Observable<ServiceResponse>;
+    getInstitution(id: string): Observable<ServiceResponseOfInstitutionDto>;
     getInstitutionList(accountId: string): Observable<ServiceResponseOfListOfInstitutionDto>;
 }
 
@@ -1034,61 +1098,6 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         super();
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
-    }
-
-    getInstitution(id: string): Observable<ServiceResponseOfInstitutionDto> {
-        let url_ = this.baseUrl + "/api/institutions/GetInstitution?";
-        if (id === undefined)
-            throw new Error("The parameter 'id' must be defined.");
-        else
-            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("get", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processGetInstitution(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetInstitution(<any>response_);
-                } catch (e) {
-                    return <Observable<ServiceResponseOfInstitutionDto>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<ServiceResponseOfInstitutionDto>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetInstitution(response: HttpResponseBase): Observable<ServiceResponseOfInstitutionDto> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponseOfInstitutionDto.fromJS(resultData200) : <any>null;
-            return Observable.of(result200);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<ServiceResponseOfInstitutionDto>(<any>null);
     }
 
     create(institution: InstitutionForCreationDto): Observable<ServiceResponse> {
@@ -1256,6 +1265,61 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
             });
         }
         return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    getInstitution(id: string): Observable<ServiceResponseOfInstitutionDto> {
+        let url_ = this.baseUrl + "/api/institutions/getinstitution?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetInstitution(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInstitution(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfInstitutionDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfInstitutionDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetInstitution(response: HttpResponseBase): Observable<ServiceResponseOfInstitutionDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfInstitutionDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfInstitutionDto>(<any>null);
     }
 
     getInstitutionList(accountId: string): Observable<ServiceResponseOfListOfInstitutionDto> {
@@ -2339,6 +2403,7 @@ export interface IRegisterModel {
 
 export class CheckListForCreationDto implements ICheckListForCreationDto {
     name: string;
+    accountId?: string;
 
     constructor(data?: ICheckListForCreationDto) {
         if (data) {
@@ -2352,6 +2417,7 @@ export class CheckListForCreationDto implements ICheckListForCreationDto {
     init(data?: any) {
         if (data) {
             this.name = data["name"];
+            this.accountId = data["accountId"];
         }
     }
 
@@ -2365,16 +2431,19 @@ export class CheckListForCreationDto implements ICheckListForCreationDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["accountId"] = this.accountId;
         return data; 
     }
 }
 
 export interface ICheckListForCreationDto {
     name: string;
+    accountId?: string;
 }
 
 export class CheckListForUpdateDto implements ICheckListForUpdateDto {
     name: string;
+    accountId?: string;
 
     constructor(data?: ICheckListForUpdateDto) {
         if (data) {
@@ -2388,6 +2457,7 @@ export class CheckListForUpdateDto implements ICheckListForUpdateDto {
     init(data?: any) {
         if (data) {
             this.name = data["name"];
+            this.accountId = data["accountId"];
         }
     }
 
@@ -2401,12 +2471,173 @@ export class CheckListForUpdateDto implements ICheckListForUpdateDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["accountId"] = this.accountId;
         return data; 
     }
 }
 
 export interface ICheckListForUpdateDto {
     name: string;
+    accountId?: string;
+}
+
+export class ServiceResponseOfCheckListDto extends ServiceResponse implements IServiceResponseOfCheckListDto {
+    data?: CheckListDto;
+
+    constructor(data?: IServiceResponseOfCheckListDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.data = data["data"] ? CheckListDto.fromJS(data["data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfCheckListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfCheckListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfCheckListDto extends IServiceResponse {
+    data?: CheckListDto;
+}
+
+export class BaseDto implements IBaseDto {
+    id: string;
+    createdDate: Date;
+    modifiedDate: Date;
+
+    constructor(data?: IBaseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.createdDate = data["createdDate"] ? new Date(data["createdDate"].toString()) : <any>undefined;
+            this.modifiedDate = data["modifiedDate"] ? new Date(data["modifiedDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): BaseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BaseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["modifiedDate"] = this.modifiedDate ? this.modifiedDate.toISOString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IBaseDto {
+    id: string;
+    createdDate: Date;
+    modifiedDate: Date;
+}
+
+export class CheckListDto extends BaseDto implements ICheckListDto {
+    name: string;
+    accountId?: string;
+    accountName?: string;
+
+    constructor(data?: ICheckListDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.name = data["name"];
+            this.accountId = data["accountId"];
+            this.accountName = data["accountName"];
+        }
+    }
+
+    static fromJS(data: any): CheckListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CheckListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["accountId"] = this.accountId;
+        data["accountName"] = this.accountName;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ICheckListDto extends IBaseDto {
+    name: string;
+    accountId?: string;
+    accountName?: string;
+}
+
+export class ServiceResponseOfListOfCheckListDto extends ServiceResponse implements IServiceResponseOfListOfCheckListDto {
+    data?: CheckListDto[];
+
+    constructor(data?: IServiceResponseOfListOfCheckListDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            if (data["data"] && data["data"].constructor === Array) {
+                this.data = [];
+                for (let item of data["data"])
+                    this.data.push(CheckListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfListOfCheckListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfListOfCheckListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.data && this.data.constructor === Array) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfListOfCheckListDto extends IServiceResponse {
+    data?: CheckListDto[];
 }
 
 export class CheckListItemForCreationDto implements ICheckListItemForCreationDto {
@@ -2457,87 +2688,6 @@ export interface ICheckListItemForCreationDto {
     answerSetId: string;
 }
 
-export class ServiceResponseOfInstitutionDto extends ServiceResponse implements IServiceResponseOfInstitutionDto {
-    data?: InstitutionDto;
-
-    constructor(data?: IServiceResponseOfInstitutionDto) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.data = data["data"] ? InstitutionDto.fromJS(data["data"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ServiceResponseOfInstitutionDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ServiceResponseOfInstitutionDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IServiceResponseOfInstitutionDto extends IServiceResponse {
-    data?: InstitutionDto;
-}
-
-export class InstitutionDto implements IInstitutionDto {
-    id: string;
-    name: string;
-    accountId?: string;
-    accountName?: string;
-
-    constructor(data?: IInstitutionDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-            this.accountId = data["accountId"];
-            this.accountName = data["accountName"];
-        }
-    }
-
-    static fromJS(data: any): InstitutionDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new InstitutionDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["accountId"] = this.accountId;
-        data["accountName"] = this.accountName;
-        return data; 
-    }
-}
-
-export interface IInstitutionDto {
-    id: string;
-    name: string;
-    accountId?: string;
-    accountName?: string;
-}
-
 export class InstitutionForCreationDto implements IInstitutionForCreationDto {
     name: string;
     accountId?: string;
@@ -2580,6 +2730,7 @@ export interface IInstitutionForCreationDto {
 
 export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
     name: string;
+    accountId?: string;
 
     constructor(data?: IInstitutionForUpdateDto) {
         if (data) {
@@ -2593,6 +2744,7 @@ export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
     init(data?: any) {
         if (data) {
             this.name = data["name"];
+            this.accountId = data["accountId"];
         }
     }
 
@@ -2606,12 +2758,88 @@ export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["accountId"] = this.accountId;
         return data; 
     }
 }
 
 export interface IInstitutionForUpdateDto {
     name: string;
+    accountId?: string;
+}
+
+export class ServiceResponseOfInstitutionDto extends ServiceResponse implements IServiceResponseOfInstitutionDto {
+    data?: InstitutionDto;
+
+    constructor(data?: IServiceResponseOfInstitutionDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.data = data["data"] ? InstitutionDto.fromJS(data["data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfInstitutionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfInstitutionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfInstitutionDto extends IServiceResponse {
+    data?: InstitutionDto;
+}
+
+export class InstitutionDto extends BaseDto implements IInstitutionDto {
+    name: string;
+    accountId?: string;
+    accountName?: string;
+
+    constructor(data?: IInstitutionDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.name = data["name"];
+            this.accountId = data["accountId"];
+            this.accountName = data["accountName"];
+        }
+    }
+
+    static fromJS(data: any): InstitutionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InstitutionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["accountId"] = this.accountId;
+        data["accountName"] = this.accountName;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IInstitutionDto extends IBaseDto {
+    name: string;
+    accountId?: string;
+    accountName?: string;
 }
 
 export class ServiceResponseOfListOfInstitutionDto extends ServiceResponse implements IServiceResponseOfListOfInstitutionDto {
