@@ -142,7 +142,7 @@ export class LoansComponent implements OnInit, OnDestroy {
     this.getLoans();
   }
 
-  editCheckList(loan: LoanDto) {
+  editLoan(loan: LoanDto) {
     const objIns = Utility.deepClone(loan);
     this.dialogRef = this.dialog.open(LoanDialogComponent, {
       data: objIns,  disableClose: true
@@ -155,7 +155,7 @@ export class LoansComponent implements OnInit, OnDestroy {
       }
     });
   }
-  addInstition() {
+  addLoan() {
     this.dialogRef = this.dialog.open(LoanDialogComponent, {
       data: null,  disableClose: true
     });
@@ -167,6 +167,7 @@ export class LoansComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   ngOnDestroy() {
     sessionStorage.removeItem('LoanAccountId');
   }

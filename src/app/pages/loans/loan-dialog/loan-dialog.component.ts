@@ -12,7 +12,8 @@ import {
   AspNetRoleDto,
   LoansClient,
   LoanDto,
-  AccountsClient
+  AccountsClient,
+  StateDto
 } from 'api/apiclient';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
@@ -32,7 +33,7 @@ export class LoanDialogComponent implements OnInit {
   public model = new LoanDto();
   public accountList: AccountDto[] = new Array<AccountDto>();
   public roleList: AspNetRoleDto[] = new Array<AspNetRoleDto>();
-  stateList
+  stateList: StateDto[] = new Array<StateDto>();
   constructor(
     public dialogRef: MatDialogRef<LoanDialogComponent>,
     private fb: FormBuilder,

@@ -1,9 +1,9 @@
 <card #loansDiv title="Manage Loans">
-    <button mat-raised-button color="accent" (click)="addInstition()">Add Loan</button>
+    <button mat-raised-button color="accent" (click)="addLoan()">Add Loan</button>
     <div *ngIf="isLoadingResults">
       <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
     </div>
-    <mat-table #table [dataSource]="checkLists" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+    <mat-table #table [dataSource]="loans" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
 
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef  disableClear> Name </mat-header-cell>
@@ -25,7 +25,7 @@
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
           <mat-cell *matCellDef="let row">
-            <button matTooltip="Edit"  mat-icon-button (click)="editCheckList(row)">
+            <button matTooltip="Edit"  mat-icon-button (click)="editLoan(row)">
               <mat-icon>edit</mat-icon>
             </button>
           </mat-cell>
