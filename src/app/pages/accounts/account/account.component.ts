@@ -27,6 +27,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   accountId = '';
   isNewFromSuperAdmin = false;
   dialogRef = null;
+  stateList: StateDto[] = new Array<StateDto>();
   constructor(
     protected router: Router,
     protected fb: FormBuilder,
