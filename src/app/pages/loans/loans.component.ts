@@ -15,9 +15,10 @@ import {
 } from '@angular/material';
 
 import {
-  CheckListDto,
-  ServiceResponseOfListOfCheckListDto,
-  CheckListClient
+  LoanDto,
+  ServiceResponseOfListOfLoanDto,
+  CheckListClient,
+  LoansClient
 } from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
 import { LoaderService } from '../../loader/loader.service';
@@ -34,18 +35,18 @@ import { TokenService } from '../../services/token.service';
 import { UserInfoModel } from 'models/custom.model';
 import { ToastrService } from 'ngx-toastr';
 import Utility from 'utility/utility';
-import { CheckListDialogComponent } from './checklist-dialog/checklist-dialog.component';
+import { LoanDialogComponent } from './loan-dialog/loan-dialog.component';
 
 @Component({
-  selector: 'app-check-list',
-  templateUrl: './checklists.component.html',
-  styleUrls: ['./checklists.component.scss']
+  selector: 'app-loans',
+  templateUrl: './loans.component.html',
+  styleUrls: ['./loans.component.scss']
 })
-export class CheckListComponent implements OnInit, OnDestroy {
-  @ViewChild('checkListDiv', { read: ViewContainerRef })
-  checkListDiv: ViewContainerRef;
+export class LoansComponent implements OnInit, OnDestroy {
+  @ViewChild('loansDiv', { read: ViewContainerRef })
+  loansDiv: ViewContainerRef;
 
-  pageTitle = 'CheckList Management';
+  pageTitle = 'Loans Management';
   displayedColumns: string[] = [
     'name',
     'accountname',
@@ -53,11 +54,11 @@ export class CheckListComponent implements OnInit, OnDestroy {
     'modifiedDate',
     'action'
   ];
-  checkLists = new MatTableDataSource<CheckListDto>([]);
-  AllCheckList: ServiceResponseOfListOfCheckListDto = null;
+  loans = new MatTableDataSource<LoanDto>([]);
+  AllLoans: ServiceResponseOfListOfLoanDto = null;
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
-  dialogRef: MatDialogRef<CheckListDialogComponent>;
+  dialogRef: MatDialogRef<LoanDialogComponent>;
   selectedOption: string;
   resultsLength = 0;
   isLoadingResults = true;
@@ -69,7 +70,7 @@ export class CheckListComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
-    public checkListClient: CheckListClient,
+    public loansClient: LoansClient,
     public oAuthService: OAuthService,
     public loaderService: LoaderService,
     public tokenService: TokenService,
@@ -78,7 +79,7 @@ export class CheckListComponent implements OnInit, OnDestroy {
     this._sharedService.emitChange(this.pageTitle);
   }
 
-  getCheckList() {
+  getLoans() {
     const tokenDetail = this.tokenService.getTokenDetails();
     const roles = tokenDetail ? tokenDetail.role : null;
     let accountId = '';
@@ -95,11 +96,11 @@ export class CheckListComponent implements OnInit, OnDestroy {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.AllCheckList
-          ? Observable.of<ServiceResponseOfListOfCheckListDto>(
-              this.AllCheckList
+          return this.AllLoans
+          ? Observable.of<ServiceResponseOfListOfLoanDto>(
+              this.AllLoans
             )
-          : this.checkListClient.getListOfCheckList(accountId);
+          : this.loansClient.getLoanList(accountId);
         }),
         map(data => {
           if (!data.successful) {
@@ -110,9 +111,9 @@ export class CheckListComponent implements OnInit, OnDestroy {
           );
           this.toastrService.error(error.toString(), 'Alert');
           }
-          this.AllCheckList = !this.AllCheckList
+          this.AllLoans = !this.AllLoans
             ? data
-            : this.AllCheckList;
+            : this.AllLoans;
           this.resultsLength = data.data.length;
           // below is for static data pagination
           const startPoint = this.paginator.pageIndex * 5;
@@ -133,40 +134,40 @@ export class CheckListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(
-        data => (this.checkLists = new MatTableDataSource<CheckListDto>(data))
+        data => (this.loans = new MatTableDataSource<LoanDto>(data))
       );
   }
 
   ngOnInit() {
-    this.getCheckList();
+    this.getLoans();
   }
 
-  editCheckList(checkList: CheckListDto) {
-    const objIns = Utility.deepClone(checkList);
-    this.dialogRef = this.dialog.open(CheckListDialogComponent, {
+  editCheckList(loan: LoanDto) {
+    const objIns = Utility.deepClone(loan);
+    this.dialogRef = this.dialog.open(LoanDialogComponent, {
       data: objIns,  disableClose: true
     });
 
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.AllCheckList = null;
-        this.getCheckList();
+        this.AllLoans = null;
+        this.getLoans();
       }
     });
   }
   addInstition() {
-    this.dialogRef = this.dialog.open(CheckListDialogComponent, {
+    this.dialogRef = this.dialog.open(LoanDialogComponent, {
       data: null,  disableClose: true
     });
 
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.AllCheckList = null;
-        this.getCheckList();
+        this.AllLoans = null;
+        this.getLoans();
       }
     });
   }
   ngOnDestroy() {
-    sessionStorage.removeItem('AccountCheckList');
+    sessionStorage.removeItem('LoanAccountId');
   }
 }

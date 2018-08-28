@@ -1378,6 +1378,304 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     }
 }
 
+export interface ILoansClient {
+    create(loan: LoanForCreationDto): Observable<ServiceResponse>;
+    delete(id: string): Observable<ServiceResponse>;
+    update(loan: LoanForUpdateDto, id: string): Observable<ServiceResponse>;
+    getLoanDetail(id: string): Observable<ServiceResponseOfLoanDto>;
+    getLoanList(accountId: string): Observable<ServiceResponseOfListOfLoanDto>;
+}
+
+@Injectable()
+export class LoansClient extends BaseClient implements ILoansClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: (key: string, value: any) => any = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        super();
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+    }
+
+    create(loan: LoanForCreationDto): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/Loans";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(loan);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processCreate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    delete(id: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/Loans/delete?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("delete", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processDelete(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    update(loan: LoanForUpdateDto, id: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/Loans/update?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(loan);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("put", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processUpdate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    getLoanDetail(id: string): Observable<ServiceResponseOfLoanDto> {
+        let url_ = this.baseUrl + "/api/Loans/getloandetail?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetLoanDetail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLoanDetail(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfLoanDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfLoanDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetLoanDetail(response: HttpResponseBase): Observable<ServiceResponseOfLoanDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfLoanDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfLoanDto>(<any>null);
+    }
+
+    getLoanList(accountId: string): Observable<ServiceResponseOfListOfLoanDto> {
+        let url_ = this.baseUrl + "/api/Loans/getloanlist?";
+        if (accountId === undefined)
+            throw new Error("The parameter 'accountId' must be defined.");
+        else
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetLoanList(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLoanList(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfListOfLoanDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfListOfLoanDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetLoanList(response: HttpResponseBase): Observable<ServiceResponseOfListOfLoanDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfLoanDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfListOfLoanDto>(<any>null);
+    }
+}
+
 export interface IManageUserClient {
     inviteUser(model: InviteUserModel): Observable<ServiceResponse>;
     getRegisterdUsersByAccount(accountId: string): Observable<ServiceResponseOfListOfUserModel>;
@@ -2881,6 +3179,273 @@ export class ServiceResponseOfListOfInstitutionDto extends ServiceResponse imple
 
 export interface IServiceResponseOfListOfInstitutionDto extends IServiceResponse {
     data?: InstitutionDto[];
+}
+
+export class LoanForCreationDto implements ILoanForCreationDto {
+    loanNumber: string;
+    borrower: string;
+    accountManager: string;
+    propertyAddress: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    accountId?: string;
+
+    constructor(data?: ILoanForCreationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.loanNumber = data["loanNumber"];
+            this.borrower = data["borrower"];
+            this.accountManager = data["accountManager"];
+            this.propertyAddress = data["propertyAddress"];
+            this.city = data["city"];
+            this.state = data["state"];
+            this.zipCode = data["zipCode"];
+            this.accountId = data["accountId"];
+        }
+    }
+
+    static fromJS(data: any): LoanForCreationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoanForCreationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["loanNumber"] = this.loanNumber;
+        data["borrower"] = this.borrower;
+        data["accountManager"] = this.accountManager;
+        data["propertyAddress"] = this.propertyAddress;
+        data["city"] = this.city;
+        data["state"] = this.state;
+        data["zipCode"] = this.zipCode;
+        data["accountId"] = this.accountId;
+        return data; 
+    }
+}
+
+export interface ILoanForCreationDto {
+    loanNumber: string;
+    borrower: string;
+    accountManager: string;
+    propertyAddress: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    accountId?: string;
+}
+
+export class LoanForUpdateDto implements ILoanForUpdateDto {
+    loanNumber: string;
+    borrower: string;
+    accountManager: string;
+    propertyAddress: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    accountId?: string;
+
+    constructor(data?: ILoanForUpdateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.loanNumber = data["loanNumber"];
+            this.borrower = data["borrower"];
+            this.accountManager = data["accountManager"];
+            this.propertyAddress = data["propertyAddress"];
+            this.city = data["city"];
+            this.state = data["state"];
+            this.zipCode = data["zipCode"];
+            this.accountId = data["accountId"];
+        }
+    }
+
+    static fromJS(data: any): LoanForUpdateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoanForUpdateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["loanNumber"] = this.loanNumber;
+        data["borrower"] = this.borrower;
+        data["accountManager"] = this.accountManager;
+        data["propertyAddress"] = this.propertyAddress;
+        data["city"] = this.city;
+        data["state"] = this.state;
+        data["zipCode"] = this.zipCode;
+        data["accountId"] = this.accountId;
+        return data; 
+    }
+}
+
+export interface ILoanForUpdateDto {
+    loanNumber: string;
+    borrower: string;
+    accountManager: string;
+    propertyAddress: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    accountId?: string;
+}
+
+export class ServiceResponseOfLoanDto extends ServiceResponse implements IServiceResponseOfLoanDto {
+    data?: LoanDto;
+
+    constructor(data?: IServiceResponseOfLoanDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.data = data["data"] ? LoanDto.fromJS(data["data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfLoanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfLoanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfLoanDto extends IServiceResponse {
+    data?: LoanDto;
+}
+
+export class LoanDto extends BaseDto implements ILoanDto {
+    loanNumber: string;
+    borrower: string;
+    accountManager: string;
+    propertyAddress: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    accountId?: string;
+    accountName?: string;
+
+    constructor(data?: ILoanDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.loanNumber = data["loanNumber"];
+            this.borrower = data["borrower"];
+            this.accountManager = data["accountManager"];
+            this.propertyAddress = data["propertyAddress"];
+            this.city = data["city"];
+            this.state = data["state"];
+            this.zipCode = data["zipCode"];
+            this.accountId = data["accountId"];
+            this.accountName = data["accountName"];
+        }
+    }
+
+    static fromJS(data: any): LoanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["loanNumber"] = this.loanNumber;
+        data["borrower"] = this.borrower;
+        data["accountManager"] = this.accountManager;
+        data["propertyAddress"] = this.propertyAddress;
+        data["city"] = this.city;
+        data["state"] = this.state;
+        data["zipCode"] = this.zipCode;
+        data["accountId"] = this.accountId;
+        data["accountName"] = this.accountName;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ILoanDto extends IBaseDto {
+    loanNumber: string;
+    borrower: string;
+    accountManager: string;
+    propertyAddress: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    accountId?: string;
+    accountName?: string;
+}
+
+export class ServiceResponseOfListOfLoanDto extends ServiceResponse implements IServiceResponseOfListOfLoanDto {
+    data?: LoanDto[];
+
+    constructor(data?: IServiceResponseOfListOfLoanDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            if (data["data"] && data["data"].constructor === Array) {
+                this.data = [];
+                for (let item of data["data"])
+                    this.data.push(LoanDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfListOfLoanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfListOfLoanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.data && this.data.constructor === Array) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfListOfLoanDto extends IServiceResponse {
+    data?: LoanDto[];
 }
 
 export class InviteUserModel implements IInviteUserModel {

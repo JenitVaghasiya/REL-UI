@@ -124,7 +124,7 @@ import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.co
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
-import { AuthClient, AccountsClient, ManageUserClient, InstitutionClient, CheckListClient } from 'api/apiclient';
+import { AuthClient, AccountsClient, ManageUserClient, InstitutionClient, CheckListClient, LoansClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
@@ -147,6 +147,8 @@ import { InstitutionDialogComponent } from './pages/institutions/institution-dia
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
 import { CheckListComponent } from './pages/checklists/checklists.component';
 import { CheckListDialogComponent } from './pages/checklists/checklist-dialog/checklist-dialog.component';
+import { LoansComponent } from './pages/loans/loans.component';
+import { LoanDialogComponent } from './pages/loans/loan-dialog/loan-dialog.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -289,7 +291,9 @@ import { CheckListDialogComponent } from './pages/checklists/checklist-dialog/ch
     InstitutionDialogComponent,
     InstitutionsComponent,
     CheckListComponent,
-    CheckListDialogComponent
+    CheckListDialogComponent,
+    LoansComponent,
+    LoanDialogComponent
   ],
   entryComponents: [
     DialogResultComponent,
@@ -301,7 +305,8 @@ import { CheckListDialogComponent } from './pages/checklists/checklist-dialog/ch
     AccountDialogComponent,
     InstitutionDialogComponent,
     CheckListComponent,
-    CheckListDialogComponent
+    CheckListDialogComponent,
+    LoanDialogComponent
   ],
   bootstrap: [AppComponent],
   exports: [],
@@ -316,6 +321,7 @@ import { CheckListDialogComponent } from './pages/checklists/checklist-dialog/ch
     TokenService,
     InstitutionClient,
     CheckListClient,
+    LoansClient,
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

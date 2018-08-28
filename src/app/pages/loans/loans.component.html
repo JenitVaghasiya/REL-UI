@@ -1,0 +1,40 @@
+<card #loansDiv title="Manage Loans">
+    <button mat-raised-button color="accent" (click)="addInstition()">Add Loan</button>
+    <div *ngIf="isLoadingResults">
+      <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
+    </div>
+    <mat-table #table [dataSource]="checkLists" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef  disableClear> Name </mat-header-cell>
+          <!-- mat-sort-header -->
+          <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="accountname">
+          <mat-header-cell *matHeaderCellDef> Account Name </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.accountName}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="createdDate">
+          <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.createdDate | date:'MM/dd/yyyy h:mm a' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="modifiedDate">
+          <mat-header-cell *matHeaderCellDef> Modified Date </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy h:mm a'}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button matTooltip="Edit"  mat-icon-button (click)="editCheckList(row)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator [length]="resultsLength"  [pageIndex]="0"
+      [pageSize]="10"
+      [pageSizeOptions]="[ 10, 25, 50, 100]"></mat-paginator>
+
+</card>

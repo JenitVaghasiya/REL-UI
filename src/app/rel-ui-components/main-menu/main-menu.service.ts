@@ -95,6 +95,17 @@ export class MainMenuService {
         budge: '',
         budgeColor: ''
       });
+      MAINMENUITEMS.push({
+        title: 'Manage Loans',
+        icon: 'fa fa-list-alt',
+        active: false,
+        groupTitle: false,
+        sub: '',
+        routing: '/rel/loans',
+        externalLink: '',
+        budge: '',
+        budgeColor: ''
+      });
     }
 
     return Promise.resolve(MAINMENUITEMS);

@@ -167,4 +167,8 @@ export class AccountsComponent implements OnInit {
     sessionStorage.setItem('AccountCheckList', account.id);
     this.router.navigate(['/rel/checklists']);
   }
+  listLoans(account: AccountDto) {
+    sessionStorage.setItem('LoanAccountId', account.id);
+    this.router.navigate(['/rel/loans']);
+  }
 }

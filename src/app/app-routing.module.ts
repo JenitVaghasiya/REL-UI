@@ -71,6 +71,7 @@ import { AccountsComponent } from './pages/accounts/accounts.component';
 import { Page403Component } from './pages/extra-pages/page-403/page-403.component';
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
 import { CheckListComponent } from './pages/checklists/checklists.component';
+import { LoansComponent } from './pages/loans/loans.component';
 
 const defaultRoutes: Routes = [
   {
@@ -162,6 +163,14 @@ const defaultRoutes: Routes = [
   {
     path: 'checklists',
     component: CheckListComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['accountadmin', 'superadmin']
+    }
+  },
+  {
+    path: 'loans',
+    component: LoansComponent,
     canActivate: [AuthenticationGuard],
     data: {
       expectedRole: ['accountadmin', 'superadmin']

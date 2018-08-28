@@ -23,8 +23,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   signUpDiv: ViewContainerRef;
   public form: FormGroup;
   model = new AccountDto();
-  stateList = new Array<StateDto>();
-  iAgreed = false;
+  ciAgreed = false;
   accountId = '';
   isNewFromSuperAdmin = false;
   dialogRef = null;
