@@ -1,32 +1,18 @@
-<card #loanDiv [title]=" model.id ? 'Edit Loan' : 'Add Loan'" [align]="'center'">
+<card #investorDiv [title]=" model.id ? 'Edit Investor' : 'Add Investor'" [align]="'center'">
   <form (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <input matInput placeholder="Loan Number" [(ngModel)]="model.loanNumber" [formControl]="form.controls['loanNumber']">
-      <mat-error *ngIf="form.controls['loanNumber'].hasError('required') && form.controls['loanNumber'].touched">
-        You must include Loan Number
+      <input matInput placeholder="Name" [(ngModel)]="model.name" [formControl]="form.controls['name']">
+      <mat-error *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched">
+        You must include Name
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Borrower" [(ngModel)]="model.borrower" [formControl]="form.controls['borrower']">
-      <mat-error *ngIf="form.controls['borrower'].hasError('required') && form.controls['borrower'].touched">
-        You must include Borrower
+      <input matInput placeholder="Contact Name" [(ngModel)]="model.contactName" [formControl]="form.controls['contactName']">
+      <mat-error *ngIf="form.controls['contactName'].hasError('required') && form.controls['contactName'].touched">
+        You must include Contact Name
       </mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Account Manager" [(ngModel)]="model.accountManager" [formControl]="form.controls['accountManager']">
-      <mat-error *ngIf="form.controls['borrower'].hasError('required') && form.controls['accountManager'].touched">
-        You must include Account Manager
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Property Address" [(ngModel)]="model.propertyAddress" [formControl]="form.controls['propertyAddress']">
-      <mat-error *ngIf="form.controls['propertyAddress'].hasError('required') && form.controls['propertyAddress'].touched">
-        You must include Porperty Address
-      </mat-error>
-    </mat-form-field>
-
-
     <mat-form-field>
       <input matInput placeholder="City" [(ngModel)]="model.city" [formControl]="form.controls['city']">
       <mat-error *ngIf="form.controls['city'].hasError('required') && form.controls['city'].touched">
@@ -43,12 +29,12 @@
             please select State.
           </mat-error>
     </mat-form-field>
-    <mat-form-field>
+    <!-- <mat-form-field>
       <input matInput placeholder="ZipCode" [(ngModel)]="model.zipCode" [formControl]="form.controls['zipCode']">
       <mat-error *ngIf="form.controls['zipCode'].hasError('required') && form.controls['zipCode'].touched">
         You must include ZipCode
       </mat-error>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <button class="btn-margin-top" mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ !model.id ? 'Save' : 'Update' }}</button>
     <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>

@@ -106,6 +106,17 @@ export class MainMenuService {
         budge: '',
         budgeColor: ''
       });
+      MAINMENUITEMS.push({
+        title: 'Manage Investors',
+        icon: 'fa fa-list-alt',
+        active: false,
+        groupTitle: false,
+        sub: '',
+        routing: '/rel/investors',
+        externalLink: '',
+        budge: '',
+        budgeColor: ''
+      });
     }
 
     return Promise.resolve(MAINMENUITEMS);

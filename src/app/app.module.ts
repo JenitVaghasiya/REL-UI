@@ -124,7 +124,8 @@ import { PageLeafletMapComponent } from './pages/maps/leaflet-map/leaflet-map.co
 import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
-import { AuthClient, AccountsClient, ManageUserClient, InstitutionClient, CheckListClient, LoansClient } from 'api/apiclient';
+import { AuthClient, AccountsClient, ManageUserClient,
+  InstitutionClient, CheckListClient, LoansClient, InvestorClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
@@ -149,6 +150,8 @@ import { CheckListComponent } from './pages/checklists/checklists.component';
 import { CheckListDialogComponent } from './pages/checklists/checklist-dialog/checklist-dialog.component';
 import { LoansComponent } from './pages/loans/loans.component';
 import { LoanDialogComponent } from './pages/loans/loan-dialog/loan-dialog.component';
+import { InvestorDialogComponent } from './pages/investors/investor-dialog/investor-dialog.component';
+import { InvestorsComponent } from './pages/investors/investors.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -293,7 +296,9 @@ import { LoanDialogComponent } from './pages/loans/loan-dialog/loan-dialog.compo
     CheckListComponent,
     CheckListDialogComponent,
     LoansComponent,
-    LoanDialogComponent
+    LoanDialogComponent,
+    InvestorDialogComponent,
+    InvestorsComponent
   ],
   entryComponents: [
     DialogResultComponent,
@@ -306,7 +311,8 @@ import { LoanDialogComponent } from './pages/loans/loan-dialog/loan-dialog.compo
     InstitutionDialogComponent,
     CheckListComponent,
     CheckListDialogComponent,
-    LoanDialogComponent
+    LoanDialogComponent,
+    InvestorDialogComponent
   ],
   bootstrap: [AppComponent],
   exports: [],
@@ -316,6 +322,7 @@ import { LoanDialogComponent } from './pages/loans/loan-dialog/loan-dialog.compo
     AuthClient,
     AccountsClient,
     ManageUserClient,
+    InvestorClient,
     AuthenticationGuard,
     LoaderService,
     TokenService,

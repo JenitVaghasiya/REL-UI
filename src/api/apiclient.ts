@@ -1378,6 +1378,304 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     }
 }
 
+export interface IInvestorClient {
+    create(investor: InvestorForCreationDto): Observable<ServiceResponse>;
+    delete(id: string): Observable<ServiceResponse>;
+    update(investor: InvestorForUpdateDto, id: string): Observable<ServiceResponse>;
+    getInvestorDetail(id: string): Observable<ServiceResponseOfInvestorDto>;
+    getInvestorList(accountId: string): Observable<ServiceResponseOfListOfInvestorDto>;
+}
+
+@Injectable()
+export class InvestorClient extends BaseClient implements IInvestorClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: (key: string, value: any) => any = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        super();
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+    }
+
+    create(investor: InvestorForCreationDto): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/Investor";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(investor);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processCreate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    delete(id: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/Investor/delete?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("delete", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processDelete(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    update(investor: InvestorForUpdateDto, id: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/Investor/update?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(investor);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("put", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processUpdate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    getInvestorDetail(id: string): Observable<ServiceResponseOfInvestorDto> {
+        let url_ = this.baseUrl + "/api/Investor/getinvestordetail?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetInvestorDetail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInvestorDetail(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfInvestorDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfInvestorDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetInvestorDetail(response: HttpResponseBase): Observable<ServiceResponseOfInvestorDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfInvestorDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfInvestorDto>(<any>null);
+    }
+
+    getInvestorList(accountId: string): Observable<ServiceResponseOfListOfInvestorDto> {
+        let url_ = this.baseUrl + "/api/Investor/getinvestorlist?";
+        if (accountId === undefined)
+            throw new Error("The parameter 'accountId' must be defined.");
+        else
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetInvestorList(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInvestorList(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfListOfInvestorDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfListOfInvestorDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetInvestorList(response: HttpResponseBase): Observable<ServiceResponseOfListOfInvestorDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfInvestorDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfListOfInvestorDto>(<any>null);
+    }
+}
+
 export interface ILoansClient {
     create(loan: LoanForCreationDto): Observable<ServiceResponse>;
     delete(id: string): Observable<ServiceResponse>;
@@ -3179,6 +3477,241 @@ export class ServiceResponseOfListOfInstitutionDto extends ServiceResponse imple
 
 export interface IServiceResponseOfListOfInstitutionDto extends IServiceResponse {
     data?: InstitutionDto[];
+}
+
+export class InvestorForCreationDto implements IInvestorForCreationDto {
+    name: string;
+    contactName: string;
+    city: string;
+    state: string;
+    accountId?: string;
+
+    constructor(data?: IInvestorForCreationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.contactName = data["contactName"];
+            this.city = data["city"];
+            this.state = data["state"];
+            this.accountId = data["accountId"];
+        }
+    }
+
+    static fromJS(data: any): InvestorForCreationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InvestorForCreationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["contactName"] = this.contactName;
+        data["city"] = this.city;
+        data["state"] = this.state;
+        data["accountId"] = this.accountId;
+        return data; 
+    }
+}
+
+export interface IInvestorForCreationDto {
+    name: string;
+    contactName: string;
+    city: string;
+    state: string;
+    accountId?: string;
+}
+
+export class InvestorForUpdateDto implements IInvestorForUpdateDto {
+    name: string;
+    contactName: string;
+    city: string;
+    state: string;
+    accountId?: string;
+
+    constructor(data?: IInvestorForUpdateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.contactName = data["contactName"];
+            this.city = data["city"];
+            this.state = data["state"];
+            this.accountId = data["accountId"];
+        }
+    }
+
+    static fromJS(data: any): InvestorForUpdateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InvestorForUpdateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["contactName"] = this.contactName;
+        data["city"] = this.city;
+        data["state"] = this.state;
+        data["accountId"] = this.accountId;
+        return data; 
+    }
+}
+
+export interface IInvestorForUpdateDto {
+    name: string;
+    contactName: string;
+    city: string;
+    state: string;
+    accountId?: string;
+}
+
+export class ServiceResponseOfInvestorDto extends ServiceResponse implements IServiceResponseOfInvestorDto {
+    data?: InvestorDto;
+
+    constructor(data?: IServiceResponseOfInvestorDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.data = data["data"] ? InvestorDto.fromJS(data["data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfInvestorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfInvestorDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfInvestorDto extends IServiceResponse {
+    data?: InvestorDto;
+}
+
+export class InvestorDto extends BaseDto implements IInvestorDto {
+    name: string;
+    contactName: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    accountId?: string;
+    accountName?: string;
+
+    constructor(data?: IInvestorDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.name = data["name"];
+            this.contactName = data["contactName"];
+            this.city = data["city"];
+            this.state = data["state"];
+            this.zipCode = data["zipCode"];
+            this.accountId = data["accountId"];
+            this.accountName = data["accountName"];
+        }
+    }
+
+    static fromJS(data: any): InvestorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InvestorDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["contactName"] = this.contactName;
+        data["city"] = this.city;
+        data["state"] = this.state;
+        data["zipCode"] = this.zipCode;
+        data["accountId"] = this.accountId;
+        data["accountName"] = this.accountName;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IInvestorDto extends IBaseDto {
+    name: string;
+    contactName: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    accountId?: string;
+    accountName?: string;
+}
+
+export class ServiceResponseOfListOfInvestorDto extends ServiceResponse implements IServiceResponseOfListOfInvestorDto {
+    data?: InvestorDto[];
+
+    constructor(data?: IServiceResponseOfListOfInvestorDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            if (data["data"] && data["data"].constructor === Array) {
+                this.data = [];
+                for (let item of data["data"])
+                    this.data.push(InvestorDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfListOfInvestorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfListOfInvestorDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.data && this.data.constructor === Array) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfListOfInvestorDto extends IServiceResponse {
+    data?: InvestorDto[];
 }
 
 export class LoanForCreationDto implements ILoanForCreationDto {

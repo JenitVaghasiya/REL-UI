@@ -72,6 +72,7 @@ import { Page403Component } from './pages/extra-pages/page-403/page-403.componen
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
 import { CheckListComponent } from './pages/checklists/checklists.component';
 import { LoansComponent } from './pages/loans/loans.component';
+import { InvestorsComponent } from './pages/investors/investors.component';
 
 const defaultRoutes: Routes = [
   {
@@ -171,6 +172,14 @@ const defaultRoutes: Routes = [
   {
     path: 'loans',
     component: LoansComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['accountadmin', 'superadmin']
+    }
+  },
+  {
+    path: 'investors',
+    component: InvestorsComponent,
     canActivate: [AuthenticationGuard],
     data: {
       expectedRole: ['accountadmin', 'superadmin']
