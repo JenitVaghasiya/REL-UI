@@ -17,7 +17,6 @@ import {
 import {
   LoanDto,
   ServiceResponseOfListOfLoanDto,
-  CheckListClient,
   LoansClient
 } from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
@@ -48,7 +47,10 @@ export class LoansComponent implements OnInit, OnDestroy {
 
   pageTitle = 'Loans Management';
   displayedColumns: string[] = [
-    'name',
+    'loannumber',
+    'borrower',
+    'accountManager',
+    'propertyAddress',
     'accountname',
     'createdDate',
     'modifiedDate',
@@ -83,8 +85,8 @@ export class LoansComponent implements OnInit, OnDestroy {
     const tokenDetail = this.tokenService.getTokenDetails();
     const roles = tokenDetail ? tokenDetail.role : null;
     let accountId = '';
-    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountCheckList')) {
-      accountId = sessionStorage.getItem('AccountCheckList');
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('LoanAccountId')) {
+      accountId = sessionStorage.getItem('LoanAccountId');
     } else {
       accountId = this.oAuthService.getAccountId();
     }

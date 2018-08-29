@@ -33,18 +33,28 @@
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <button color="primary" mat-icon-button matTooltip="Edit Account" (click)="editAccount(row)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button color="warn" mat-icon-button matTooltip="List User" (click)="listUsers(row)">
-          <mat-icon>list</mat-icon>
-        </button>
-        <button color="warn" mat-icon-button matTooltip="List CheckList" (click)="listCheckList(row)">
-          <mat-icon>playlist_add_check</mat-icon>
-        </button>
-        <button color="warn" mat-icon-button matTooltip="List Loans" (click)="listLoans(row)">
-          <mat-icon>playlist_add_check</mat-icon>
-        </button>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button color="primary" mat-menu-item (click)="editAccount(row)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit Account</span>
+                </button>
+                  <button color="warn" mat-menu-item  (click)="listUsers(row)">
+                    <mat-icon>list</mat-icon>
+                    <span>Users</span>
+                  </button>
+                  <button color="warn" mat-menu-item  (click)="listCheckList(row)">
+                    <mat-icon>playlist_add_check</mat-icon>
+                    <span>CheckLists</span>
+                  </button>
+                  <button color="warn" mat-menu-item  (click)="listLoans(row)">
+                    <mat-icon>playlist_add_check</mat-icon>
+                    <span>Loans</span>
+                  </button>
+            </mat-menu>
+
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

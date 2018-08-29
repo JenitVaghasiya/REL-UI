@@ -5,10 +5,25 @@
     </div>
     <mat-table #table [dataSource]="loans" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
 
-        <ng-container matColumnDef="name">
-          <mat-header-cell *matHeaderCellDef  disableClear> Name </mat-header-cell>
+        <ng-container matColumnDef="loannumber">
+          <mat-header-cell *matHeaderCellDef  disableClear> Loan Number </mat-header-cell>
           <!-- mat-sort-header -->
-          <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+          <mat-cell *matCellDef="let row"> {{row.loanNumber}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="borrower">
+          <mat-header-cell *matHeaderCellDef  disableClear> Borrower </mat-header-cell>
+          <!-- mat-sort-header -->
+          <mat-cell *matCellDef="let row"> {{row.borrower}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="accountManager">
+          <mat-header-cell *matHeaderCellDef  disableClear> Account Manager </mat-header-cell>
+          <!-- mat-sort-header -->
+          <mat-cell *matCellDef="let row"> {{row.accountManager}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="propertyAddress">
+          <mat-header-cell *matHeaderCellDef  disableClear> Property Address </mat-header-cell>
+          <!-- mat-sort-header -->
+          <mat-cell *matCellDef="let row"> {{row.propertyAddress}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="accountname">
           <mat-header-cell *matHeaderCellDef> Account Name </mat-header-cell>
