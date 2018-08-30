@@ -101,11 +101,11 @@ export class InvestorsComponent implements OnInit, OnDestroy {
           if (this.txtCommonSearch && this.txtCommonSearch.length > 0) {
             const filterResultl = _.clone(this.AllInvestors);
             filterResultl.data = filterResultl.data.filter(
-              x => x.accountName.indexOf(this.txtCommonSearch) >= 0 ||
-              x.city.indexOf(this.txtCommonSearch) >= 0 ||
-              x.contactName.indexOf(this.txtCommonSearch) >= 0 ||
-              x.name.indexOf(this.txtCommonSearch) >= 0 ||
-              x.state.indexOf(this.txtCommonSearch) >= 0 );
+              x => x.accountName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.city.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.contactName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.name.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.state.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 );
               return Observable.of<ServiceResponseOfListOfInvestorDto>(filterResultl);
           } else {
             return this.AllInvestors ? Observable.of<ServiceResponseOfListOfInvestorDto>(this.AllInvestors)

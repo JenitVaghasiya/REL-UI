@@ -103,13 +103,13 @@ export class LoansComponent implements OnInit, OnDestroy {
           if (this.txtCommonSearch && this.txtCommonSearch.length > 0) {
             const filterResultl = _.clone(this.AllLoans);
             filterResultl.data = filterResultl.data.filter(
-              x => x.accountName.indexOf(this.txtCommonSearch) >= 0 ||
-              x.city.indexOf(this.txtCommonSearch) >= 0 ||
-              x.accountManager.indexOf(this.txtCommonSearch) >= 0 ||
-              x.borrower.indexOf(this.txtCommonSearch) >= 0 ||
-              x.loanNumber.indexOf(this.txtCommonSearch) >= 0 ||
-              x.propertyAddress.indexOf(this.txtCommonSearch) >= 0 ||
-              x.state.indexOf(this.txtCommonSearch) >= 0 );
+              x => x.accountName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.city.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.accountManager.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.borrower.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.loanNumber.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.propertyAddress.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.state.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 );
               return Observable.of<ServiceResponseOfListOfLoanDto>(filterResultl);
           } else {
           return this.AllLoans
