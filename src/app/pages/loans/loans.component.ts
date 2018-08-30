@@ -35,6 +35,7 @@ import { UserInfoModel } from 'models/custom.model';
 import { ToastrService } from 'ngx-toastr';
 import Utility from 'utility/utility';
 import { LoanDialogComponent } from './loan-dialog/loan-dialog.component';
+import * as _ from 'underscore';
 
 @Component({
   selector: 'app-loans',
@@ -44,7 +45,7 @@ import { LoanDialogComponent } from './loan-dialog/loan-dialog.component';
 export class LoansComponent implements OnInit, OnDestroy {
   @ViewChild('loansDiv', { read: ViewContainerRef })
   loansDiv: ViewContainerRef;
-
+  txtCommonSearch = '';
   pageTitle = 'Loans Management';
   displayedColumns: string[] = [
     'loannumber',
@@ -98,11 +99,25 @@ export class LoansComponent implements OnInit, OnDestroy {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
+          // common filter
+          if (this.txtCommonSearch && this.txtCommonSearch.length > 0) {
+            const filterResultl = _.clone(this.AllLoans);
+            filterResultl.data = filterResultl.data.filter(
+              x => x.accountName.indexOf(this.txtCommonSearch) >= 0 ||
+              x.city.indexOf(this.txtCommonSearch) >= 0 ||
+              x.accountManager.indexOf(this.txtCommonSearch) >= 0 ||
+              x.borrower.indexOf(this.txtCommonSearch) >= 0 ||
+              x.loanNumber.indexOf(this.txtCommonSearch) >= 0 ||
+              x.propertyAddress.indexOf(this.txtCommonSearch) >= 0 ||
+              x.state.indexOf(this.txtCommonSearch) >= 0 );
+              return Observable.of<ServiceResponseOfListOfLoanDto>(filterResultl);
+          } else {
           return this.AllLoans
           ? Observable.of<ServiceResponseOfListOfLoanDto>(
               this.AllLoans
             )
           : this.loansClient.getLoanList(accountId);
+          }
         }),
         map(data => {
           if (!data.successful) {

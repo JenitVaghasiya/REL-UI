@@ -35,7 +35,7 @@ import { UserInfoModel } from 'models/custom.model';
 import { ToastrService } from 'ngx-toastr';
 import Utility from 'utility/utility';
 import { InvestorDialogComponent } from './investor-dialog/investor-dialog.component';
-
+import * as _ from 'underscore';
 @Component({
   selector: 'app-investors',
   templateUrl: './investors.component.html',
@@ -44,7 +44,7 @@ import { InvestorDialogComponent } from './investor-dialog/investor-dialog.compo
 export class InvestorsComponent implements OnInit, OnDestroy {
   @ViewChild('investorsDiv', { read: ViewContainerRef })
   investorsDiv: ViewContainerRef;
-
+  txtCommonSearch = '';
   pageTitle = 'Investors Management';
   displayedColumns: string[] = [
     'name',
@@ -97,11 +97,20 @@ export class InvestorsComponent implements OnInit, OnDestroy {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.AllInvestors
-          ? Observable.of<ServiceResponseOfListOfInvestorDto>(
-              this.AllInvestors
-            )
+          // common filter
+          if (this.txtCommonSearch && this.txtCommonSearch.length > 0) {
+            const filterResultl = _.clone(this.AllInvestors);
+            filterResultl.data = filterResultl.data.filter(
+              x => x.accountName.indexOf(this.txtCommonSearch) >= 0 ||
+              x.city.indexOf(this.txtCommonSearch) >= 0 ||
+              x.contactName.indexOf(this.txtCommonSearch) >= 0 ||
+              x.name.indexOf(this.txtCommonSearch) >= 0 ||
+              x.state.indexOf(this.txtCommonSearch) >= 0 );
+              return Observable.of<ServiceResponseOfListOfInvestorDto>(filterResultl);
+          } else {
+            return this.AllInvestors ? Observable.of<ServiceResponseOfListOfInvestorDto>(this.AllInvestors)
           : this.investorClient.getInvestorList(accountId);
+          }
         }),
         map(data => {
           if (!data.successful) {
