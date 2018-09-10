@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   AccountDto,
   AspNetRoleDto,
-  LoansClient,
+  LoanClient,
   LoanDto,
   AccountsClient,
   StateDto
@@ -37,7 +37,7 @@ export class LoanDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<LoanDialogComponent>,
     private fb: FormBuilder,
-    private loansClient: LoansClient,
+    private loansClient: LoanClient,
     @Inject(MAT_DIALOG_DATA) public data: LoanDto,
     private toastrService: ToastrService,
     private loaderService: LoaderService,
@@ -75,6 +75,9 @@ export class LoanDialogComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       loanNumber: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
+      loanType: [null, Validators.compose([Validators.required, Validators.maxLength(100)])],
+      broker: [null, Validators.compose([Validators.required, Validators.maxLength(100)])],
+      branchId: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
       borrower: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
       accountManager: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
       propertyAddress: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],

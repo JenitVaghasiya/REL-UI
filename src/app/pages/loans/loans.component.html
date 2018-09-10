@@ -16,18 +16,28 @@
           <!-- mat-sort-header -->
           <mat-cell *matCellDef="let row"> {{row.loanNumber}} </mat-cell>
         </ng-container>
+        <ng-container matColumnDef="loanType">
+            <mat-header-cell *matHeaderCellDef  disableClear> Loan Type </mat-header-cell>
+            <!-- mat-sort-header -->
+            <mat-cell *matCellDef="let row"> {{row.loanType}} </mat-cell>
+          </ng-container>
         <ng-container matColumnDef="borrower">
           <mat-header-cell *matHeaderCellDef  disableClear> Borrower </mat-header-cell>
           <!-- mat-sort-header -->
           <mat-cell *matCellDef="let row"> {{row.borrower}} </mat-cell>
         </ng-container>
+        <ng-container matColumnDef="broker">
+            <mat-header-cell *matHeaderCellDef  disableClear> Broker </mat-header-cell>
+            <!-- mat-sort-header -->
+            <mat-cell *matCellDef="let row"> {{row.broker}} </mat-cell>
+          </ng-container>
         <ng-container matColumnDef="accountManager">
           <mat-header-cell *matHeaderCellDef  disableClear> Account Manager </mat-header-cell>
           <!-- mat-sort-header -->
           <mat-cell *matCellDef="let row"> {{row.accountManager}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="propertyAddress">
-          <mat-header-cell *matHeaderCellDef  disableClear> Property Address </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef  disableClear>Address </mat-header-cell>
           <!-- mat-sort-header -->
           <mat-cell *matCellDef="let row"> {{row.propertyAddress}} </mat-cell>
         </ng-container>
@@ -37,11 +47,11 @@
         </ng-container>
         <ng-container matColumnDef="createdDate">
           <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.createdDate | date:'MM/dd/yyyy h:mm a' }} </mat-cell>
+          <mat-cell *matCellDef="let row"> {{row.createdDate | date:'MM/dd/yyyy' }} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="modifiedDate">
           <mat-header-cell *matHeaderCellDef> Modified Date </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy h:mm a'}} </mat-cell>
+          <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy'}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>

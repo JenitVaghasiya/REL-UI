@@ -14,6 +14,18 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field>
+      <input matInput placeholder="Contact Phone" [(ngModel)]="model.contactPhone" [formControl]="form.controls['contactPhone']">
+      <mat-error *ngIf="form.controls['contactPhone'].hasError('required') && form.controls['contactPhone'].touched">
+        You must include Contact Phone
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Address" [(ngModel)]="model.address" [formControl]="form.controls['address']">
+      <mat-error *ngIf="form.controls['city'].hasError('address') && form.controls['address'].touched">
+        You must include Address
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
       <input matInput placeholder="City" [(ngModel)]="model.city" [formControl]="form.controls['city']">
       <mat-error *ngIf="form.controls['city'].hasError('required') && form.controls['city'].touched">
         You must include City
@@ -29,12 +41,12 @@
             please select State.
           </mat-error>
     </mat-form-field>
-    <!-- <mat-form-field>
+    <mat-form-field>
       <input matInput placeholder="ZipCode" [(ngModel)]="model.zipCode" [formControl]="form.controls['zipCode']">
       <mat-error *ngIf="form.controls['zipCode'].hasError('required') && form.controls['zipCode'].touched">
         You must include ZipCode
       </mat-error>
-    </mat-form-field> -->
+    </mat-form-field>
 
     <button class="btn-margin-top" mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ !model.id ? 'Save' : 'Update' }}</button>
     <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>

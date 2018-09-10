@@ -1,40 +1,90 @@
 <card #loanDiv [title]=" model.id ? 'Edit Loan' : 'Add Loan'" [align]="'center'">
   <form (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <input matInput placeholder="Loan Number" [(ngModel)]="model.loanNumber" [formControl]="form.controls['loanNumber']">
-      <mat-error *ngIf="form.controls['loanNumber'].hasError('required') && form.controls['loanNumber'].touched">
-        You must include Loan Number
-      </mat-error>
-    </mat-form-field>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Loan Number" [(ngModel)]="model.loanNumber" [formControl]="form.controls['loanNumber']">
+          <mat-error *ngIf="form.controls['loanNumber'].hasError('required') && form.controls['loanNumber'].touched">
+            You must include Loan Number
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Loan Type" [(ngModel)]="model.loanType" [formControl]="form.controls['loanType']">
+          <mat-error *ngIf="form.controls['loanType'].hasError('required') && form.controls['loanType'].touched">
+            You must include Loan Type
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
 
-    <mat-form-field>
-      <input matInput placeholder="Borrower" [(ngModel)]="model.borrower" [formControl]="form.controls['borrower']">
-      <mat-error *ngIf="form.controls['borrower'].hasError('required') && form.controls['borrower'].touched">
-        You must include Borrower
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Account Manager" [(ngModel)]="model.accountManager" [formControl]="form.controls['accountManager']">
-      <mat-error *ngIf="form.controls['borrower'].hasError('required') && form.controls['accountManager'].touched">
-        You must include Account Manager
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Property Address" [(ngModel)]="model.propertyAddress" [formControl]="form.controls['propertyAddress']">
-      <mat-error *ngIf="form.controls['propertyAddress'].hasError('required') && form.controls['propertyAddress'].touched">
-        You must include Porperty Address
-      </mat-error>
-    </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Borrower" [(ngModel)]="model.borrower" [formControl]="form.controls['borrower']">
+          <mat-error *ngIf="form.controls['borrower'].hasError('required') && form.controls['borrower'].touched">
+            You must include Borrower
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+
+        <mat-form-field>
+          <input matInput placeholder="Broker" [(ngModel)]="model.broker" [formControl]="form.controls['broker']">
+          <mat-error *ngIf="form.controls['broker'].hasError('required') && form.controls['broker'].touched">
+            You must include Broker
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+
+        <mat-form-field>
+          <input matInput placeholder="Branch Id" [(ngModel)]="model.branchId" [formControl]="form.controls['branchId']">
+          <mat-error *ngIf="form.controls['branchId'].hasError('required') && form.controls['branchId'].touched">
+            You must include Branch Id
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+
+        <mat-form-field>
+          <input matInput placeholder="Account Manager" [(ngModel)]="model.accountManager" [formControl]="form.controls['accountManager']">
+          <mat-error *ngIf="form.controls['accountManager'].hasError('required') && form.controls['accountManager'].touched">
+            You must include Account Manager
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+
+        <mat-form-field>
+
+          <input matInput placeholder="Property Address" [(ngModel)]="model.propertyAddress" [formControl]="form.controls['propertyAddress']">
+          <mat-error *ngIf="form.controls['propertyAddress'].hasError('required') && form.controls['propertyAddress'].touched">
+            You must include Porperty Address
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
 
 
-    <mat-form-field>
-      <input matInput placeholder="City" [(ngModel)]="model.city" [formControl]="form.controls['city']">
-      <mat-error *ngIf="form.controls['city'].hasError('required') && form.controls['city'].touched">
-        You must include City
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-select placeholder="State" name="state" [(ngModel)]="model.state" [formControl]="form.controls['state']">
+        <mat-form-field>
+          <input matInput placeholder="City" [(ngModel)]="model.propertyCity" [formControl]="form.controls['city']">
+          <mat-error *ngIf="form.controls['city'].hasError('required') && form.controls['city'].touched">
+            You must include City
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+
+        <mat-form-field>
+          <mat-select placeholder="State" name="state" [(ngModel)]="model.propertyState" [formControl]="form.controls['state']">
             <mat-option *ngFor="let state of stateList" [value]="state.code">
               {{ state.name }}
             </mat-option>
@@ -42,15 +92,20 @@
           <mat-error *ngIf="form.controls['state'].hasError('required') && form.controls['state'].touched">
             please select State.
           </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="ZipCode" [(ngModel)]="model.zipCode" [formControl]="form.controls['zipCode']">
-      <mat-error *ngIf="form.controls['zipCode'].hasError('required') && form.controls['zipCode'].touched">
-        You must include ZipCode
-      </mat-error>
-    </mat-form-field>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
 
-    <button class="btn-margin-top" mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ !model.id ? 'Save' : 'Update' }}</button>
+        <mat-form-field>
+          <input matInput placeholder="ZipCode" [(ngModel)]="model.propertyZipCode" [formControl]="form.controls['zipCode']">
+          <mat-error *ngIf="form.controls['zipCode'].hasError('required') && form.controls['zipCode'].touched">
+            You must include ZipCode
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <button class="btn-margin-top" mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{
+      !model.id ? 'Save' : 'Update' }}</button>
     <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>
 
   </form>

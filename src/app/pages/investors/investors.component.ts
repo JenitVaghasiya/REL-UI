@@ -49,6 +49,8 @@ export class InvestorsComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'name',
     'contactName',
+    'contactPhone',
+    'address',
     'city',
     'accountname',
     'createdDate',
@@ -104,6 +106,8 @@ export class InvestorsComponent implements OnInit, OnDestroy {
               x => x.accountName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.city.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.contactName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.contactPhone.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.address.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.name.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.state.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 );
               return Observable.of<ServiceResponseOfListOfInvestorDto>(filterResultl);

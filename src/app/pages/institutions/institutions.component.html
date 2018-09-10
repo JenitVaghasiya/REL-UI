@@ -22,11 +22,11 @@
         </ng-container>
         <ng-container matColumnDef="createdDate">
           <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.createdDate | date:'MM/dd/yyyy h:mm a' }} </mat-cell>
+          <mat-cell *matCellDef="let row"> {{row.createdDate | date:'MM/dd/yyyy' }} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="modifiedDate">
           <mat-header-cell *matHeaderCellDef> Modified Date </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy h:mm a'}} </mat-cell>
+          <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="action">

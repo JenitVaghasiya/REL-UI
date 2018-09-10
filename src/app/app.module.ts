@@ -125,7 +125,7 @@ import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
 import { AuthClient, AccountsClient, ManageUserClient,
-  InstitutionClient, CheckListClient, LoansClient, InvestorClient } from 'api/apiclient';
+  InstitutionClient, CheckListClient, LoanClient, InvestorClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
@@ -328,7 +328,7 @@ import { InvestorsComponent } from './pages/investors/investors.component';
     TokenService,
     InstitutionClient,
     CheckListClient,
-    LoansClient,
+    LoanClient,
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

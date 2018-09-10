@@ -76,9 +76,11 @@ export class InvestorDialogComponent implements OnInit {
     this.form = this.fb.group({
       name: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
       contactName: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
+      contactPhone: [null, Validators.compose([Validators.required, Validators.maxLength(20)])],
       city: [null, Validators.compose([Validators.required, Validators.maxLength(30)])],
       state: [null, Validators.compose([Validators.required, Validators.maxLength(2)])],
-      // zipCode: [null, Validators.compose([Validators.required, Validators.maxLength(10)])],
+      zipCode: [null, Validators.compose([Validators.required, Validators.maxLength(10)])],
+      address: [null, Validators.compose([Validators.required, Validators.maxLength(100)])],
     });
 
 

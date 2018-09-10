@@ -1,0 +1,49 @@
+@import '../../../assets/sass/variable';
+
+.my-class {
+  color: white;
+  background-color: red;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: relative;
+  overflow: visible !important;
+  box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
+  -o-box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.5);
+}
+.dropdown-menu:before {
+  right: 0;
+  bottom: 100%;
+  position: absolute;
+  border: solid transparent;
+  pointer-events: none;
+}
+.dropdown-menu:before, .dropdown-menu:after {
+  content: " ";
+  height: 0;
+  width: 0;
+}
+.dropdown-menu:after {
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+  position: absolute;
+  margin-left: 0;
+  box-sizing: border-box;
+  border: 6px solid #000;
+  border-color: transparent transparent #fff #fff;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+  box-shadow: -2px 2px 3px -1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: -2px 2px 3px -1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: -2px 2px 3px -1px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: -2px 2px 3px -1px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: -2px 2px 3px -1px rgba(0, 0, 0, 0.1);
+}

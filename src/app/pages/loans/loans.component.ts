@@ -17,7 +17,7 @@ import {
 import {
   LoanDto,
   ServiceResponseOfListOfLoanDto,
-  LoansClient
+  LoanClient
 } from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
 import { LoaderService } from '../../loader/loader.service';
@@ -49,7 +49,9 @@ export class LoansComponent implements OnInit, OnDestroy {
   pageTitle = 'Loans Management';
   displayedColumns: string[] = [
     'loannumber',
+    'loanType',
     'borrower',
+    'broker',
     'accountManager',
     'propertyAddress',
     'accountname',
@@ -73,7 +75,7 @@ export class LoansComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
-    public loansClient: LoansClient,
+    public loansClient: LoanClient,
     public oAuthService: OAuthService,
     public loaderService: LoaderService,
     public tokenService: TokenService,
@@ -104,12 +106,14 @@ export class LoansComponent implements OnInit, OnDestroy {
             const filterResultl = _.clone(this.AllLoans);
             filterResultl.data = filterResultl.data.filter(
               x => x.accountName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
-              x.city.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.propertyCity.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.accountManager.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.borrower.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.loanNumber.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.loanType.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x.broker.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.propertyAddress.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
-              x.state.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 );
+              x.propertyState.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 );
               return Observable.of<ServiceResponseOfListOfLoanDto>(filterResultl);
           } else {
           return this.AllLoans

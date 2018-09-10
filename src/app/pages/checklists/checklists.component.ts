@@ -51,6 +51,7 @@ export class CheckListComponent implements OnInit, OnDestroy {
     'accountname',
     'createdDate',
     'modifiedDate',
+    // 'status',
     'action'
   ];
   checkLists = new MatTableDataSource<CheckListDto>([]);
@@ -123,6 +124,9 @@ export class CheckListComponent implements OnInit, OnDestroy {
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
+          // finalForDisplay.forEach(item => {
+          //   item.status = new StatusModel();
+          // });
           return finalForDisplay;
         }),
         catchError(() => {
@@ -166,6 +170,9 @@ export class CheckListComponent implements OnInit, OnDestroy {
       }
     });
   }
+  // changeStatus(row: CheckListDto) {
+
+  // }
   ngOnDestroy() {
     sessionStorage.removeItem('AccountCheckList');
   }
