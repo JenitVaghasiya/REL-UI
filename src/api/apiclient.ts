@@ -95,7 +95,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -118,8 +118,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processCreate(response: HttpResponseBase): Observable<ServiceResponseOfString> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -143,14 +143,14 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -173,8 +173,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processGetAccount(response: HttpResponseBase): Observable<ServiceResponseOfAccountDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -201,7 +201,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -224,8 +224,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processGetAccounts(response: HttpResponseBase): Observable<ServiceResponseOfListOfAccountDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -249,14 +249,14 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -279,8 +279,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -304,7 +304,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(account);
@@ -314,7 +314,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -337,8 +337,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -365,7 +365,7 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -388,8 +388,8 @@ export class AccountsClient extends BaseClient implements IAccountsClient {
 
     protected processGetStateList(response: HttpResponseBase): Observable<ServiceResponseOfListOfStateDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -439,7 +439,7 @@ export class AuthClient extends BaseClient implements IAuthClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -462,8 +462,8 @@ export class AuthClient extends BaseClient implements IAuthClient {
 
     protected processLogin(response: HttpResponseBase): Observable<ServiceResponseOfProfileViewModel> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -493,7 +493,7 @@ export class AuthClient extends BaseClient implements IAuthClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -516,8 +516,8 @@ export class AuthClient extends BaseClient implements IAuthClient {
 
     protected processRegister(response: HttpResponseBase): Observable<ServiceResponseOfProfileViewModel> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -541,14 +541,14 @@ export class AuthClient extends BaseClient implements IAuthClient {
         if (email === undefined)
             throw new Error("The parameter 'email' must be defined.");
         else
-            url_ += "email=" + encodeURIComponent("" + email) + "&";
+            url_ += "email=" + encodeURIComponent("" + email) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -571,8 +571,8 @@ export class AuthClient extends BaseClient implements IAuthClient {
 
     protected processForgotPassword(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -596,20 +596,20 @@ export class AuthClient extends BaseClient implements IAuthClient {
         if (password === undefined)
             throw new Error("The parameter 'password' must be defined.");
         else
-            url_ += "password=" + encodeURIComponent("" + password) + "&";
+            url_ += "password=" + encodeURIComponent("" + password) + "&"; 
         if (confirmPassword !== undefined)
-            url_ += "confirmPassword=" + encodeURIComponent("" + confirmPassword) + "&";
+            url_ += "confirmPassword=" + encodeURIComponent("" + confirmPassword) + "&"; 
         if (code !== undefined)
-            url_ += "code=" + encodeURIComponent("" + code) + "&";
+            url_ += "code=" + encodeURIComponent("" + code) + "&"; 
         if (userId !== undefined)
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -632,8 +632,8 @@ export class AuthClient extends BaseClient implements IAuthClient {
 
     protected processResetPassword(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -684,7 +684,7 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -707,8 +707,8 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 
     protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -732,14 +732,14 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -762,8 +762,8 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 
     protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -787,7 +787,7 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(checkList);
@@ -797,7 +797,7 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -820,8 +820,8 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 
     protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -845,14 +845,14 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -875,8 +875,8 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 
     protected processGetCheckList(response: HttpResponseBase): Observable<ServiceResponseOfCheckListDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -900,14 +900,14 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
         if (accountId === undefined)
             throw new Error("The parameter 'accountId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&";
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -930,8 +930,8 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 
     protected processGetListOfCheckList(response: HttpResponseBase): Observable<ServiceResponseOfListOfCheckListDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -974,18 +974,18 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
         let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/GetListItem?";
         if (checkListId === undefined || checkListId === null)
             throw new Error("The parameter 'checkListId' must be defined.");
-        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId));
+        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1008,8 +1008,8 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
 
     protected processGet(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1030,7 +1030,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
         let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/Create";
         if (checkListId === undefined || checkListId === null)
             throw new Error("The parameter 'checkListId' must be defined.");
-        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId));
+        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(checkListItem);
@@ -1040,7 +1040,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1063,8 +1063,8 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
 
     protected processCreate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1085,10 +1085,10 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
         let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/{id}";
         if (checkListId === undefined || checkListId === null)
             throw new Error("The parameter 'checkListId' must be defined.");
-        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId));
+        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(checkListItem);
@@ -1098,7 +1098,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1121,8 +1121,8 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
 
     protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1143,14 +1143,14 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
         let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems";
         if (checklistId === undefined || checklistId === null)
             throw new Error("The parameter 'checklistId' must be defined.");
-        url_ = url_.replace("{checklistId}", encodeURIComponent("" + checklistId));
+        url_ = url_.replace("{checklistId}", encodeURIComponent("" + checklistId)); 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1173,8 +1173,8 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
 
     protected processGetChecklistItems(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1223,7 +1223,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1246,8 +1246,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 
     protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1271,14 +1271,14 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1301,8 +1301,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 
     protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1326,7 +1326,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(institution);
@@ -1336,7 +1336,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1359,8 +1359,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 
     protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1384,14 +1384,14 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1414,8 +1414,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 
     protected processGetInstitution(response: HttpResponseBase): Observable<ServiceResponseOfInstitutionDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1439,14 +1439,14 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         if (accountId === undefined)
             throw new Error("The parameter 'accountId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&";
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1469,8 +1469,8 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
 
     protected processGetInstitutionList(response: HttpResponseBase): Observable<ServiceResponseOfListOfInstitutionDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1521,7 +1521,7 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1544,8 +1544,8 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
 
     protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1569,14 +1569,14 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1599,8 +1599,8 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
 
     protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1624,7 +1624,7 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(investor);
@@ -1634,7 +1634,7 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1657,8 +1657,8 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
 
     protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1682,14 +1682,14 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1712,8 +1712,8 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
 
     protected processGetInvestorDetail(response: HttpResponseBase): Observable<ServiceResponseOfInvestorDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1737,14 +1737,14 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
         if (accountId === undefined)
             throw new Error("The parameter 'accountId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&";
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1767,8 +1767,8 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
 
     protected processGetInvestorList(response: HttpResponseBase): Observable<ServiceResponseOfListOfInvestorDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1819,7 +1819,7 @@ export class LoanClient extends BaseClient implements ILoanClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1842,8 +1842,8 @@ export class LoanClient extends BaseClient implements ILoanClient {
 
     protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1867,14 +1867,14 @@ export class LoanClient extends BaseClient implements ILoanClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1897,8 +1897,8 @@ export class LoanClient extends BaseClient implements ILoanClient {
 
     protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1922,7 +1922,7 @@ export class LoanClient extends BaseClient implements ILoanClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(loan);
@@ -1932,7 +1932,7 @@ export class LoanClient extends BaseClient implements ILoanClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -1955,8 +1955,8 @@ export class LoanClient extends BaseClient implements ILoanClient {
 
     protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -1980,14 +1980,14 @@ export class LoanClient extends BaseClient implements ILoanClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2010,8 +2010,8 @@ export class LoanClient extends BaseClient implements ILoanClient {
 
     protected processGetLoanDetail(response: HttpResponseBase): Observable<ServiceResponseOfLoanDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2035,14 +2035,14 @@ export class LoanClient extends BaseClient implements ILoanClient {
         if (accountId === undefined)
             throw new Error("The parameter 'accountId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&";
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2065,8 +2065,8 @@ export class LoanClient extends BaseClient implements ILoanClient {
 
     protected processGetLoanList(response: HttpResponseBase): Observable<ServiceResponseOfListOfLoanDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2117,7 +2117,7 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2140,8 +2140,8 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
 
     protected processInviteUser(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2165,14 +2165,14 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
         if (accountId === undefined)
             throw new Error("The parameter 'accountId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&";
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2195,8 +2195,8 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
 
     protected processGetRegisterdUsersByAccount(response: HttpResponseBase): Observable<ServiceResponseOfListOfUserModel> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2226,7 +2226,7 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2249,8 +2249,8 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
 
     protected processUpdatePasswordOfInvitedUser(response: HttpResponseBase): Observable<ServiceResponseOfProfileViewModel> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2277,7 +2277,7 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2300,8 +2300,8 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
 
     protected processGetRoles(response: HttpResponseBase): Observable<ServiceResponseOfListOfAspNetRoleDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2331,7 +2331,7 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2354,8 +2354,8 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
 
     protected processUpdateUserDetail(response: HttpResponseBase): Observable<ServiceResponseOfProfileViewModel> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2381,11 +2381,6 @@ export interface ITaskStatusClient {
     deleteTaskStatusSet(id: string): Observable<ServiceResponse>;
     updateTaskStatusSet(model: TaskStatusSetForUpdateDto, id: string): Observable<ServiceResponse>;
     getTaskStatusSetList(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto>;
-    getTaskStatus(id: string): Observable<ServiceResponseOfTaskStatusSetDto>;
-    createTaskStatus(model: TaskStatusSetForCreationDto): Observable<ServiceResponse>;
-    deleteTaskStatus(id: string): Observable<ServiceResponse>;
-    updateTaskStatus(model: TaskStatusSetForUpdateDto, id: string): Observable<ServiceResponse>;
-    getTaskStatusList(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto>;
 }
 
 @Injectable()
@@ -2405,14 +2400,14 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2435,8 +2430,8 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
 
     protected processGetTaskStatusSet(response: HttpResponseBase): Observable<ServiceResponseOfTaskStatusSetDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2466,7 +2461,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2489,8 +2484,8 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
 
     protected processCreateTaskStatusSet(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2514,14 +2509,14 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2544,8 +2539,8 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
 
     protected processDeleteTaskStatusSet(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2569,7 +2564,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -2579,7 +2574,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2602,8 +2597,8 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
 
     protected processUpdateTaskStatusSet(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2627,14 +2622,14 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         if (accountId === undefined)
             throw new Error("The parameter 'accountId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&";
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2657,8 +2652,8 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
 
     protected processGetTaskStatusSetList(response: HttpResponseBase): Observable<ServiceResponseOfListOfTaskStatusSetDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2676,20 +2671,41 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         }
         return Observable.of<ServiceResponseOfListOfTaskStatusSetDto>(<any>null);
     }
+}
 
-    getTaskStatus(id: string): Observable<ServiceResponseOfTaskStatusSetDto> {
-        let url_ = this.baseUrl + "/api/taststatussets/GetTaskStatus?";
+export interface ITaskStatusDetailClient {
+    getTaskStatus(id: string): Observable<ServiceResponseOfTaskStatusDetailDto>;
+    createTaskStatus(model: TaskStatusDetailForCreationDto): Observable<ServiceResponse>;
+    deleteTaskStatus(id: string): Observable<ServiceResponse>;
+    updateTaskStatus(model: TaskStatusDetailForUpdateDto, id: string): Observable<ServiceResponse>;
+    getTaskStatusList(id: string): Observable<ServiceResponseOfListOfTaskStatusDetailDto>;
+}
+
+@Injectable()
+export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDetailClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: (key: string, value: any) => any = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        super();
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
+    }
+
+    getTaskStatus(id: string): Observable<ServiceResponseOfTaskStatusDetailDto> {
+        let url_ = this.baseUrl + "/api/TaskStatusDetail/GetTaskStatus?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2703,17 +2719,17 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
                 try {
                     return this.processGetTaskStatus(<any>response_);
                 } catch (e) {
-                    return <Observable<ServiceResponseOfTaskStatusSetDto>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfTaskStatusDetailDto>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<ServiceResponseOfTaskStatusSetDto>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfTaskStatusDetailDto>><any>Observable.throw(response_);
         });
     }
 
-    protected processGetTaskStatus(response: HttpResponseBase): Observable<ServiceResponseOfTaskStatusSetDto> {
+    protected processGetTaskStatus(response: HttpResponseBase): Observable<ServiceResponseOfTaskStatusDetailDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2721,7 +2737,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             return blobToText(responseBlob).flatMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponseOfTaskStatusSetDto.fromJS(resultData200) : <any>null;
+            result200 = resultData200 ? ServiceResponseOfTaskStatusDetailDto.fromJS(resultData200) : <any>null;
             return Observable.of(result200);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2729,11 +2745,11 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<ServiceResponseOfTaskStatusSetDto>(<any>null);
+        return Observable.of<ServiceResponseOfTaskStatusDetailDto>(<any>null);
     }
 
-    createTaskStatus(model: TaskStatusSetForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/taststatussets/CreateTaskStatus";
+    createTaskStatus(model: TaskStatusDetailForCreationDto): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/TaskStatusDetail/CreateTaskStatus";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -2743,7 +2759,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2766,8 +2782,8 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
 
     protected processCreateTaskStatus(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2787,18 +2803,18 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
     }
 
     deleteTaskStatus(id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/taststatussets/deleteTaskStatus?";
+        let url_ = this.baseUrl + "/api/TaskStatusDetail/deleteTaskStatus?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2821,8 +2837,8 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
 
     protected processDeleteTaskStatus(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2841,12 +2857,12 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         return Observable.of<ServiceResponse>(<any>null);
     }
 
-    updateTaskStatus(model: TaskStatusSetForUpdateDto, id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/taststatussets/updateTaskStatus?";
+    updateTaskStatus(model: TaskStatusDetailForUpdateDto, id: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/TaskStatusDetail/updateTaskStatus?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -2856,7 +2872,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2879,8 +2895,8 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
 
     protected processUpdateTaskStatus(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2899,19 +2915,19 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         return Observable.of<ServiceResponse>(<any>null);
     }
 
-    getTaskStatusList(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto> {
-        let url_ = this.baseUrl + "/api/taststatussets/gettaskstatuslist?";
-        if (accountId === undefined)
-            throw new Error("The parameter 'accountId' must be defined.");
+    getTaskStatusList(id: string): Observable<ServiceResponseOfListOfTaskStatusDetailDto> {
+        let url_ = this.baseUrl + "/api/TaskStatusDetail/gettaskstatuslist?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&";
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 "Accept": "application/json"
             })
         };
@@ -2925,17 +2941,17 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
                 try {
                     return this.processGetTaskStatusList(<any>response_);
                 } catch (e) {
-                    return <Observable<ServiceResponseOfListOfTaskStatusSetDto>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfListOfTaskStatusDetailDto>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<ServiceResponseOfListOfTaskStatusSetDto>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfListOfTaskStatusDetailDto>><any>Observable.throw(response_);
         });
     }
 
-    protected processGetTaskStatusList(response: HttpResponseBase): Observable<ServiceResponseOfListOfTaskStatusSetDto> {
+    protected processGetTaskStatusList(response: HttpResponseBase): Observable<ServiceResponseOfListOfTaskStatusDetailDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
@@ -2943,7 +2959,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             return blobToText(responseBlob).flatMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponseOfListOfTaskStatusSetDto.fromJS(resultData200) : <any>null;
+            result200 = resultData200 ? ServiceResponseOfListOfTaskStatusDetailDto.fromJS(resultData200) : <any>null;
             return Observable.of(result200);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2951,7 +2967,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<ServiceResponseOfListOfTaskStatusSetDto>(<any>null);
+        return Observable.of<ServiceResponseOfListOfTaskStatusDetailDto>(<any>null);
     }
 }
 
@@ -2998,7 +3014,7 @@ export class AccountForCreationDto implements IAccountForCreationDto {
         data["city"] = this.city;
         data["state"] = this.state;
         data["zipCode"] = this.zipCode;
-        return data;
+        return data; 
     }
 }
 
@@ -3050,7 +3066,7 @@ export class ServiceResponse implements IServiceResponse {
                 data["errorMessages"].push(item.toJSON());
         }
         data["successful"] = this.successful;
-        return data;
+        return data; 
     }
 }
 
@@ -3084,7 +3100,7 @@ export class ServiceResponseOfString extends ServiceResponse implements IService
         data = typeof data === 'object' ? data : {};
         data["data"] = this.data;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -3177,7 +3193,7 @@ Like "Value {0} that you entered should be {1}" */
             }
         }
         data["resourceName"] = this.resourceName;
-        return data;
+        return data; 
     }
 }
 
@@ -3208,9 +3224,9 @@ Like "Value {0} that you entered should be {1}" */
 
 /** Specifies the severity of a rule. */
 export enum Severity {
-    Error = 0,
-    Warning = 1,
-    Info = 2,
+    Error = 0, 
+    Warning = 1, 
+    Info = 2, 
 }
 
 export class ServiceResponseOfAccountDto extends ServiceResponse implements IServiceResponseOfAccountDto {
@@ -3238,7 +3254,7 @@ export class ServiceResponseOfAccountDto extends ServiceResponse implements ISer
         data = typeof data === 'object' ? data : {};
         data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -3292,7 +3308,7 @@ export class AccountDto implements IAccountDto {
         data["city"] = this.city;
         data["state"] = this.state;
         data["zipCode"] = this.zipCode;
-        return data;
+        return data; 
     }
 }
 
@@ -3339,7 +3355,7 @@ export class ServiceResponseOfListOfAccountDto extends ServiceResponse implement
                 data["data"].push(item.toJSON());
         }
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -3390,7 +3406,7 @@ export class AccountForUpdateDto implements IAccountForUpdateDto {
         data["city"] = this.city;
         data["state"] = this.state;
         data["zipCode"] = this.zipCode;
-        return data;
+        return data; 
     }
 }
 
@@ -3436,7 +3452,7 @@ export class ServiceResponseOfListOfStateDto extends ServiceResponse implements 
                 data["data"].push(item.toJSON());
         }
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -3478,7 +3494,7 @@ export class StateDto implements IStateDto {
         data["id"] = this.id;
         data["code"] = this.code;
         data["name"] = this.name;
-        return data;
+        return data; 
     }
 }
 
@@ -3522,7 +3538,7 @@ export class LoginModel implements ILoginModel {
         data["email"] = this.email;
         data["password"] = this.password;
         data["rememberMe"] = this.rememberMe;
-        return data;
+        return data; 
     }
 }
 
@@ -3557,7 +3573,7 @@ export class ServiceResponseOfProfileViewModel extends ServiceResponse implement
         data = typeof data === 'object' ? data : {};
         data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -3617,7 +3633,7 @@ export class ProfileViewModel implements IProfileViewModel {
         data["isInvited"] = this.isInvited;
         data["phoneNumber"] = this.phoneNumber;
         data["emailConfirmed"] = this.emailConfirmed;
-        return data;
+        return data; 
     }
 }
 
@@ -3676,7 +3692,7 @@ export class RegisterModel implements IRegisterModel {
         data["email"] = this.email;
         data["password"] = this.password;
         data["confirmPassword"] = this.confirmPassword;
-        return data;
+        return data; 
     }
 }
 
@@ -3720,7 +3736,7 @@ export class CheckListForCreationDto implements ICheckListForCreationDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["accountId"] = this.accountId;
-        return data;
+        return data; 
     }
 }
 
@@ -3760,7 +3776,7 @@ export class CheckListForUpdateDto implements ICheckListForUpdateDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["accountId"] = this.accountId;
-        return data;
+        return data; 
     }
 }
 
@@ -3794,7 +3810,7 @@ export class ServiceResponseOfCheckListDto extends ServiceResponse implements IS
         data = typeof data === 'object' ? data : {};
         data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -3804,10 +3820,8 @@ export interface IServiceResponseOfCheckListDto extends IServiceResponse {
 
 export class BaseDto implements IBaseDto {
     id: string;
-    createdBy?: string;
     createdDate: Date;
     modifiedDate: Date;
-    modifedBy?: string;
 
     constructor(data?: IBaseDto) {
         if (data) {
@@ -3821,10 +3835,8 @@ export class BaseDto implements IBaseDto {
     init(data?: any) {
         if (data) {
             this.id = data["id"];
-            this.createdBy = data["createdBy"];
             this.createdDate = data["createdDate"] ? new Date(data["createdDate"].toString()) : <any>undefined;
             this.modifiedDate = data["modifiedDate"] ? new Date(data["modifiedDate"].toString()) : <any>undefined;
-            this.modifedBy = data["modifedBy"];
         }
     }
 
@@ -3838,20 +3850,16 @@ export class BaseDto implements IBaseDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["createdBy"] = this.createdBy;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["modifiedDate"] = this.modifiedDate ? this.modifiedDate.toISOString() : <any>undefined;
-        data["modifedBy"] = this.modifedBy;
-        return data;
+        return data; 
     }
 }
 
 export interface IBaseDto {
     id: string;
-    createdBy?: string;
     createdDate: Date;
     modifiedDate: Date;
-    modifedBy?: string;
 }
 
 export class CheckListDto extends BaseDto implements ICheckListDto {
@@ -3885,7 +3893,7 @@ export class CheckListDto extends BaseDto implements ICheckListDto {
         data["accountId"] = this.accountId;
         data["accountName"] = this.accountName;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -3928,7 +3936,7 @@ export class ServiceResponseOfListOfCheckListDto extends ServiceResponse impleme
                 data["data"].push(item.toJSON());
         }
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -3970,7 +3978,7 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
         data["order"] = this.order;
         data["prompt"] = this.prompt;
         data["answerSetId"] = this.answerSetId;
-        return data;
+        return data; 
     }
 }
 
@@ -4014,7 +4022,7 @@ export class CheckListItemForUpdateDto implements ICheckListItemForUpdateDto {
         data["order"] = this.order;
         data["prompt"] = this.prompt;
         data["answerSetId"] = this.answerSetId;
-        return data;
+        return data; 
     }
 }
 
@@ -4055,7 +4063,7 @@ export class InstitutionForCreationDto implements IInstitutionForCreationDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["accountId"] = this.accountId;
-        return data;
+        return data; 
     }
 }
 
@@ -4095,7 +4103,7 @@ export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["accountId"] = this.accountId;
-        return data;
+        return data; 
     }
 }
 
@@ -4129,7 +4137,7 @@ export class ServiceResponseOfInstitutionDto extends ServiceResponse implements 
         data = typeof data === 'object' ? data : {};
         data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -4168,7 +4176,7 @@ export class InstitutionDto extends BaseDto implements IInstitutionDto {
         data["accountId"] = this.accountId;
         data["accountName"] = this.accountName;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -4211,7 +4219,7 @@ export class ServiceResponseOfListOfInstitutionDto extends ServiceResponse imple
                 data["data"].push(item.toJSON());
         }
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -4268,7 +4276,7 @@ export class InvestorForCreationDto implements IInvestorForCreationDto {
         data["contactName"] = this.contactName;
         data["contactPhone"] = this.contactPhone;
         data["accountId"] = this.accountId;
-        return data;
+        return data; 
     }
 }
 
@@ -4332,7 +4340,7 @@ export class InvestorForUpdateDto implements IInvestorForUpdateDto {
         data["contactName"] = this.contactName;
         data["contactPhone"] = this.contactPhone;
         data["accountId"] = this.accountId;
-        return data;
+        return data; 
     }
 }
 
@@ -4372,7 +4380,7 @@ export class ServiceResponseOfInvestorDto extends ServiceResponse implements ISe
         data = typeof data === 'object' ? data : {};
         data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -4429,13 +4437,13 @@ export class InvestorDto extends BaseDto implements IInvestorDto {
         data["contactPhone"] = this.contactPhone;
         data["accountName"] = this.accountName;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
 export interface IInvestorDto extends IBaseDto {
     accountId: string;
-    name?: string;
+    name: string;
     address?: string;
     city?: string;
     state?: string;
@@ -4478,7 +4486,7 @@ export class ServiceResponseOfListOfInvestorDto extends ServiceResponse implemen
                 data["data"].push(item.toJSON());
         }
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -4544,7 +4552,7 @@ export class LoanForCreationDto implements ILoanForCreationDto {
         data["branchId"] = this.branchId;
         data["loanType"] = this.loanType;
         data["accountId"] = this.accountId;
-        return data;
+        return data; 
     }
 }
 
@@ -4620,7 +4628,7 @@ export class LoanForUpdateDto implements ILoanForUpdateDto {
         data["branchId"] = this.branchId;
         data["loanType"] = this.loanType;
         data["accountId"] = this.accountId;
-        return data;
+        return data; 
     }
 }
 
@@ -4663,7 +4671,7 @@ export class ServiceResponseOfLoanDto extends ServiceResponse implements IServic
         data = typeof data === 'object' ? data : {};
         data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -4729,7 +4737,7 @@ export class LoanDto extends BaseDto implements ILoanDto {
         data["accountId"] = this.accountId;
         data["accountName"] = this.accountName;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -4781,7 +4789,7 @@ export class ServiceResponseOfListOfLoanDto extends ServiceResponse implements I
                 data["data"].push(item.toJSON());
         }
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -4823,7 +4831,7 @@ export class InviteUserModel implements IInviteUserModel {
         data["accountId"] = this.accountId;
         data["email"] = this.email;
         data["roleId"] = this.roleId;
-        return data;
+        return data; 
     }
 }
 
@@ -4866,7 +4874,7 @@ export class ServiceResponseOfListOfUserModel extends ServiceResponse implements
                 data["data"].push(item.toJSON());
         }
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -4926,7 +4934,7 @@ export class UserModel implements IUserModel {
         data["role"] = this.role;
         data["roleId"] = this.roleId;
         data["phoneNumber"] = this.phoneNumber;
-        return data;
+        return data; 
     }
 }
 
@@ -4973,7 +4981,7 @@ export class UpdatePasswordOfInvitedUserModel implements IUpdatePasswordOfInvite
         data = typeof data === 'object' ? data : {};
         data["password"] = this.password;
         data["oldPassword"] = this.oldPassword;
-        return data;
+        return data; 
     }
 }
 
@@ -5015,7 +5023,7 @@ export class ServiceResponseOfListOfAspNetRoleDto extends ServiceResponse implem
                 data["data"].push(item.toJSON());
         }
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -5060,7 +5068,7 @@ export class AspNetRoleDto implements IAspNetRoleDto {
         data["concurrencyStamp"] = this.concurrencyStamp;
         data["name"] = this.name;
         data["normalizedName"] = this.normalizedName;
-        return data;
+        return data; 
     }
 }
 
@@ -5096,7 +5104,7 @@ export class ServiceResponseOfTaskStatusSetDto extends ServiceResponse implement
         data = typeof data === 'object' ? data : {};
         data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
@@ -5105,7 +5113,7 @@ export interface IServiceResponseOfTaskStatusSetDto extends IServiceResponse {
 }
 
 export class TaskStatusSetDto extends BaseDto implements ITaskStatusSetDto {
-    title?: string;
+    title: string;
     disabled: boolean;
     accountId: string;
     accountName?: string;
@@ -5138,28 +5146,32 @@ export class TaskStatusSetDto extends BaseDto implements ITaskStatusSetDto {
         data["accountId"] = this.accountId;
         data["accountName"] = this.accountName;
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
 export interface ITaskStatusSetDto extends IBaseDto {
-    title?: string;
+    title: string;
     disabled: boolean;
     accountId: string;
     accountName?: string;
 }
 
-export class TaskStatusSetForCreationDto extends BaseDto implements ITaskStatusSetForCreationDto {
+export class TaskStatusSetForCreationDto implements ITaskStatusSetForCreationDto {
     title: string;
     disabled: boolean;
     accountId: string;
 
     constructor(data?: ITaskStatusSetForCreationDto) {
-        super(data);
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
 
     init(data?: any) {
-        super.init(data);
         if (data) {
             this.title = data["title"];
             this.disabled = data["disabled"];
@@ -5179,12 +5191,11 @@ export class TaskStatusSetForCreationDto extends BaseDto implements ITaskStatusS
         data["title"] = this.title;
         data["disabled"] = this.disabled;
         data["accountId"] = this.accountId;
-        super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
-export interface ITaskStatusSetForCreationDto extends IBaseDto {
+export interface ITaskStatusSetForCreationDto {
     title: string;
     disabled: boolean;
     accountId: string;
@@ -5224,7 +5235,7 @@ export class TaskStatusSetForUpdateDto implements ITaskStatusSetForUpdateDto {
         data["title"] = this.title;
         data["disabled"] = this.disabled;
         data["accountId"] = this.accountId;
-        return data;
+        return data; 
     }
 }
 
@@ -5267,12 +5278,263 @@ export class ServiceResponseOfListOfTaskStatusSetDto extends ServiceResponse imp
                 data["data"].push(item.toJSON());
         }
         super.toJSON(data);
-        return data;
+        return data; 
     }
 }
 
 export interface IServiceResponseOfListOfTaskStatusSetDto extends IServiceResponse {
     data?: TaskStatusSetDto[];
+}
+
+export class ServiceResponseOfTaskStatusDetailDto extends ServiceResponse implements IServiceResponseOfTaskStatusDetailDto {
+    data?: TaskStatusDetailDto;
+
+    constructor(data?: IServiceResponseOfTaskStatusDetailDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.data = data["data"] ? TaskStatusDetailDto.fromJS(data["data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfTaskStatusDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfTaskStatusDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfTaskStatusDetailDto extends IServiceResponse {
+    data?: TaskStatusDetailDto;
+}
+
+export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+
+    constructor(data?: ITaskStatusDetailDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.caption = data["caption"];
+            this.color = data["color"];
+            this.backGroundColor = data["backGroundColor"];
+            this.order = data["order"];
+            this.taskStatusSetId = data["taskStatusSetId"];
+            this.disabled = data["disabled"];
+            this.taskStatusSetTitle = data["taskStatusSetTitle"];
+        }
+    }
+
+    static fromJS(data: any): TaskStatusDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaskStatusDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["caption"] = this.caption;
+        data["color"] = this.color;
+        data["backGroundColor"] = this.backGroundColor;
+        data["order"] = this.order;
+        data["taskStatusSetId"] = this.taskStatusSetId;
+        data["disabled"] = this.disabled;
+        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITaskStatusDetailDto extends IBaseDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+}
+
+export class TaskStatusDetailForCreationDto implements ITaskStatusDetailForCreationDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+
+    constructor(data?: ITaskStatusDetailForCreationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.caption = data["caption"];
+            this.color = data["color"];
+            this.backGroundColor = data["backGroundColor"];
+            this.order = data["order"];
+            this.taskStatusSetId = data["taskStatusSetId"];
+            this.disabled = data["disabled"];
+            this.taskStatusSetTitle = data["taskStatusSetTitle"];
+        }
+    }
+
+    static fromJS(data: any): TaskStatusDetailForCreationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaskStatusDetailForCreationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["caption"] = this.caption;
+        data["color"] = this.color;
+        data["backGroundColor"] = this.backGroundColor;
+        data["order"] = this.order;
+        data["taskStatusSetId"] = this.taskStatusSetId;
+        data["disabled"] = this.disabled;
+        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
+        return data; 
+    }
+}
+
+export interface ITaskStatusDetailForCreationDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+}
+
+export class TaskStatusDetailForUpdateDto implements ITaskStatusDetailForUpdateDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+
+    constructor(data?: ITaskStatusDetailForUpdateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.caption = data["caption"];
+            this.color = data["color"];
+            this.backGroundColor = data["backGroundColor"];
+            this.order = data["order"];
+            this.taskStatusSetId = data["taskStatusSetId"];
+            this.disabled = data["disabled"];
+            this.taskStatusSetTitle = data["taskStatusSetTitle"];
+        }
+    }
+
+    static fromJS(data: any): TaskStatusDetailForUpdateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaskStatusDetailForUpdateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["caption"] = this.caption;
+        data["color"] = this.color;
+        data["backGroundColor"] = this.backGroundColor;
+        data["order"] = this.order;
+        data["taskStatusSetId"] = this.taskStatusSetId;
+        data["disabled"] = this.disabled;
+        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
+        return data; 
+    }
+}
+
+export interface ITaskStatusDetailForUpdateDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+}
+
+export class ServiceResponseOfListOfTaskStatusDetailDto extends ServiceResponse implements IServiceResponseOfListOfTaskStatusDetailDto {
+    data?: TaskStatusDetailDto[];
+
+    constructor(data?: IServiceResponseOfListOfTaskStatusDetailDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            if (data["data"] && data["data"].constructor === Array) {
+                this.data = [];
+                for (let item of data["data"])
+                    this.data.push(TaskStatusDetailDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfListOfTaskStatusDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfListOfTaskStatusDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.data && this.data.constructor === Array) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfListOfTaskStatusDetailDto extends IServiceResponse {
+    data?: TaskStatusDetailDto[];
 }
 
 export interface FileResponse {
@@ -5284,10 +5546,10 @@ export interface FileResponse {
 
 export class SwaggerException extends Error {
     message: string;
-    status: number;
-    response: string;
+    status: number; 
+    response: string; 
     headers: { [key: string]: any; };
-    result: any;
+    result: any; 
 
     constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
         super();
@@ -5319,12 +5581,12 @@ function blobToText(blob: any): Observable<string> {
             observer.next("");
             observer.complete();
         } else {
-            let reader = new FileReader();
-            reader.onload = function() {
+            let reader = new FileReader(); 
+            reader.onload = function() { 
                 observer.next(this.result);
                 observer.complete();
             }
-            reader.readAsText(blob);
+            reader.readAsText(blob); 
         }
     });
 }

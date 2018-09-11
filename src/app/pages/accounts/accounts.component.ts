@@ -175,4 +175,8 @@ export class AccountsComponent implements OnInit {
     sessionStorage.setItem('InvestorAccountId', account.id);
     this.router.navigate(['/rel/investors']);
   }
+  listTaskStatusSet(account: AccountDto) {
+    sessionStorage.setItem('TaskStatusSetAccountId', account.id);
+    this.router.navigate(['/rel/taskstatus-sets']);
+  }
 }

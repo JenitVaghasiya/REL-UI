@@ -1,0 +1,19 @@
+<card #taskStatusSetDiv [title]=" model.id ? 'Edit Task Status Set' : 'Add Task Status Set'" [align]="'center'">
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Name" [(ngModel)]="model.title" [formControl]="form.controls['title']">
+      <mat-error *ngIf="form.controls['title'].hasError('required') && form.controls['title'].touched">
+        You must include Title
+      </mat-error>
+    </mat-form-field>
+    <div class="text-left mb-module">
+      <mat-checkbox [(ngModel)]="model.disabled" [ngModelOptions]="{standalone: true}">
+        Disabled
+      </mat-checkbox>
+    </div>
+
+    <button class="btn-margin-top" mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ !model.id ? 'Save' : 'Update' }}</button>
+    <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>
+
+  </form>
+</card>

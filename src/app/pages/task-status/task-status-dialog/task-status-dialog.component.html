@@ -1,0 +1,35 @@
+<card #taskStatusDiv [title]="model.id ? 'Edit Task Status in ' + model.taskStatusSetTitle : 'Add Task Status'" [align]="'center'">
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Caption" [(ngModel)]="model.caption" [formControl]="form.controls['caption']">
+      <mat-error *ngIf="form.controls['caption'].hasError('required') && form.controls['caption'].touched">
+        You must include Caption
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Color" [(ngModel)]="model.color" [formControl]="form.controls['color']">
+      <mat-error *ngIf="form.controls['color'].hasError('required') && form.controls['color'].touched">
+        You must include Color
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Background Color" [(ngModel)]="model.backGroundColor" [formControl]="form.controls['backGroundColor']">
+      <mat-error *ngIf="form.controls['backGroundColor'].hasError('required') && form.controls['backGroundColor'].touched">
+        You must include BackGround Color
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="order" [(ngModel)]="model.order" [ngModelOptions]="{standalone: true}">
+
+    </mat-form-field>
+    <div class="text-left mb-module">
+      <mat-checkbox [(ngModel)]="model.disabled" [ngModelOptions]="{standalone: true}">
+        Disabled
+      </mat-checkbox>
+    </div>
+    <button class="btn-margin-top" mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ !model.id ? 'Save' : 'Update' }}</button>
+    <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>
+
+  </form>
+</card>

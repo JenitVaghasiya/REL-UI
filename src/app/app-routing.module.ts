@@ -73,6 +73,9 @@ import { InstitutionsComponent } from './pages/institutions/institutions.compone
 import { CheckListComponent } from './pages/checklists/checklists.component';
 import { LoansComponent } from './pages/loans/loans.component';
 import { InvestorsComponent } from './pages/investors/investors.component';
+import { TaskStatusSetDialogComponent } from './pages/task-status-set/task-status-set-dialog/task-status-set-dialog.component';
+import { TaskStatusSetComponent } from './pages/task-status-set/task-status-set.component';
+import { TaskStatusesComponent } from './pages/task-status/task-statuses.component';
 
 const defaultRoutes: Routes = [
   {
@@ -180,6 +183,22 @@ const defaultRoutes: Routes = [
   {
     path: 'investors',
     component: InvestorsComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['accountadmin', 'superadmin']
+    }
+  },
+  {
+    path: 'taskstatus-sets',
+    component: TaskStatusSetComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['accountadmin', 'superadmin']
+    }
+  },
+  {
+    path: 'taskstatuses',
+    component: TaskStatusesComponent,
     canActivate: [AuthenticationGuard],
     data: {
       expectedRole: ['accountadmin', 'superadmin']

@@ -1,0 +1,68 @@
+<card #taskStatusDiv title="Manage Task Statuses">
+    <div>
+        <button mat-raised-button color="accent" (click)="addTaskStatus()">Add Task Status</button>
+        <mat-form-field>
+            <input autocomplete="txtCommonSearch" matInput placeholder="Search" [(ngModel)]="txtCommonSearch" (ngModelChange)="getTaskStatuses()" >
+        </mat-form-field>
+    </div>
+
+
+    <div *ngIf="isLoadingResults">
+      <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
+    </div>
+    <mat-table #table [dataSource]="taskStatusDetails" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+        <ng-container matColumnDef="caption">
+          <mat-header-cell *matHeaderCellDef  disableClear> Caption </mat-header-cell>
+          <!-- mat-sort-header -->
+          <mat-cell *matCellDef="let row"> {{row.caption}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="order">
+          <mat-header-cell *matHeaderCellDef  disableClear> Order </mat-header-cell>
+          <!-- mat-sort-header -->
+          <mat-cell *matCellDef="let row"> {{row.order}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="color">
+          <mat-header-cell *matHeaderCellDef  disableClear> Color </mat-header-cell>
+          <!-- mat-sort-header -->
+          <mat-cell *matCellDef="let row"> {{row.color}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="backGroundColor">
+          <mat-header-cell *matHeaderCellDef  disableClear> BackGround Color </mat-header-cell>
+          <!-- mat-sort-header -->
+          <mat-cell *matCellDef="let row"> {{row.backGroundColor}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="disabled">
+          <mat-header-cell *matHeaderCellDef  disableClear> Disabled </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.disabled ? 'Yes' : 'No'}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="taskStatusSetTitle">
+          <mat-header-cell *matHeaderCellDef> TaskStatus Set </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.taskStatusSetTitle}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="createdDate">
+          <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.createdDate | date:'MM/dd/yyyy' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="modifiedDate">
+          <mat-header-cell *matHeaderCellDef> Modified Date </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy'}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button matTooltip="Edit"  mat-icon-button (click)="editTaskStatus(row)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <div class="no-record-found" *ngIf="!taskStatusDetails || (taskStatusDetails && taskStatusDetails.data.length === 0)"> No Record Found.</div>
+      <mat-paginator #paginator [length]="resultsLength"  [pageIndex]="0"
+      [pageSize]="10"
+      [pageSizeOptions]="[ 10, 25, 50, 100]"></mat-paginator>
+
+</card>

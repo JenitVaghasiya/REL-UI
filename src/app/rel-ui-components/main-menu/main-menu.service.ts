@@ -117,6 +117,28 @@ export class MainMenuService {
         budge: '',
         budgeColor: ''
       });
+      MAINMENUITEMS.push({
+        title: 'Task Status Sets',
+        icon: 'fa fa-list-alt',
+        active: false,
+        groupTitle: false,
+        sub: '',
+        routing: '/rel/taskstatus-sets',
+        externalLink: '',
+        budge: '',
+        budgeColor: ''
+      });
+      MAINMENUITEMS.push({
+        title: 'Task Statuses',
+        icon: 'fa fa-list-alt',
+        active: false,
+        groupTitle: false,
+        sub: '',
+        routing: '/rel/taskstatuses',
+        externalLink: '',
+        budge: '',
+        budgeColor: ''
+      });
     }
 
     return Promise.resolve(MAINMENUITEMS);

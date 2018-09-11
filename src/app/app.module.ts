@@ -125,7 +125,7 @@ import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
 import { AuthClient, AccountsClient, ManageUserClient,
-  InstitutionClient, CheckListClient, LoanClient, InvestorClient } from 'api/apiclient';
+  InstitutionClient, CheckListClient, LoanClient, InvestorClient, TaskStatusClient, TaskStatusDetailClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 
@@ -152,6 +152,10 @@ import { LoansComponent } from './pages/loans/loans.component';
 import { LoanDialogComponent } from './pages/loans/loan-dialog/loan-dialog.component';
 import { InvestorDialogComponent } from './pages/investors/investor-dialog/investor-dialog.component';
 import { InvestorsComponent } from './pages/investors/investors.component';
+import { TaskStatusSetComponent } from './pages/task-status-set/task-status-set.component';
+import { TaskStatusSetDialogComponent } from './pages/task-status-set/task-status-set-dialog/task-status-set-dialog.component';
+import { TaskStatusDialogComponent } from './pages/task-status/task-status-dialog/task-status-dialog.component';
+import { TaskStatusesComponent } from './pages/task-status/task-statuses.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -298,7 +302,11 @@ import { InvestorsComponent } from './pages/investors/investors.component';
     LoansComponent,
     LoanDialogComponent,
     InvestorDialogComponent,
-    InvestorsComponent
+    InvestorsComponent,
+    TaskStatusSetComponent,
+    TaskStatusSetDialogComponent,
+    TaskStatusesComponent,
+    TaskStatusDialogComponent
   ],
   entryComponents: [
     DialogResultComponent,
@@ -312,7 +320,9 @@ import { InvestorsComponent } from './pages/investors/investors.component';
     CheckListComponent,
     CheckListDialogComponent,
     LoanDialogComponent,
-    InvestorDialogComponent
+    InvestorDialogComponent,
+    TaskStatusSetDialogComponent,
+    TaskStatusDialogComponent
   ],
   bootstrap: [AppComponent],
   exports: [],
@@ -329,6 +339,8 @@ import { InvestorsComponent } from './pages/investors/investors.component';
     InstitutionClient,
     CheckListClient,
     LoanClient,
+    TaskStatusClient,
+    TaskStatusDetailClient,
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
