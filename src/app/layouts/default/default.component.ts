@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SharedService } from '../shared-service';
-import { NavbarComponent } from '../../rel-ui-components/navbar/navbar.component';
 
 @Component({
   moduleId: module.id,
@@ -11,8 +10,8 @@ import { NavbarComponent } from '../../rel-ui-components/navbar/navbar.component
 })
 export class DefaultLayoutComponent implements OnInit {
   pageTitle: any;
-  rtl: boolean = false;
-  @Input() openedSidebar: boolean = false;
+  rtl: false;
+  @Input() openedSidebar = false;
 
   constructor( private _sharedService: SharedService ) {
     _sharedService.changeEmitted$.subscribe(

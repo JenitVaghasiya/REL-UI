@@ -10,7 +10,7 @@ import { SharedService } from '../../../layouts/shared-service';
   styleUrls: ['./form-elements.component.scss']
 })
 export class PageFormElementsComponent implements OnInit {
-  pageTitle: string = 'Form elements';
+  pageTitle = 'Form elements';
   stateCtrl: FormControl;
   filteredStates: any;
 
@@ -67,7 +67,7 @@ export class PageFormElementsComponent implements OnInit {
     'Wyoming',
   ];
 
-  favoriteSeason: string = 'Winter';
+  favoriteSeason = 'Winter';
 
   seasons: string[] = [
     'Winter',

@@ -15,23 +15,12 @@
         <ng-container matColumnDef="caption">
           <mat-header-cell *matHeaderCellDef  disableClear> Caption </mat-header-cell>
           <!-- mat-sort-header -->
-          <mat-cell *matCellDef="let row"> {{row.caption}} </mat-cell>
+          <mat-cell class="task-status-caption" [ngStyle]="{'color' : row.color ,'background-color': row.backGroundColor, 'align-self': 'stretch'}" *matCellDef="let row"> <div> {{row.caption}}</div> </mat-cell>
         </ng-container>
         <ng-container matColumnDef="order">
           <mat-header-cell *matHeaderCellDef  disableClear> Order </mat-header-cell>
           <!-- mat-sort-header -->
           <mat-cell *matCellDef="let row"> {{row.order}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="color">
-          <mat-header-cell *matHeaderCellDef  disableClear> Color </mat-header-cell>
-          <!-- mat-sort-header -->
-          <mat-cell *matCellDef="let row"> {{row.color}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="backGroundColor">
-          <mat-header-cell *matHeaderCellDef  disableClear> BackGround Color </mat-header-cell>
-          <!-- mat-sort-header -->
-          <mat-cell *matCellDef="let row"> {{row.backGroundColor}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="disabled">
           <mat-header-cell *matHeaderCellDef  disableClear> Disabled </mat-header-cell>

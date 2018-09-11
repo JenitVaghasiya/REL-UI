@@ -48,8 +48,6 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
   pageTitle = 'Task Status Management';
   displayedColumns: string[] = [
     'caption',
-    'color',
-    'backGroundColor',
     'taskStatusSetTitle',
     'order',
     'disabled',
