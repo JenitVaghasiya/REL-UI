@@ -1,4 +1,4 @@
-<card #taskStatusDiv title="Manage Task Statuses">
+<card #taskStatusDiv title="Manage Task Statuses {{ taskStatusDetails && taskStatusDetails.data && taskStatusDetails.data.length > 0 ? 'for ' + taskStatusDetails.data[0].taskStatusSetTitle : '' }}">
     <div>
         <button mat-raised-button color="accent" (click)="addTaskStatus()">Add Task Status</button>
         <mat-form-field>
@@ -15,7 +15,12 @@
         <ng-container matColumnDef="caption">
           <mat-header-cell *matHeaderCellDef  disableClear> Caption </mat-header-cell>
           <!-- mat-sort-header -->
-          <mat-cell class="task-status-caption" [ngStyle]="{'color' : row.color ,'background-color': row.backGroundColor, 'align-self': 'stretch'}" *matCellDef="let row"> <div> {{row.caption}}</div> </mat-cell>
+          <mat-cell class="task-status-caption"  *matCellDef="let row"> <div
+
+          [ngStyle]="{'color' : row.color ?  row.color : '#000000',
+          'background-color': row.backGroundColor ?  row.backGroundColor : 'initial'}"
+
+           class="set-colors"> {{row.caption}}</div> </mat-cell>
         </ng-container>
         <ng-container matColumnDef="order">
           <mat-header-cell *matHeaderCellDef  disableClear> Order </mat-header-cell>
@@ -25,10 +30,6 @@
         <ng-container matColumnDef="disabled">
           <mat-header-cell *matHeaderCellDef  disableClear> Disabled </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.disabled ? 'Yes' : 'No'}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="taskStatusSetTitle">
-          <mat-header-cell *matHeaderCellDef> TaskStatus Set </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.taskStatusSetTitle}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="createdDate">
           <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>

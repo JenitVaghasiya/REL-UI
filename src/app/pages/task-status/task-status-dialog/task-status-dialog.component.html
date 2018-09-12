@@ -8,13 +8,14 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Color" [(ngModel)]="model.color" [formControl]="form.controls['color']">
+      <input matInput [cpOutputFormat]="'hex'"  [(colorPicker)]="model.color" placeholder="Color" [(ngModel)]="model.color" [formControl]="form.controls['color']">
       <mat-error *ngIf="form.controls['color'].hasError('required') && form.controls['color'].touched">
         You must include Color
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Background Color" [(ngModel)]="model.backGroundColor" [formControl]="form.controls['backGroundColor']">
+
+      <input matInput [cpOutputFormat]="'hex'" [(colorPicker)]="model.backGroundColor" placeholder="Background Color" [(ngModel)]="model.backGroundColor" [formControl]="form.controls['backGroundColor']">
       <mat-error *ngIf="form.controls['backGroundColor'].hasError('required') && form.controls['backGroundColor'].touched">
         You must include BackGround Color
       </mat-error>

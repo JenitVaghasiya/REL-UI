@@ -128,6 +128,7 @@ import { AuthClient, AccountsClient, ManageUserClient,
   InstitutionClient, CheckListClient, LoanClient, InvestorClient, TaskStatusClient, TaskStatusDetailClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 import { ToastrModule } from 'ngx-toastr';
 import { AuthenticationGuard } from './services/authentication.guard';
@@ -205,7 +206,8 @@ import { TaskStatusesComponent } from './pages/task-status/task-statuses.compone
       enableHtml: true,
       easeTime: 300,
       preventDuplicates: true
-    })
+    }),
+    ColorPickerModule
   ],
   declarations: [
     AppComponent,
