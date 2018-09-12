@@ -129,7 +129,7 @@ import { AuthClient, AccountsClient, ManageUserClient,
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 import { ColorPickerModule } from 'ngx-color-picker';
-
+import { NgxDnDModule } from '@swimlane/ngx-dnd';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthenticationGuard } from './services/authentication.guard';
 import { LoaderComponent } from './loader/loader.component';
@@ -207,7 +207,8 @@ import { TaskStatusesComponent } from './pages/task-status/task-statuses.compone
       easeTime: 300,
       preventDuplicates: true
     }),
-    ColorPickerModule
+    ColorPickerModule,
+    NgxDnDModule
   ],
   declarations: [
     AppComponent,

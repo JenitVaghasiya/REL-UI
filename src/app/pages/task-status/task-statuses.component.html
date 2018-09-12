@@ -10,16 +10,22 @@
     <div *ngIf="isLoadingResults">
       <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
     </div>
-    <mat-table #table [dataSource]="taskStatusDetails" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
 
-        <ng-container matColumnDef="caption">
+    <mat-table ngxDroppable  #table [dataSource]="taskStatusDetails" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+        <ng-container  matColumnDef="dragrow">
+            <mat-header-cell [ngClass]="'col-sm-4'" *matHeaderCellDef  disableClear> </mat-header-cell>
+            <mat-cell  [ngClass]="'col-sm-4'" *matCellDef="let row">
+            <mat-icon  style="cursor: pointer;" ngxDragHandle >more_vert</mat-icon>
+            </mat-cell>
+        </ng-container>
+        <ng-container  matColumnDef="caption">
           <mat-header-cell *matHeaderCellDef  disableClear> Caption </mat-header-cell>
           <!-- mat-sort-header -->
-          <mat-cell class="task-status-caption"  *matCellDef="let row"> <div
 
-          [ngStyle]="{'color' : row.color ?  row.color : '#000000',
+          <mat-cell class="task-status-caption"  *matCellDef="let row">
+
+            <div [ngStyle]="{'color' : row.color ?  row.color : '#000000',
           'background-color': row.backGroundColor ?  row.backGroundColor : 'initial'}"
-
            class="set-colors"> {{row.caption}}</div> </mat-cell>
         </ng-container>
         <ng-container matColumnDef="order">
@@ -47,8 +53,9 @@
             </button>
           </mat-cell>
         </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        <mat-row ngxDraggable *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-header-row ngxDraggable="['restricted-target']" *matHeaderRowDef="displayedColumns"></mat-header-row>
       </mat-table>
       <div class="no-record-found" *ngIf="!taskStatusDetails || (taskStatusDetails && taskStatusDetails.data.length === 0)"> No Record Found.</div>
       <mat-paginator #paginator [length]="resultsLength"  [pageIndex]="0"

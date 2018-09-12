@@ -36,10 +36,12 @@ import { ToastrService } from 'ngx-toastr';
 import Utility from 'utility/utility';
 import { TaskStatusDialogComponent } from './task-status-dialog/task-status-dialog.component';
 import * as _ from 'underscore';
+import { DroppableDirective } from '@swimlane/ngx-dnd';
+
 @Component({
   selector: 'app-task-statuses',
   templateUrl: './task-statuses.component.html',
-  styleUrls: ['./task-statuses.component.scss']
+  styleUrls: ['./task-statuses.component.scss'], providers:[DroppableDirective]
 })
 export class TaskStatusesComponent implements OnInit, OnDestroy {
   @ViewChild('taskStatusDiv', { read: ViewContainerRef })
@@ -47,6 +49,7 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
   txtCommonSearch = '';
   pageTitle = 'Task Status Management';
   displayedColumns: string[] = [
+    'dragrow',
     'caption',
     'order',
     'disabled',
