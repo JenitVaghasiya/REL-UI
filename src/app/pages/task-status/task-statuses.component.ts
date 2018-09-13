@@ -67,6 +67,9 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
   isRateLimitReached = false;
   isSuperadmin = false;
   userInfoModel: UserInfoModel = new UserInfoModel();
+  lastDragedRows: TaskStatusDetailDto[];
+  beforeDragedRowIndex: number;
+  afterDragedRowIndex: number;
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
@@ -136,7 +139,12 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(
-        data => (this.taskStatusDetails = new MatTableDataSource<TaskStatusDetailDto>(data))
+        data => {
+          data = data && data.length > 0 ?  (data as TaskStatusDetailDto[])
+          .sort((a, b) => a.order < b.order ? -1 : a.order > b.order ? 1 : 0) : [];
+          (this.taskStatusDetails = new MatTableDataSource<TaskStatusDetailDto>
+          (data))
+        }
       );
   }
 
@@ -172,5 +180,45 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     sessionStorage.removeItem('TaskStatusSetId');
+  }
+  builderDrop(event: any) {
+
+    this.afterDragedRowIndex = event.dropIndex;
+    if (this.afterDragedRowIndex < this.beforeDragedRowIndex) {
+      const neworder = this.lastDragedRows[this.afterDragedRowIndex].order;
+      for (let i = this.afterDragedRowIndex; i < this.beforeDragedRowIndex; i++) {
+        this.lastDragedRows[i].order = this.lastDragedRows[i + 1].order;
+      }
+      this.lastDragedRows[this.beforeDragedRowIndex].order = neworder;
+    } else if (this.afterDragedRowIndex > this.beforeDragedRowIndex) {
+      const neworder = this.lastDragedRows[this.afterDragedRowIndex].order;
+      for (let i = this.afterDragedRowIndex; i > this.beforeDragedRowIndex; i--) {
+        this.lastDragedRows[i].order = this.lastDragedRows[i - 1].order;
+      }
+      this.lastDragedRows[this.beforeDragedRowIndex].order = neworder;
+    }
+    this.lastDragedRows.forEach( async (element, index) => {
+      this.taskStatusDetails.data.filter(w => w.id === element.id)[0].order = element.order;
+      const res = await this.taskStatusDetailClient.updateTaskstatusDetailOrder(element.taskStatusSetId, element.id,
+         element.order).toPromise();
+         if (res.successful) {
+          this.toastrService.success(
+            'Task Status Order Updated Successfully',
+            'Alert'
+          );
+        } else {
+          let error = '';
+          res.errorMessages.map(
+            (item, i) =>
+              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
+          this.toastrService.error(error, 'Alert');
+        }
+    });
+  }
+
+  builderDrag(event: any) {
+    this.lastDragedRows = Utility.deepClone(this.taskStatusDetails.data);
+    this.beforeDragedRowIndex = this.lastDragedRows.findIndex(w => w.id === event.value.id);
   }
 }

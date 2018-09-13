@@ -5,8 +5,6 @@
             <input autocomplete="txtCommonSearch" matInput placeholder="Search" [(ngModel)]="txtCommonSearch" (ngModelChange)="getTaskStatuses()" >
         </mat-form-field>
     </div>
-
-
     <div *ngIf="isLoadingResults">
       <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
     </div>
@@ -19,8 +17,8 @@
             </div>
       </div>
       </div>
-      <div ngxDroppable class="mat-table">
-          <div ngxDraggable class="mat-row" *ngFor="let row of taskStatusDetails.data">
+      <div ngxDroppable class="mat-table" [model]="taskStatusDetails.data"  (drag)="builderDrag($event)"   (drop)="builderDrop($event)">
+          <div ngxDraggable class="mat-row"  [model]="taskStatusDetails.data[i]"   *ngFor="let row of taskStatusDetails.data;let i = index">
             <div class="mat-cell drag-col-sm-4" ><mat-icon ngxDragHandle >more_vert</mat-icon></div>
               <div class="mat-cell">  <div [ngStyle]="{'color' : row.color ?  row.color : '#000000',
                 'background-color': row.backGroundColor ?  row.backGroundColor : 'initial'}"
