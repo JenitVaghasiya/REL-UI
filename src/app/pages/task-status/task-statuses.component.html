@@ -10,56 +10,41 @@
     <div *ngIf="isLoadingResults">
       <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
     </div>
+    <div class="mat-table" >
+      <div class="mat-header-row">
+          <div class="mat-header-cell drag-col-sm-4" >
+          </div>
+          <div class="mat-header-cell" *ngFor="let col of displayedColumns1" >
+              {{col}}
+            </div>
+      </div>
+      </div>
+      <div ngxDroppable class="mat-table">
+          <div ngxDraggable class="mat-row" *ngFor="let row of taskStatusDetails.data">
+            <div class="mat-cell drag-col-sm-4" ><mat-icon ngxDragHandle >more_vert</mat-icon></div>
+              <div class="mat-cell">  <div [ngStyle]="{'color' : row.color ?  row.color : '#000000',
+                'background-color': row.backGroundColor ?  row.backGroundColor : 'initial'}"
+                 class="set-colors"> {{row.caption}}</div>
+                </div>
+              <div class="mat-cell"> {{row.order}}</div>
+              <div class="mat-cell"> {{row.disabled ? 'Yes' : 'No'}}</div>
+              <div class="mat-cell"> {{row.createdDate | date:'MM/dd/yyyy' }}</div>
+              <div class="mat-cell"> {{row.modifiedDate | date:'MM/dd/yyyy' }}</div>
 
-    <mat-table ngxDroppable  #table [dataSource]="taskStatusDetails" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
-        <ng-container  matColumnDef="dragrow">
-            <mat-header-cell [ngClass]="'col-sm-4'" *matHeaderCellDef  disableClear> </mat-header-cell>
-            <mat-cell  [ngClass]="'col-sm-4'" *matCellDef="let row">
-            <mat-icon  style="cursor: pointer;" ngxDragHandle >more_vert</mat-icon>
-            </mat-cell>
-        </ng-container>
-        <ng-container  matColumnDef="caption">
-          <mat-header-cell *matHeaderCellDef  disableClear> Caption </mat-header-cell>
-          <!-- mat-sort-header -->
+              <div class="mat-cell">
+                <button matTooltip="Edit"  mat-icon-button (click)="editTaskStatus(row)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            </div>
+      </div>
 
-          <mat-cell class="task-status-caption"  *matCellDef="let row">
 
-            <div [ngStyle]="{'color' : row.color ?  row.color : '#000000',
-          'background-color': row.backGroundColor ?  row.backGroundColor : 'initial'}"
-           class="set-colors"> {{row.caption}}</div> </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="order">
-          <mat-header-cell *matHeaderCellDef  disableClear> Order </mat-header-cell>
-          <!-- mat-sort-header -->
-          <mat-cell *matCellDef="let row"> {{row.order}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="disabled">
-          <mat-header-cell *matHeaderCellDef  disableClear> Disabled </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.disabled ? 'Yes' : 'No'}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="createdDate">
-          <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.createdDate | date:'MM/dd/yyyy' }} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="modifiedDate">
-          <mat-header-cell *matHeaderCellDef> Modified Date </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy'}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="action">
-          <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            <button matTooltip="Edit"  mat-icon-button (click)="editTaskStatus(row)">
-              <mat-icon>edit</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
-
-        <mat-row ngxDraggable *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        <mat-header-row ngxDraggable="['restricted-target']" *matHeaderRowDef="displayedColumns"></mat-header-row>
-      </mat-table>
       <div class="no-record-found" *ngIf="!taskStatusDetails || (taskStatusDetails && taskStatusDetails.data.length === 0)"> No Record Found.</div>
       <mat-paginator #paginator [length]="resultsLength"  [pageIndex]="0"
       [pageSize]="10"
       [pageSizeOptions]="[ 10, 25, 50, 100]"></mat-paginator>
+      <div ngxDroppable="example2">
 
+      </div>
 </card>

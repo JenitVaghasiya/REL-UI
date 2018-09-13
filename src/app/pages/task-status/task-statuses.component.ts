@@ -48,14 +48,13 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
   taskStatusDiv: ViewContainerRef;
   txtCommonSearch = '';
   pageTitle = 'Task Status Management';
-  displayedColumns: string[] = [
-    'dragrow',
-    'caption',
-    'order',
-    'disabled',
-    'createdDate',
-    'modifiedDate',
-    'action'
+  displayedColumns1: string[] = [
+    'Caption',
+    'Order',
+    'Disabled',
+    'Created Date',
+    'Modified Date',
+    'Action'
   ];
   taskStatusDetails = new MatTableDataSource<TaskStatusDetailDto>([]);
   allTaskStatuses: ServiceResponseOfListOfTaskStatusDetailDto = null;
@@ -66,8 +65,6 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
-  @ViewChild(MatSort)
-  sort: MatSort;
   isSuperadmin = false;
   userInfoModel: UserInfoModel = new UserInfoModel();
   constructor(
@@ -90,9 +87,8 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
       taskStatusSetId = sessionStorage.getItem('TaskStatusSetId');
     }
 
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-    merge(this.sort.sortChange, this.paginator.page)
+    merge( this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
@@ -101,9 +97,7 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
           if (this.txtCommonSearch && this.txtCommonSearch.length > 0) {
             const filterResultl = _.clone(this.allTaskStatuses);
             filterResultl.data = filterResultl.data.filter(
-              x => x.caption.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
-              // x.disabled.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
-              x.taskStatusSetTitle.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0)
+              x => x.caption.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0)
               return Observable.of<ServiceResponseOfListOfTaskStatusDetailDto>(filterResultl);
           } else {
             return this.allTaskStatuses ? Observable.of<ServiceResponseOfListOfTaskStatusDetailDto>(this.allTaskStatuses)
