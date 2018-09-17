@@ -2679,7 +2679,7 @@ export interface ITaskStatusDetailClient {
     deleteTaskStatus(id: string): Observable<ServiceResponse>;
     updateTaskStatus(model: TaskStatusDetailForUpdateDto, id: string): Observable<ServiceResponse>;
     getTaskStatusList(id: string): Observable<ServiceResponseOfListOfTaskStatusDetailDto>;
-    updateTaskstatusDetailOrder(taskStatusSetId: string, id: string, newOrderId: number): Observable<ServiceResponse>;
+    updateTaskstatusDetailOrder(updatedtaskStatusdetailList: TaskStatusDetailDto[]): Observable<ServiceResponse>;
 }
 
 @Injectable()
@@ -2971,20 +2971,15 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
         return Observable.of<ServiceResponseOfListOfTaskStatusDetailDto>(<any>null);
     }
 
-    updateTaskstatusDetailOrder(taskStatusSetId: string, id: string, newOrderId: number): Observable<ServiceResponse> {
+    updateTaskstatusDetailOrder(updatedtaskStatusdetailList: TaskStatusDetailDto[]): Observable<ServiceResponse> {
         let url_ = this.baseUrl + "/api/TaskStatusDetail/updateTaskstatusDetailOrder?";
-        if (taskStatusSetId === undefined)
-            throw new Error("The parameter 'taskStatusSetId' must be defined.");
-        else
-            url_ += "taskStatusSetId=" + encodeURIComponent("" + taskStatusSetId) + "&"; 
-        if (id === undefined)
-            throw new Error("The parameter 'id' must be defined.");
-        else
-            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
-        if (newOrderId === undefined || newOrderId === null)
-            throw new Error("The parameter 'newOrderId' must be defined and cannot be null.");
-        else
-            url_ += "newOrderId=" + encodeURIComponent("" + newOrderId) + "&"; 
+        if (updatedtaskStatusdetailList !== undefined)
+            updatedtaskStatusdetailList && updatedtaskStatusdetailList.forEach((item, index) => { 
+                for (let attr in item)
+        			if (item.hasOwnProperty(attr)) {
+        				url_ += "updatedtaskStatusdetailList[" + index + "]." + attr + "=" + encodeURIComponent("" + (<any>item)[attr]) + "&";
+        			}
+            });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

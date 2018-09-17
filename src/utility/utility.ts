@@ -6,6 +6,7 @@ static deepClone(obj) {
   _.each(clone, (value, key) => {
     if (_.isObject(value)) {
       clone[key] = this.deepClone(value);
+      delete clone['constructor'];
     }
   });
   return clone;

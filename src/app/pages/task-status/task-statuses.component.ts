@@ -41,7 +41,7 @@ import { DroppableDirective } from '@swimlane/ngx-dnd';
 @Component({
   selector: 'app-task-statuses',
   templateUrl: './task-statuses.component.html',
-  styleUrls: ['./task-statuses.component.scss'], providers:[DroppableDirective]
+  styleUrls: ['./task-statuses.component.scss'], providers: [DroppableDirective]
 })
 export class TaskStatusesComponent implements OnInit, OnDestroy {
   @ViewChild('taskStatusDiv', { read: ViewContainerRef })
@@ -181,7 +181,7 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     sessionStorage.removeItem('TaskStatusSetId');
   }
-  builderDrop(event: any) {
+  async builderDrop(event: any) {
 
     this.afterDragedRowIndex = event.dropIndex;
     if (this.afterDragedRowIndex < this.beforeDragedRowIndex) {
@@ -197,24 +197,29 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
       }
       this.lastDragedRows[this.beforeDragedRowIndex].order = neworder;
     }
-    this.lastDragedRows.forEach( async (element, index) => {
+    this.lastDragedRows.forEach((element, index) => {
       this.taskStatusDetails.data.filter(w => w.id === element.id)[0].order = element.order;
-      const res = await this.taskStatusDetailClient.updateTaskstatusDetailOrder(element.taskStatusSetId, element.id,
-         element.order).toPromise();
-         if (res.successful) {
-          this.toastrService.success(
-            'Task Status Order Updated Successfully',
-            'Alert'
-          );
-        } else {
-          let error = '';
-          res.errorMessages.map(
-            (item, i) =>
-              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
-          );
-          this.toastrService.error(error, 'Alert');
-        }
+
     });
+    const listStatus = Utility.deepClone(this.taskStatusDetails.data);
+    listStatus.forEach(element => {
+      delete element.taskStatusSetTitle;
+    });
+    console.log(listStatus);
+    const res = await this.taskStatusDetailClient.updateTaskstatusDetailOrder(listStatus).toPromise();
+      if (res.successful) {
+       this.toastrService.success(
+         'Task Status Order Updated Successfully',
+         'Alert'
+       );
+     } else {
+       let error = '';
+       res.errorMessages.map(
+         (item, i) =>
+           (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+       );
+       this.toastrService.error(error, 'Alert');
+     }
   }
 
   builderDrag(event: any) {
