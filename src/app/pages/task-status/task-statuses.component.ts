@@ -205,7 +205,6 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
     listStatus.forEach(element => {
       delete element.taskStatusSetTitle;
     });
-    console.log(listStatus);
     const res = await this.taskStatusDetailClient.updateTaskstatusDetailOrder(listStatus).toPromise();
       if (res.successful) {
        this.toastrService.success(
