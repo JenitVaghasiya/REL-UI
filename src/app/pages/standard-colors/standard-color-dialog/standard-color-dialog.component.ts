@@ -8,10 +8,9 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
-  AccountDto,
-  AspNetRoleDto,
-  CheckListDto,
-  CheckListClient
+  StandardColorDto,
+  StandardColorClient,
+  StandardColorForCreationDto
 } from 'api/apiclient';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
@@ -20,22 +19,20 @@ import { OAuthService } from '../../../services/o-auth.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'checklist-dialog',
-  templateUrl: 'checklist-dialog.component.html',
-  styleUrls: ['checklist-dialog.component.scss']
+  selector: 'standard-color-dialog',
+  templateUrl: 'standard-color-dialog.component.html',
+  styleUrls: ['standard-color-dialog.component.scss']
 })
-export class CheckListDialogComponent implements OnInit {
-  @ViewChild('checkListDiv', { read: ViewContainerRef })
-  checkListDiv: ViewContainerRef;
+export class StandardColorDialogComponent implements OnInit {
+  @ViewChild('standardColorDiv', { read: ViewContainerRef })
+  standardColorDiv: ViewContainerRef;
   public form: FormGroup;
-  public model = new CheckListDto();
-  public accountList: AccountDto[] = new Array<AccountDto>();
-  public roleList: AspNetRoleDto[] = new Array<AspNetRoleDto>();
+  public model = new StandardColorDto();
   constructor(
-    public dialogRef: MatDialogRef<CheckListDialogComponent>,
+    public dialogRef: MatDialogRef<StandardColorDialogComponent>,
     private fb: FormBuilder,
-    private checklistClient: CheckListClient,
-    @Inject(MAT_DIALOG_DATA) public data: CheckListDto,
+    private colorClient: StandardColorClient,
+    @Inject(MAT_DIALOG_DATA) public data: StandardColorDto,
     private toastrService: ToastrService,
     private loaderService: LoaderService,
     private oAuthService: OAuthService,
@@ -45,8 +42,8 @@ export class CheckListDialogComponent implements OnInit {
     const roles = tokenDetail ? tokenDetail.role : null;
 
     let accountId = '';
-    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountCheckList')) {
-      accountId = sessionStorage.getItem('AccountCheckList');
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountColors')) {
+      accountId = sessionStorage.getItem('AccountColors');
     } else {
       accountId = this.oAuthService.getAccountId();
     }
@@ -62,18 +59,19 @@ export class CheckListDialogComponent implements OnInit {
   }
   ngOnInit() {
     this.form = this.fb.group({
-      name: [null, Validators.compose([Validators.required])]
+      name: [null, Validators.compose([Validators.required])],
+      fontColor: [null, Validators.compose([Validators.required])],
+      backGroundColor: [null, Validators.compose([Validators.required])]
     });
   }
-
   onSubmit() {
-    this.loaderService.start(this.checkListDiv);
+    this.loaderService.start(this.standardColorDiv);
     if (!this.model.id) {
-      this.checklistClient.create(this.model).subscribe(e => {
+      this.colorClient.createStandardColor(this.model).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
           this.toastrService.success(
-            'CheckList Created Successfully',
+            'Color Created Successfully',
             'Alert'
           );
           this.dialogRef.close(this.model);
@@ -87,11 +85,11 @@ export class CheckListDialogComponent implements OnInit {
         }
       });
     } else {
-      this.checklistClient.update(this.model, this.model.id).subscribe(e => {
+      this.colorClient.updateStandardColor(this.model, this.model.id).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
           this.toastrService.success(
-            'CheckList Updated Successfully',
+            'Color Updated Successfully',
             'Alert'
           );
           this.dialogRef.close(this.model);

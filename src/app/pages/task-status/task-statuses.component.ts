@@ -37,6 +37,7 @@ import Utility from 'utility/utility';
 import { TaskStatusDialogComponent } from './task-status-dialog/task-status-dialog.component';
 import * as _ from 'underscore';
 import { DroppableDirective } from '@swimlane/ngx-dnd';
+import { ConfirmBoxComponent } from '../confirm-box/confirm-box.component';
 
 @Component({
   selector: 'app-task-statuses',
@@ -50,8 +51,8 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
   pageTitle = 'Task Status Management';
   displayedColumns1: string[] = [
     'Caption',
-    'Order',
-    'Disabled',
+    // 'Order',
+    // 'Disabled',
     'Created Date',
     'Modified Date',
     'Action'
@@ -166,8 +167,14 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
     });
   }
   addTaskStatus() {
+    const temp = new TaskStatusDetailDto();
+    if (this.allTaskStatuses.data.length > 0) {
+      temp.order = Math.max(...this.allTaskStatuses.data.map( w => w.order)) + 1;
+    } else {
+      temp.order = 1;
+    }
     this.dialogRef = this.dialog.open(TaskStatusDialogComponent, {
-      data: null,  disableClose: true
+      data: temp,  disableClose: true
     });
 
     this.dialogRef.afterClosed().subscribe(result => {
@@ -219,6 +226,37 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
        );
        this.toastrService.error(error, 'Alert');
      }
+  }
+
+  deleteTaskStatus(taskStatus: TaskStatusDetailDto) {
+    const dialogRef = this.dialog.open(ConfirmBoxComponent, {
+      data: {
+        message: 'Are you sure, You want to delete?'
+      },
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.taskStatusDetailClient.deleteTaskStatus(taskStatus.id).subscribe(e => {
+          if (e.successful) {
+            this.toastrService.success(
+              'Task Status Set Deleted Successfully',
+              'Alert'
+            );
+            this.allTaskStatuses = null;
+            this.getTaskStatuses();
+          } else {
+            let error = '';
+            e.errorMessages.map(
+              (item, i) =>
+                (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+            );
+            this.toastrService.error(error, 'Alert');
+          }
+        });
+      }
+    });
+
   }
 
   builderDrag(event: any) {

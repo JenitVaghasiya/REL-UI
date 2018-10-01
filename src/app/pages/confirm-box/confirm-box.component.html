@@ -1,0 +1,6 @@
+<h2 mat-dialog-title>Confirmation</h2>
+<mat-dialog-content>{{ confirmMessage }}</mat-dialog-content>
+<mat-dialog-actions>
+    <button type="button" mat-raised-button class="mat-default" [mat-dialog-close]="false">{{ noText }}</button>
+    <button type="button" mat-raised-button [color]="yesColor" [mat-dialog-close]="true">{{ yesText }}</button>
+</mat-dialog-actions>

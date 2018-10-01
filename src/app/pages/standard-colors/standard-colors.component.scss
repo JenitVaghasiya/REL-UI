@@ -1,0 +1,20 @@
+@import '../../../assets/sass/variable';
+
+.my-class {
+  color: white;
+  background-color: red;
+  cursor: pointer;
+}
+
+.task-status-caption {
+  justify-content: start;
+  align-items: center;
+  display: flex;
+}
+.set-colors {
+  padding-left: 10px;padding-top: 10px;
+  margin-right: 20px;
+  border-radius: 7px;
+  height: 40px;
+  width: 90%;
+}

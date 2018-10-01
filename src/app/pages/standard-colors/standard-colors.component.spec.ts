@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaskStatusesComponent } from './task-statuses.component';
+import { StandardColorsComponent } from './standard-colors.component';
 
-describe('CheckListComponent', () => {
-  let component: TaskStatusesComponent;
-  let fixture: ComponentFixture<TaskStatusesComponent>;
+describe('StandardColorsComponent', () => {
+  let component: StandardColorsComponent;
+  let fixture: ComponentFixture<StandardColorsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskStatusesComponent ]
+      declarations: [ StandardColorsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskStatusesComponent);
+    fixture = TestBed.createComponent(StandardColorsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

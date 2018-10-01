@@ -37,6 +37,7 @@ import Utility from 'utility/utility';
 import { TaskStatusSetDialogComponent } from './task-status-set-dialog/task-status-set-dialog.component';
 import * as _ from 'underscore';
 import { Router } from '@angular/router';
+import { ConfirmBoxComponent } from '../confirm-box/confirm-box.component';
 
 @Component({
   selector: 'app-task-status-set',
@@ -51,7 +52,6 @@ export class TaskStatusSetComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'title',
     'accountname',
-    'disabled',
     'createdDate',
     'modifiedDate',
     'action'
@@ -164,6 +164,37 @@ export class TaskStatusSetComponent implements OnInit, OnDestroy {
       }
     });
   }
+  deleteTaskStatusSet(taskStatusSet: TaskStatusSetDto) {
+    const dialogRef = this.dialog.open(ConfirmBoxComponent, {
+      data: {
+        message: 'Are you sure, You want to delete?'
+      },
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.taskStatusClient.deleteTaskStatusSet(taskStatusSet.id).subscribe(e => {
+          if (e.successful) {
+            this.toastrService.success(
+              'Task Status Set Deleted Successfully',
+              'Alert'
+            );
+            this.AllTaskStatusSets = null;
+            this.getTaskStatusSets();
+          } else {
+            let error = '';
+            e.errorMessages.map(
+              (item, i) =>
+                (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+            );
+            this.toastrService.error(error, 'Alert');
+          }
+        });
+      }
+    });
+
+  }
+
   addTaskStatusSet() {
     this.dialogRef = this.dialog.open(TaskStatusSetDialogComponent, {
       data: null,  disableClose: true

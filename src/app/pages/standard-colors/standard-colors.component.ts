@@ -17,7 +17,10 @@ import {
 import {
   CheckListDto,
   ServiceResponseOfListOfCheckListDto,
-  CheckListClient
+  CheckListClient,
+  StandardColorDto,
+  ServiceResponseOfListOfStandardColorDto,
+  StandardColorClient
 } from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
 import { LoaderService } from '../../loader/loader.service';
@@ -34,31 +37,30 @@ import { TokenService } from '../../services/token.service';
 import { UserInfoModel } from 'models/custom.model';
 import { ToastrService } from 'ngx-toastr';
 import Utility from 'utility/utility';
-import { CheckListDialogComponent } from './checklist-dialog/checklist-dialog.component';
+import { StandardColorDialogComponent } from './standard-color-dialog/standard-color-dialog.component';
+import { ConfirmBoxComponent } from '../confirm-box/confirm-box.component';
 
 @Component({
-  selector: 'app-check-list',
-  templateUrl: './checklists.component.html',
-  styleUrls: ['./checklists.component.scss']
+  selector: 'app-standard-colors',
+  templateUrl: './standard-colors.component.html',
+  styleUrls: ['./standard-colors.component.scss']
 })
-export class CheckListComponent implements OnInit, OnDestroy {
-  @ViewChild('checkListDiv', { read: ViewContainerRef })
-  checkListDiv: ViewContainerRef;
+export class StandardColorsComponent implements OnInit, OnDestroy {
+  @ViewChild('standardColorsDiv', { read: ViewContainerRef })
+  standardColorsDiv: ViewContainerRef;
 
-  pageTitle = 'CheckList Management';
+  pageTitle = 'Standard Color Management';
   displayedColumns: string[] = [
     'name',
-    'accountname',
     'createdDate',
     'modifiedDate',
-    // 'status',
     'action'
   ];
-  checkLists = new MatTableDataSource<CheckListDto>([]);
-  AllCheckList: ServiceResponseOfListOfCheckListDto = null;
+  colors = new MatTableDataSource<StandardColorDto>([]);
+  AllColors: ServiceResponseOfListOfStandardColorDto = null;
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
-  dialogRef: MatDialogRef<CheckListDialogComponent>;
+  dialogRef: MatDialogRef<StandardColorDialogComponent>;
   selectedOption: string;
   resultsLength = 0;
   isLoadingResults = true;
@@ -70,7 +72,7 @@ export class CheckListComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
-    public checkListClient: CheckListClient,
+    public colorClient: StandardColorClient,
     public oAuthService: OAuthService,
     public loaderService: LoaderService,
     public tokenService: TokenService,
@@ -79,12 +81,12 @@ export class CheckListComponent implements OnInit, OnDestroy {
     this._sharedService.emitChange(this.pageTitle);
   }
 
-  getCheckList() {
+  getColors() {
     const tokenDetail = this.tokenService.getTokenDetails();
     const roles = tokenDetail ? tokenDetail.role : null;
     let accountId = '';
-    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountCheckList')) {
-      accountId = sessionStorage.getItem('AccountCheckList');
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountColors')) {
+      accountId = sessionStorage.getItem('AccountColors');
     } else {
       accountId = this.oAuthService.getAccountId();
     }
@@ -96,11 +98,11 @@ export class CheckListComponent implements OnInit, OnDestroy {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.AllCheckList
-          ? Observable.of<ServiceResponseOfListOfCheckListDto>(
-              this.AllCheckList
+          return this.AllColors
+          ? Observable.of<ServiceResponseOfListOfStandardColorDto>(
+              this.AllColors
             )
-          : this.checkListClient.getListOfCheckList(accountId);
+          : this.colorClient.getStandardColorList(accountId);
         }),
         map(data => {
           if (!data.successful) {
@@ -111,9 +113,9 @@ export class CheckListComponent implements OnInit, OnDestroy {
           );
           this.toastrService.error(error.toString(), 'Alert');
           }
-          this.AllCheckList = !this.AllCheckList
+          this.AllColors = !this.AllColors
             ? data
-            : this.AllCheckList;
+            : this.AllColors;
           this.resultsLength = data.data.length;
           // below is for static data pagination
           const startPoint = this.paginator.pageIndex * 5;
@@ -124,9 +126,6 @@ export class CheckListComponent implements OnInit, OnDestroy {
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
-          // finalForDisplay.forEach(item => {
-          //   item.status = new StatusModel();
-          // });
           return finalForDisplay;
         }),
         catchError(() => {
@@ -137,43 +136,70 @@ export class CheckListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(
-        data => (this.checkLists = new MatTableDataSource<CheckListDto>(data))
+        data => (this.colors = new MatTableDataSource<StandardColorDto>(data))
       );
   }
 
   ngOnInit() {
-    this.getCheckList();
+    this.getColors();
   }
 
-  editCheckList(checkList: CheckListDto) {
-    const objIns = Utility.deepClone(checkList);
-    this.dialogRef = this.dialog.open(CheckListDialogComponent, {
+  editColor(color: StandardColorDto) {
+    const objIns = Utility.deepClone(color);
+    this.dialogRef = this.dialog.open(StandardColorDialogComponent, {
       data: objIns,  disableClose: true
     });
 
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.AllCheckList = null;
-        this.getCheckList();
+        this.AllColors = null;
+        this.getColors();
       }
     });
   }
-  addCheckList() {
-    this.dialogRef = this.dialog.open(CheckListDialogComponent, {
+  addColor() {
+    this.dialogRef = this.dialog.open(StandardColorDialogComponent, {
       data: null,  disableClose: true
     });
 
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.AllCheckList = null;
-        this.getCheckList();
+        this.AllColors = null;
+        this.getColors();
       }
     });
   }
-  // changeStatus(row: CheckListDto) {
+  deleteColor(color: StandardColorDto) {
+    const dialogRef = this.dialog.open(ConfirmBoxComponent, {
+      data: {
+        message: 'Are you sure, You want to delete?'
+      },
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.colorClient.deleteStandardColor(color.id).subscribe(e => {
+          if (e.successful) {
+            this.toastrService.success(
+              'Color Deleted Successfully',
+              'Alert'
+            );
+            this.AllColors = null;
+            this.getColors();
+          } else {
+            let error = '';
+            e.errorMessages.map(
+              (item, i) =>
+                (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+            );
+            this.toastrService.error(error, 'Alert');
+          }
+        });
+      }
+    });
 
-  // }
+  }
   ngOnDestroy() {
-    sessionStorage.removeItem('AccountCheckList');
+    sessionStorage.removeItem('AccountColors');
   }
 }

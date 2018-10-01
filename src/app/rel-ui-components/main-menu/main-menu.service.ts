@@ -129,12 +129,12 @@ export class MainMenuService {
         budgeColor: ''
       });
       MAINMENUITEMS.push({
-        title: 'Task Statuses',
+        title: 'Standard Color',
         icon: 'fa fa-list-alt',
         active: false,
         groupTitle: false,
         sub: '',
-        routing: '/rel/taskstatuses',
+        routing: '/rel/standard-color',
         externalLink: '',
         budge: '',
         budgeColor: ''

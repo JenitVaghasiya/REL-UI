@@ -53,21 +53,22 @@ export class TaskStatusDialogComponent implements OnInit {
       taskStatusSetId = sessionStorage.getItem('TaskStatusSetId');
     }
 
-    if (this.data) {
+    if (this.data && this.data.id) {
       this.model = this.data;
       if (!this.model.taskStatusSetId) {
         this.model.taskStatusSetId = taskStatusSetId;
       }
     } else {
       this.model.id = null;
+      this.model.order = this.data && this.data.order ? this.data.order : 1;
       this.model.taskStatusSetId = taskStatusSetId;
     }
 
-    this.accountsClient.getStateList().subscribe(res => {
-      if (res.successful) {
-        this.stateList = res.data;
-      }
-    });
+    // this.accountsClient.getStateList().subscribe(res => {
+    //   if (res.successful) {
+    //     this.stateList = res.data;
+    //   }
+    // });
 
 
   }

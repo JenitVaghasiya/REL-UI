@@ -37,9 +37,6 @@ export class TokenService {
     const decoded = token && token.length > 0 && token !== 'null' ? this.jwtDecode(token) : null;
     if (decoded) {
       const day = moment.unix(decoded.exp);
-      // console.log(decoded);
-      // console.log(day.toDate());
-      // console.log(moment(Date.now()).toDate());
       if (day.toDate() <= moment(Date.now()).toDate()) {
         return true;
       } else {

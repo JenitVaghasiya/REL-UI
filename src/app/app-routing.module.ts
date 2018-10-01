@@ -76,6 +76,7 @@ import { InvestorsComponent } from './pages/investors/investors.component';
 import { TaskStatusSetDialogComponent } from './pages/task-status-set/task-status-set-dialog/task-status-set-dialog.component';
 import { TaskStatusSetComponent } from './pages/task-status-set/task-status-set.component';
 import { TaskStatusesComponent } from './pages/task-status/task-statuses.component';
+import { StandardColorsComponent } from './pages/standard-colors/standard-colors.component';
 
 const defaultRoutes: Routes = [
   {
@@ -199,6 +200,14 @@ const defaultRoutes: Routes = [
   {
     path: 'taskstatuses',
     component: TaskStatusesComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['accountadmin', 'superadmin']
+    }
+  },
+  {
+    path: 'standard-color',
+    component: StandardColorsComponent,
     canActivate: [AuthenticationGuard],
     data: {
       expectedRole: ['accountadmin', 'superadmin']

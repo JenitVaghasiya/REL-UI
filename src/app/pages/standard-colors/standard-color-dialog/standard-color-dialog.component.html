@@ -1,0 +1,25 @@
+<card #standardColorDiv [title]=" model.id ? 'Edit Color' : 'Add Color'" [align]="'center'">
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Name" [(ngModel)]="model.name" [formControl]="form.controls['name']">
+      <mat-error *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched">
+        You must include Name
+      </mat-error>
+    </mat-form-field>
+      <mat-form-field >
+          <input matInput [cpOutputFormat]="'hex'"  [(colorPicker)]="model.fontColor" placeholder="Font Color" [(ngModel)]="model.fontColor" [formControl]="form.controls['fontColor']">
+          <mat-error *ngIf="form.controls['fontColor'].hasError('required') && form.controls['fontColor'].touched">
+            You must include Color
+          </mat-error>
+        </mat-form-field>
+      <mat-form-field  >
+          <input matInput [cpOutputFormat]="'hex'" [(colorPicker)]="model.backGroundColor" placeholder="Background Color" [(ngModel)]="model.backGroundColor" [formControl]="form.controls['backGroundColor']">
+          <mat-error *ngIf="form.controls['backGroundColor'].hasError('required') && form.controls['backGroundColor'].touched">
+            You must include BackGround Color
+          </mat-error>
+        </mat-form-field>
+    <button class="btn-margin-top" mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ !model.id ? 'Save' : 'Update' }}</button>
+    <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>
+
+  </form>
+</card>

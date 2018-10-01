@@ -16,10 +16,10 @@
           <mat-header-cell *matHeaderCellDef  disableClear> Title </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="disabled">
+        <!-- <ng-container matColumnDef="disabled">
           <mat-header-cell *matHeaderCellDef  disableClear> Disabled </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.disabled ? 'Yes' : 'No'}} </mat-cell>
-        </ng-container>
+        </ng-container> -->
         <ng-container matColumnDef="accountname">
           <mat-header-cell *matHeaderCellDef> Account Name </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.accountName}} </mat-cell>
@@ -40,6 +40,9 @@
             </button>
             <button matTooltip="Statuses"  mat-icon-button (click)="taskStatusesDetail(row)">
               <mat-icon>list</mat-icon>
+            </button>
+            <button matTooltip="Delete"  color="warn" mat-icon-button (click)="deleteTaskStatusSet(row)">
+              <mat-icon>delete_forever</mat-icon>
             </button>
           </mat-cell>
         </ng-container>

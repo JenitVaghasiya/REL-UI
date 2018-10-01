@@ -179,4 +179,8 @@ export class AccountsComponent implements OnInit {
     sessionStorage.setItem('TaskStatusSetAccountId', account.id);
     this.router.navigate(['/rel/taskstatus-sets']);
   }
+  listColors(account: AccountDto) {
+    sessionStorage.setItem('AccountColors', account.id);
+    this.router.navigate(['/rel/standard-color']);
+  }
 }

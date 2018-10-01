@@ -1,0 +1,44 @@
+<card #standardColorsDiv title="Manage Colors">
+    <button mat-raised-button color="accent" (click)="addColor()">Add Color</button>
+    <div *ngIf="isLoadingResults">
+      <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
+    </div>
+    <mat-table #table [dataSource]="colors" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef  disableClear> Name </mat-header-cell>
+          <!-- mat-sort-header -->
+          <mat-cell *matCellDef="let row">
+              <div [ngStyle]="{'color' : row.fontColor ?  row.fontColor : '#000000',
+              'background-color': row.backGroundColor ?  row.backGroundColor : 'initial'}"
+               class="set-colors"> {{row.name}}</div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="createdDate">
+          <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.createdDate | date:'MM/dd/yyyy' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="modifiedDate">
+          <mat-header-cell *matHeaderCellDef> Modified Date </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy'}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button matTooltip="Edit"  mat-icon-button (click)="editColor(row)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button matTooltip="Delete"  color="warn" mat-icon-button (click)="deleteColor(row)">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <div class="no-record-found" *ngIf="!colors || (colors && colors.data.length === 0)"> No Record Found.</div>
+      <mat-paginator #paginator [length]="resultsLength"  [pageIndex]="0"
+      [pageSize]="10"
+      [pageSizeOptions]="[ 10, 25, 50, 100]"></mat-paginator>
+
+</card>

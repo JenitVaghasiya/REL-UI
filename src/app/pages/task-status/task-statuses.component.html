@@ -24,14 +24,17 @@
                 'background-color': row.backGroundColor ?  row.backGroundColor : 'initial'}"
                  class="set-colors"> {{row.caption}}</div>
                 </div>
-              <div class="mat-cell"> {{row.order}}</div>
-              <div class="mat-cell"> {{row.disabled ? 'Yes' : 'No'}}</div>
+              <!-- <div class="mat-cell"> {{row.order}}</div> -->
+              <!-- <div class="mat-cell"> {{row.disabled ? 'Yes' : 'No'}}</div> -->
               <div class="mat-cell"> {{row.createdDate | date:'MM/dd/yyyy' }}</div>
               <div class="mat-cell"> {{row.modifiedDate | date:'MM/dd/yyyy' }}</div>
 
               <div class="mat-cell">
                 <button matTooltip="Edit"  mat-icon-button (click)="editTaskStatus(row)">
                   <mat-icon>edit</mat-icon>
+                </button>
+                <button matTooltip="Delete"  color="warn" mat-icon-button (click)="deleteTaskStatus(row)">
+                  <mat-icon>delete_forever</mat-icon>
                 </button>
               </div>
             </div>

@@ -8,27 +8,27 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [cpOutputFormat]="'hex'"  [(colorPicker)]="model.color" placeholder="Color" [(ngModel)]="model.color" [formControl]="form.controls['color']">
-      <mat-error *ngIf="form.controls['color'].hasError('required') && form.controls['color'].touched">
-        You must include Color
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
+            <input matInput [cpOutputFormat]="'hex'"  [(colorPicker)]="model.color" placeholder="Color" [(ngModel)]="model.color" [formControl]="form.controls['color']">
+            <mat-error *ngIf="form.controls['color'].hasError('required') && form.controls['color'].touched">
+              You must include Color
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
 
-      <input matInput [cpOutputFormat]="'hex'" [(colorPicker)]="model.backGroundColor" placeholder="Background Color" [(ngModel)]="model.backGroundColor" [formControl]="form.controls['backGroundColor']">
-      <mat-error *ngIf="form.controls['backGroundColor'].hasError('required') && form.controls['backGroundColor'].touched">
-        You must include BackGround Color
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="order" [(ngModel)]="model.order" [ngModelOptions]="{standalone: true}">
+            <input matInput [cpOutputFormat]="'hex'" [(colorPicker)]="model.backGroundColor" placeholder="Background Color" [(ngModel)]="model.backGroundColor" [formControl]="form.controls['backGroundColor']">
+            <mat-error *ngIf="form.controls['backGroundColor'].hasError('required') && form.controls['backGroundColor'].touched">
+              You must include BackGround Color
+            </mat-error>
+          </mat-form-field>
 
-    </mat-form-field>
-    <div class="text-left mb-module">
+    <!-- <mat-form-field>
+      <input matInput disabled="true" placeholder="order" [(ngModel)]="model.order" [ngModelOptions]="{standalone: true}">
+    </mat-form-field> -->
+    <!-- <div class="text-left mb-module">
       <mat-checkbox [(ngModel)]="model.disabled" [ngModelOptions]="{standalone: true}">
         Disabled
       </mat-checkbox>
-    </div>
+    </div> -->
     <button class="btn-margin-top" mat-raised-button color="primary" type="submit" color="accent" [disabled]="!form.valid">{{ !model.id ? 'Save' : 'Update' }}</button>
     <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>
 

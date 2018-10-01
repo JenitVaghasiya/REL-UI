@@ -125,7 +125,8 @@ import { PageWidgetsComponent } from './pages/widgets/widgets.component';
 import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
 import { AuthClient, AccountsClient, ManageUserClient,
-  InstitutionClient, CheckListClient, LoanClient, InvestorClient, TaskStatusClient, TaskStatusDetailClient } from 'api/apiclient';
+  InstitutionClient, CheckListClient, LoanClient,
+  InvestorClient, TaskStatusClient, TaskStatusDetailClient, StandardColorClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -157,11 +158,15 @@ import { TaskStatusSetComponent } from './pages/task-status-set/task-status-set.
 import { TaskStatusSetDialogComponent } from './pages/task-status-set/task-status-set-dialog/task-status-set-dialog.component';
 import { TaskStatusDialogComponent } from './pages/task-status/task-status-dialog/task-status-dialog.component';
 import { TaskStatusesComponent } from './pages/task-status/task-statuses.component';
+import { ConfirmBoxComponent } from './pages/confirm-box/confirm-box.component';
+import { StandardColorDialogComponent } from './pages/standard-colors/standard-color-dialog/standard-color-dialog.component';
+import { StandardColorsComponent } from './pages/standard-colors/standard-colors.component';
 @NgModule({
   imports: [
     HttpClientModule,
     BrowserModule,
     FormsModule,
+    MatGridListModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatButtonModule,
@@ -309,7 +314,10 @@ import { TaskStatusesComponent } from './pages/task-status/task-statuses.compone
     TaskStatusSetComponent,
     TaskStatusSetDialogComponent,
     TaskStatusesComponent,
-    TaskStatusDialogComponent
+    TaskStatusDialogComponent,
+    ConfirmBoxComponent,
+    StandardColorDialogComponent,
+    StandardColorsComponent
   ],
   entryComponents: [
     DialogResultComponent,
@@ -325,7 +333,9 @@ import { TaskStatusesComponent } from './pages/task-status/task-statuses.compone
     LoanDialogComponent,
     InvestorDialogComponent,
     TaskStatusSetDialogComponent,
-    TaskStatusDialogComponent
+    TaskStatusDialogComponent,
+    ConfirmBoxComponent,
+    StandardColorDialogComponent
   ],
   bootstrap: [AppComponent],
   exports: [],
@@ -344,6 +354,7 @@ import { TaskStatusesComponent } from './pages/task-status/task-statuses.compone
     LoanClient,
     TaskStatusClient,
     TaskStatusDetailClient,
+    StandardColorClient,
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
