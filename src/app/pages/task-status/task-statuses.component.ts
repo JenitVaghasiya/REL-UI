@@ -187,6 +187,7 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     sessionStorage.removeItem('TaskStatusSetId');
+    sessionStorage.removeItem('TaskStatusAccountId');
   }
   async builderDrop(event: any) {
 

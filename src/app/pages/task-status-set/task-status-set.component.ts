@@ -210,6 +210,7 @@ export class TaskStatusSetComponent implements OnInit, OnDestroy {
 
   taskStatusesDetail(statusSet: TaskStatusSetDto) {
     sessionStorage.setItem('TaskStatusSetId', statusSet.id);
+    sessionStorage.setItem('TaskStatusAccountId', statusSet.accountId);
     this.router.navigate(['/rel/taskstatuses']);
   }
 

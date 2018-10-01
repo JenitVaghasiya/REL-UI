@@ -13,7 +13,9 @@ import {
   AccountsClient,
   StateDto,
   TaskStatusDetailClient,
-  TaskStatusDetailDto
+  TaskStatusDetailDto,
+  StandardColorClient,
+  StandardColorDto
 } from 'api/apiclient';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
@@ -32,8 +34,8 @@ export class TaskStatusDialogComponent implements OnInit {
   public form: FormGroup;
   public model = new TaskStatusDetailDto();
   public accountList: AccountDto[] = new Array<AccountDto>();
-  public roleList: AspNetRoleDto[] = new Array<AspNetRoleDto>();
-  stateList: StateDto[] = new Array<StateDto>();
+  public colors: StandardColorDto[] = new Array<StandardColorDto>();
+  taskStatusAccountId: string;
   constructor(
     public dialogRef: MatDialogRef<TaskStatusDialogComponent>,
     private fb: FormBuilder,
@@ -43,16 +45,18 @@ export class TaskStatusDialogComponent implements OnInit {
     private loaderService: LoaderService,
     private oAuthService: OAuthService,
     private tokenService: TokenService,
-    private accountsClient: AccountsClient
+    private colorsClient: StandardColorClient
   ) {
     const tokenDetail = this.tokenService.getTokenDetails();
-    const roles = tokenDetail ? tokenDetail.role : null;
+    // const roles = tokenDetail ? tokenDetail.role : null;
 
     let taskStatusSetId = '';
     if (sessionStorage.getItem('TaskStatusSetId')) {
       taskStatusSetId = sessionStorage.getItem('TaskStatusSetId');
     }
-
+    if (sessionStorage.getItem('TaskStatusAccountId')) {
+      this.taskStatusAccountId = sessionStorage.getItem('TaskStatusAccountId');
+    }
     if (this.data && this.data.id) {
       this.model = this.data;
       if (!this.model.taskStatusSetId) {
@@ -64,11 +68,11 @@ export class TaskStatusDialogComponent implements OnInit {
       this.model.taskStatusSetId = taskStatusSetId;
     }
 
-    // this.accountsClient.getStateList().subscribe(res => {
-    //   if (res.successful) {
-    //     this.stateList = res.data;
-    //   }
-    // });
+    this.colorsClient.getStandardColorList(this.taskStatusAccountId).subscribe(res => {
+      if (res.successful) {
+        this.colors = res.data;
+      }
+    });
 
 
   }
@@ -120,5 +124,10 @@ export class TaskStatusDialogComponent implements OnInit {
         }
       });
     }
+  }
+
+  setColor(color: StandardColorDto) {
+    this.model.color = color.fontColor;
+    this.model.backGroundColor = color.backGroundColor;
   }
 }
