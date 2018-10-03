@@ -22,30 +22,14 @@
           <mat-header-cell *matHeaderCellDef> Modified Date </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy'}} </mat-cell>
         </ng-container>
-        <!-- <ng-container matColumnDef="status">
-          <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-          <mat-cell *matCellDef="let row"   >
-
-                <button mat-button [matMenuTriggerFor]="menu" [ngClass]="'my-class'" (click)="changeStatus(row)">
-                  {{row.status?.name }}
-                </button>
-                <mat-menu #menu="matMenu" yPosition="below" xPosition="before" [overlapTrigger]="false" class="dropdown-menu" >
-                    <button mat-menu-item>
-                      <mat-icon>plus</mat-icon>
-                      <span>Done</span>
-                    </button>
-                    <button mat-menu-item>
-                      <mat-icon>user</mat-icon>
-                      <span>In Progress</span>
-                    </button>
-                </mat-menu>
-          </mat-cell>
-        </ng-container> -->
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
           <mat-cell *matCellDef="let row">
             <button matTooltip="Edit"  mat-icon-button (click)="editCheckList(row)">
               <mat-icon>edit</mat-icon>
+            </button>
+            <button matTooltip="List CheckList Items"  mat-icon-button (click)="checkListItems(row)">
+              <mat-icon>list</mat-icon>
             </button>
           </mat-cell>
         </ng-container>

@@ -952,10 +952,12 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
 }
 
 export interface ICheckListItemsClient {
-    get(checkListId: string, id: string): Observable<FileResponse>;
-    create(checkListId: string, checkListItem: CheckListItemForCreationDto): Observable<FileResponse>;
-    update(checkListId: string, id: string, checkListItem: CheckListItemForUpdateDto): Observable<FileResponse>;
-    getChecklistItems(checklistId: string): Observable<FileResponse>;
+    create(checkListItem: CheckListItemForCreationDto): Observable<ServiceResponse>;
+    delete(id: string): Observable<ServiceResponse>;
+    update(checkListItem: CheckListItemDto, id: string): Observable<ServiceResponse>;
+    get(id: string): Observable<ServiceResponseOfCheckListItemDto>;
+    getChecklistItems(checklistId: string): Observable<ServiceResponseOfListOfCheckListItemDto>;
+    updateChecklistItemsOrder(model: CheckListItemDto[]): Observable<ServiceResponse>;
 }
 
 @Injectable()
@@ -970,11 +972,175 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
-    get(checkListId: string, id: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/GetListItem?";
-        if (checkListId === undefined || checkListId === null)
-            throw new Error("The parameter 'checkListId' must be defined.");
-        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
+    create(checkListItem: CheckListItemForCreationDto): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/checklistitems/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(checkListItem);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processCreate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    delete(id: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/checklistitems/delete?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("delete", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processDelete(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    update(checkListItem: CheckListItemDto, id: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/checklistitems/update?";
+        if (id === undefined)
+            throw new Error("The parameter 'id' must be defined.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(checkListItem);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("put", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processUpdate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    get(id: string): Observable<ServiceResponseOfCheckListItemDto> {
+        let url_ = this.baseUrl + "/api/checklistitems/getlistitem?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -999,151 +1165,41 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
                 try {
                     return this.processGet(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfCheckListItemDto>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfCheckListItemDto>><any>Observable.throw(response_);
         });
     }
 
-    protected processGet(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGet(response: HttpResponseBase): Observable<ServiceResponseOfCheckListItemDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfCheckListItemDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).flatMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<FileResponse>(<any>null);
+        return Observable.of<ServiceResponseOfCheckListItemDto>(<any>null);
     }
 
-    create(checkListId: string, checkListItem: CheckListItemForCreationDto): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/Create";
-        if (checkListId === undefined || checkListId === null)
-            throw new Error("The parameter 'checkListId' must be defined.");
-        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(checkListItem);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("post", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processCreate(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreate(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processCreate(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<FileResponse>(<any>null);
-    }
-
-    update(checkListId: string, id: string, checkListItem: CheckListItemForUpdateDto): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems/{id}";
-        if (checkListId === undefined || checkListId === null)
-            throw new Error("The parameter 'checkListId' must be defined.");
-        url_ = url_.replace("{checkListId}", encodeURIComponent("" + checkListId)); 
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(checkListItem);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
-            return this.http.request("put", url_, transformedOptions_);
-        }).flatMap((response_: any) => {
-            return this.processUpdate(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdate(<any>response_);
-                } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processUpdate(response: HttpResponseBase): Observable<FileResponse> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).flatMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Observable.of<FileResponse>(<any>null);
-    }
-
-    getChecklistItems(checklistId: string): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/checklists/{checklistid}/checklistitems";
-        if (checklistId === undefined || checklistId === null)
+    getChecklistItems(checklistId: string): Observable<ServiceResponseOfListOfCheckListItemDto> {
+        let url_ = this.baseUrl + "/api/checklistitems/GetChecklistItems?";
+        if (checklistId === undefined)
             throw new Error("The parameter 'checklistId' must be defined.");
-        url_ = url_.replace("{checklistId}", encodeURIComponent("" + checklistId)); 
+        else
+            url_ += "checklistId=" + encodeURIComponent("" + checklistId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1164,31 +1220,91 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
                 try {
                     return this.processGetChecklistItems(<any>response_);
                 } catch (e) {
-                    return <Observable<FileResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfListOfCheckListItemDto>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<FileResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfListOfCheckListItemDto>><any>Observable.throw(response_);
         });
     }
 
-    protected processGetChecklistItems(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetChecklistItems(response: HttpResponseBase): Observable<ServiceResponseOfListOfCheckListItemDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Observable.of({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfCheckListItemDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).flatMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<FileResponse>(<any>null);
+        return Observable.of<ServiceResponseOfListOfCheckListItemDto>(<any>null);
+    }
+
+    updateChecklistItemsOrder(model: CheckListItemDto[]): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/checklistitems/UpdateChecklistItemsOrder?";
+        if (model !== undefined)
+            model && model.forEach((item, index) => { 
+                for (let attr in item)
+        			if (item.hasOwnProperty(attr)) {
+        				url_ += "model[" + index + "]." + attr + "=" + encodeURIComponent("" + (<any>item)[attr]) + "&";
+        			}
+            });
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("put", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processUpdateChecklistItemsOrder(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateChecklistItemsOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdateChecklistItemsOrder(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
     }
 }
 
@@ -2679,6 +2795,7 @@ export interface ITaskStatusClient {
     deleteTaskStatusSet(id: string): Observable<ServiceResponse>;
     updateTaskStatusSet(model: TaskStatusSetForUpdateDto, id: string): Observable<ServiceResponse>;
     getTaskStatusSetList(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto>;
+    getTaskStatusSets(accountId: string): Observable<ServiceResponse>;
 }
 
 @Injectable()
@@ -2968,6 +3085,61 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             });
         }
         return Observable.of<ServiceResponseOfListOfTaskStatusSetDto>(<any>null);
+    }
+
+    getTaskStatusSets(accountId: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/taststatussets/gettaskstatussets?";
+        if (accountId === undefined)
+            throw new Error("The parameter 'accountId' must be defined.");
+        else
+            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("get", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetTaskStatusSets(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTaskStatusSets(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetTaskStatusSets(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
     }
 }
 
@@ -4302,9 +4474,12 @@ export interface IServiceResponseOfListOfCheckListDto extends IServiceResponse {
 }
 
 export class CheckListItemForCreationDto implements ICheckListItemForCreationDto {
+    checkListId: string;
     order: number;
-    prompt: string;
-    answerSetId: string;
+    instruction: string;
+    helpContext?: string;
+    taskStatusDetailId: string;
+    disabled: boolean;
 
     constructor(data?: ICheckListItemForCreationDto) {
         if (data) {
@@ -4317,9 +4492,12 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
 
     init(data?: any) {
         if (data) {
+            this.checkListId = data["checkListId"];
             this.order = data["order"];
-            this.prompt = data["prompt"];
-            this.answerSetId = data["answerSetId"];
+            this.instruction = data["instruction"];
+            this.helpContext = data["helpContext"];
+            this.taskStatusDetailId = data["taskStatusDetailId"];
+            this.disabled = data["disabled"];
         }
     }
 
@@ -4332,61 +4510,150 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["checkListId"] = this.checkListId;
         data["order"] = this.order;
-        data["prompt"] = this.prompt;
-        data["answerSetId"] = this.answerSetId;
+        data["instruction"] = this.instruction;
+        data["helpContext"] = this.helpContext;
+        data["taskStatusDetailId"] = this.taskStatusDetailId;
+        data["disabled"] = this.disabled;
         return data; 
     }
 }
 
 export interface ICheckListItemForCreationDto {
+    checkListId: string;
     order: number;
-    prompt: string;
-    answerSetId: string;
+    instruction: string;
+    helpContext?: string;
+    taskStatusDetailId: string;
+    disabled: boolean;
 }
 
-export class CheckListItemForUpdateDto implements ICheckListItemForUpdateDto {
+export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
+    checkListId: string;
     order: number;
-    prompt: string;
-    answerSetId: string;
+    instruction: string;
+    helpContext?: string;
+    taskStatusDetailId: string;
+    disabled: boolean;
 
-    constructor(data?: ICheckListItemForUpdateDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+    constructor(data?: ICheckListItemDto) {
+        super(data);
     }
 
     init(data?: any) {
+        super.init(data);
         if (data) {
+            this.checkListId = data["checkListId"];
             this.order = data["order"];
-            this.prompt = data["prompt"];
-            this.answerSetId = data["answerSetId"];
+            this.instruction = data["instruction"];
+            this.helpContext = data["helpContext"];
+            this.taskStatusDetailId = data["taskStatusDetailId"];
+            this.disabled = data["disabled"];
         }
     }
 
-    static fromJS(data: any): CheckListItemForUpdateDto {
+    static fromJS(data: any): CheckListItemDto {
         data = typeof data === 'object' ? data : {};
-        let result = new CheckListItemForUpdateDto();
+        let result = new CheckListItemDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["checkListId"] = this.checkListId;
         data["order"] = this.order;
-        data["prompt"] = this.prompt;
-        data["answerSetId"] = this.answerSetId;
+        data["instruction"] = this.instruction;
+        data["helpContext"] = this.helpContext;
+        data["taskStatusDetailId"] = this.taskStatusDetailId;
+        data["disabled"] = this.disabled;
+        super.toJSON(data);
         return data; 
     }
 }
 
-export interface ICheckListItemForUpdateDto {
+export interface ICheckListItemDto extends IBaseDto {
+    checkListId: string;
     order: number;
-    prompt: string;
-    answerSetId: string;
+    instruction: string;
+    helpContext?: string;
+    taskStatusDetailId: string;
+    disabled: boolean;
+}
+
+export class ServiceResponseOfCheckListItemDto extends ServiceResponse implements IServiceResponseOfCheckListItemDto {
+    data?: CheckListItemDto;
+
+    constructor(data?: IServiceResponseOfCheckListItemDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.data = data["data"] ? CheckListItemDto.fromJS(data["data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfCheckListItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfCheckListItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfCheckListItemDto extends IServiceResponse {
+    data?: CheckListItemDto;
+}
+
+export class ServiceResponseOfListOfCheckListItemDto extends ServiceResponse implements IServiceResponseOfListOfCheckListItemDto {
+    data?: CheckListItemDto[];
+
+    constructor(data?: IServiceResponseOfListOfCheckListItemDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            if (data["data"] && data["data"].constructor === Array) {
+                this.data = [];
+                for (let item of data["data"])
+                    this.data.push(CheckListItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ServiceResponseOfListOfCheckListItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceResponseOfListOfCheckListItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.data && this.data.constructor === Array) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceResponseOfListOfCheckListItemDto extends IServiceResponse {
+    data?: CheckListItemDto[];
 }
 
 export class InstitutionForCreationDto implements IInstitutionForCreationDto {
@@ -5705,6 +5972,7 @@ export class TaskStatusSetDto extends BaseDto implements ITaskStatusSetDto {
     disabled: boolean;
     accountId: string;
     accountName?: string;
+    taskStatusDetail?: TaskStatusDetailDto[];
 
     constructor(data?: ITaskStatusSetDto) {
         super(data);
@@ -5717,6 +5985,11 @@ export class TaskStatusSetDto extends BaseDto implements ITaskStatusSetDto {
             this.disabled = data["disabled"];
             this.accountId = data["accountId"];
             this.accountName = data["accountName"];
+            if (data["taskStatusDetail"] && data["taskStatusDetail"].constructor === Array) {
+                this.taskStatusDetail = [];
+                for (let item of data["taskStatusDetail"])
+                    this.taskStatusDetail.push(TaskStatusDetailDto.fromJS(item));
+            }
         }
     }
 
@@ -5733,6 +6006,11 @@ export class TaskStatusSetDto extends BaseDto implements ITaskStatusSetDto {
         data["disabled"] = this.disabled;
         data["accountId"] = this.accountId;
         data["accountName"] = this.accountName;
+        if (this.taskStatusDetail && this.taskStatusDetail.constructor === Array) {
+            data["taskStatusDetail"] = [];
+            for (let item of this.taskStatusDetail)
+                data["taskStatusDetail"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data; 
     }
@@ -5743,6 +6021,64 @@ export interface ITaskStatusSetDto extends IBaseDto {
     disabled: boolean;
     accountId: string;
     accountName?: string;
+    taskStatusDetail?: TaskStatusDetailDto[];
+}
+
+export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+
+    constructor(data?: ITaskStatusDetailDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.caption = data["caption"];
+            this.color = data["color"];
+            this.backGroundColor = data["backGroundColor"];
+            this.order = data["order"];
+            this.taskStatusSetId = data["taskStatusSetId"];
+            this.disabled = data["disabled"];
+            this.taskStatusSetTitle = data["taskStatusSetTitle"];
+        }
+    }
+
+    static fromJS(data: any): TaskStatusDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaskStatusDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["caption"] = this.caption;
+        data["color"] = this.color;
+        data["backGroundColor"] = this.backGroundColor;
+        data["order"] = this.order;
+        data["taskStatusSetId"] = this.taskStatusSetId;
+        data["disabled"] = this.disabled;
+        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITaskStatusDetailDto extends IBaseDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
 }
 
 export class TaskStatusSetForCreationDto implements ITaskStatusSetForCreationDto {
@@ -5907,63 +6243,6 @@ export interface IServiceResponseOfTaskStatusDetailDto extends IServiceResponse 
     data?: TaskStatusDetailDto;
 }
 
-export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
-    caption: string;
-    color: string;
-    backGroundColor: string;
-    order: number;
-    taskStatusSetId: string;
-    disabled: boolean;
-    taskStatusSetTitle?: string;
-
-    constructor(data?: ITaskStatusDetailDto) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.caption = data["caption"];
-            this.color = data["color"];
-            this.backGroundColor = data["backGroundColor"];
-            this.order = data["order"];
-            this.taskStatusSetId = data["taskStatusSetId"];
-            this.disabled = data["disabled"];
-            this.taskStatusSetTitle = data["taskStatusSetTitle"];
-        }
-    }
-
-    static fromJS(data: any): TaskStatusDetailDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TaskStatusDetailDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["caption"] = this.caption;
-        data["color"] = this.color;
-        data["backGroundColor"] = this.backGroundColor;
-        data["order"] = this.order;
-        data["taskStatusSetId"] = this.taskStatusSetId;
-        data["disabled"] = this.disabled;
-        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface ITaskStatusDetailDto extends IBaseDto {
-    caption: string;
-    color: string;
-    backGroundColor: string;
-    order: number;
-    taskStatusSetId: string;
-    disabled: boolean;
-    taskStatusSetTitle?: string;
-}
-
 export class TaskStatusDetailForCreationDto implements ITaskStatusDetailForCreationDto {
     caption: string;
     color: string;
@@ -6123,13 +6402,6 @@ export class ServiceResponseOfListOfTaskStatusDetailDto extends ServiceResponse 
 
 export interface IServiceResponseOfListOfTaskStatusDetailDto extends IServiceResponse {
     data?: TaskStatusDetailDto[];
-}
-
-export interface FileResponse {
-    data: Blob;
-    status: number;
-    fileName?: string;
-    headers?: { [name: string]: any };
 }
 
 export class SwaggerException extends Error {

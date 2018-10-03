@@ -77,6 +77,7 @@ import { TaskStatusSetDialogComponent } from './pages/task-status-set/task-statu
 import { TaskStatusSetComponent } from './pages/task-status-set/task-status-set.component';
 import { TaskStatusesComponent } from './pages/task-status/task-statuses.component';
 import { StandardColorsComponent } from './pages/standard-colors/standard-colors.component';
+import { ChecklistItemsComponent } from './pages/checklist-items/checklist-items.component';
 
 const defaultRoutes: Routes = [
   {
@@ -200,6 +201,14 @@ const defaultRoutes: Routes = [
   {
     path: 'taskstatuses',
     component: TaskStatusesComponent,
+    canActivate: [AuthenticationGuard],
+    data: {
+      expectedRole: ['accountadmin', 'superadmin']
+    }
+  },
+  {
+    path: 'checklist-items',
+    component: ChecklistItemsComponent,
     canActivate: [AuthenticationGuard],
     data: {
       expectedRole: ['accountadmin', 'superadmin']

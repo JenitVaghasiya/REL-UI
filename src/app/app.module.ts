@@ -126,7 +126,7 @@ import { FooterComponent } from './rel-ui-components/footer/footer.component';
 import { AdditionNavbarComponent } from './rel-ui-components/addition-navbar/addition-navbar.component';
 import { AuthClient, AccountsClient, ManageUserClient,
   InstitutionClient, CheckListClient, LoanClient,
-  InvestorClient, TaskStatusClient, TaskStatusDetailClient, StandardColorClient } from 'api/apiclient';
+  InvestorClient, TaskStatusClient, TaskStatusDetailClient, StandardColorClient, CheckListItemsClient } from 'api/apiclient';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Globals } from './globals';
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -161,6 +161,8 @@ import { TaskStatusesComponent } from './pages/task-status/task-statuses.compone
 import { ConfirmBoxComponent } from './pages/confirm-box/confirm-box.component';
 import { StandardColorDialogComponent } from './pages/standard-colors/standard-color-dialog/standard-color-dialog.component';
 import { StandardColorsComponent } from './pages/standard-colors/standard-colors.component';
+import { ChecklistItemsComponent } from './pages/checklist-items/checklist-items.component';
+import { StatusesDialogComponent } from './pages/checklist-items/statuses-dialog/statuses-dialog.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -317,7 +319,9 @@ import { StandardColorsComponent } from './pages/standard-colors/standard-colors
     TaskStatusDialogComponent,
     ConfirmBoxComponent,
     StandardColorDialogComponent,
-    StandardColorsComponent
+    StandardColorsComponent,
+    ChecklistItemsComponent,
+    StatusesDialogComponent
   ],
   entryComponents: [
     DialogResultComponent,
@@ -335,7 +339,8 @@ import { StandardColorsComponent } from './pages/standard-colors/standard-colors
     TaskStatusSetDialogComponent,
     TaskStatusDialogComponent,
     ConfirmBoxComponent,
-    StandardColorDialogComponent
+    StandardColorDialogComponent,
+    StatusesDialogComponent
   ],
   bootstrap: [AppComponent],
   exports: [],
@@ -355,6 +360,7 @@ import { StandardColorsComponent } from './pages/standard-colors/standard-colors
     TaskStatusClient,
     TaskStatusDetailClient,
     StandardColorClient,
+    CheckListItemsClient,
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

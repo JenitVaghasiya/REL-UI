@@ -35,6 +35,7 @@ import { UserInfoModel } from 'models/custom.model';
 import { ToastrService } from 'ngx-toastr';
 import Utility from 'utility/utility';
 import { CheckListDialogComponent } from './checklist-dialog/checklist-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-check-list',
@@ -74,7 +75,8 @@ export class CheckListComponent implements OnInit, OnDestroy {
     public oAuthService: OAuthService,
     public loaderService: LoaderService,
     public tokenService: TokenService,
-    public toastrService: ToastrService
+    public toastrService: ToastrService,
+    public router: Router
   ) {
     this._sharedService.emitChange(this.pageTitle);
   }
@@ -170,9 +172,10 @@ export class CheckListComponent implements OnInit, OnDestroy {
       }
     });
   }
-  // changeStatus(row: CheckListDto) {
-
-  // }
+  checkListItems(checkList: CheckListDto) {
+    sessionStorage.setItem('CheckListId', checkList.id);
+    this.router.navigate(['/rel/checklist-items'])
+  }
   ngOnDestroy() {
     sessionStorage.removeItem('AccountCheckList');
   }
