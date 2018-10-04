@@ -1,4 +1,4 @@
-<card #taskStatusDiv title="Manage Check List Items {{ checkListItems && checkListItems && checkListItems.length > 0 ? 'for Check List' : '' }}">
+<card #taskStatusDiv title="Manage Check List Items">
     <div *ngIf="isLoadingResults">
       <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
     </div>
@@ -39,9 +39,12 @@
                       <input name="helpContext_{{i}}" matInput placeholder="Help Context" [(ngModel)]="row.helpContext">
                   </mat-form-field>
               </div>
-              <div class="mat-cell">
+              <div class="mat-cell" style="padding-right: 10px;">
                       <input name="taskStatusDetailId_{{i}}" type="hidden" placeholder="Status" [(ngModel)]="row.taskStatusDetailId">
-                  <button mat-button  style="width:100%;height: 100%;" >Pending</button>
+                  <button mat-button [matMenuTriggerFor]="menu" (click)="selectedStatusIndex(i)" style="width:100%;height: 100%;" [ngStyle]="{'color' : row.taskStatusDetail?.color ?  row.taskStatusDetail?.color : '#000000',
+                  'background-color': row.taskStatusDetail?.backGroundColor ?  row.taskStatusDetail?.backGroundColor : 'initial'}"
+   >{{ row.taskStatusDetail?.caption }}</button>
+
               </div>
               <div class="mat-cell"> {{row.createdDate | date:'MM/dd/yyyy' }}</div>
               <div class="mat-cell"> {{row.modifiedDate | date:'MM/dd/yyyy' }}</div>
@@ -53,7 +56,7 @@
                       <mat-icon>add</mat-icon>
                   </button>
 
-                <button matTooltip="Cancel"  mat-icon-button (click)="resetItem(row)">
+                <button matTooltip="Cancel"  mat-icon-button (click)="resetItem(row, i)">
                     <mat-icon>clear</mat-icon>
                 </button>
                 <button matTooltip="Delete"  color="warn" *ngIf="(checkListItems && checkListItems.length -1 > i)" mat-icon-button (click)="deleteItem(row)">
@@ -65,5 +68,20 @@
 
       </div>
       <div class="no-record-found" *ngIf="!checkListItems || (checkListItems && checkListItems.length === 0)"> No Record Found.</div>
+      <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before" yPosition="below" style="max-width:auto;">
+        <div class="status-set card-primary" *ngFor="let statusset of statueSetsList;trackBy: trackItem" style="min-width: 300px;">
+          <div style="text-align: center;">
+              <div mat-list-item  color="accent" i18n="@@lblCompany">{{statusset.title}}</div>
+          </div>
+          <div style="padding: 10px;">
+              <mat-grid-list [cols]="3"  rowHeight="2:1" >
+                  <mat-grid-tile style="cursor: pointer;" *ngFor="let item of statusset.taskStatusDetail" [colspan]="1"
+                  [rowspan]="1" [ngStyle]="{'color' : item.color ?  item.color : '#000000',
+                  'background-color': item.backGroundColor ?  item.backGroundColor : 'initial'}" >
+                  <button type="button" style="width:100%;height: 100%;" mat-button (click)="setColor(item)"  > {{ item.caption}} </button> </mat-grid-tile>
+              </mat-grid-list>
+          </div>
 
+        </div>
+    </mat-menu>
 </card>

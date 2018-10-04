@@ -174,6 +174,7 @@ export class CheckListComponent implements OnInit, OnDestroy {
   }
   checkListItems(checkList: CheckListDto) {
     sessionStorage.setItem('CheckListId', checkList.id);
+    sessionStorage.setItem('AccountIdCheckListItem', checkList.accountId);
     this.router.navigate(['/rel/checklist-items'])
   }
   ngOnDestroy() {

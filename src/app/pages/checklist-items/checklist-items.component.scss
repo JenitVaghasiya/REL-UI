@@ -1,3 +1,4 @@
+
 .task-status-caption {
   justify-content: start;
   align-items: center;
@@ -63,4 +64,12 @@
 .mat-cell {
   color: rgba(0, 0, 0, 0.87);
   font-size: 14px;
+}
+::ng-deep .mat-menu-panel {
+  max-width: none !important;
+  max-height: 250px !important;
+}
+.status-set {
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: 400;
 }

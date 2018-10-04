@@ -2795,7 +2795,7 @@ export interface ITaskStatusClient {
     deleteTaskStatusSet(id: string): Observable<ServiceResponse>;
     updateTaskStatusSet(model: TaskStatusSetForUpdateDto, id: string): Observable<ServiceResponse>;
     getTaskStatusSetList(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto>;
-    getTaskStatusSets(accountId: string): Observable<ServiceResponse>;
+    getTaskStatusSets(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto>;
 }
 
 @Injectable()
@@ -3087,7 +3087,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         return Observable.of<ServiceResponseOfListOfTaskStatusSetDto>(<any>null);
     }
 
-    getTaskStatusSets(accountId: string): Observable<ServiceResponse> {
+    getTaskStatusSets(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto> {
         let url_ = this.baseUrl + "/api/taststatussets/gettaskstatussets?";
         if (accountId === undefined)
             throw new Error("The parameter 'accountId' must be defined.");
@@ -3113,14 +3113,14 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
                 try {
                     return this.processGetTaskStatusSets(<any>response_);
                 } catch (e) {
-                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                    return <Observable<ServiceResponseOfListOfTaskStatusSetDto>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+                return <Observable<ServiceResponseOfListOfTaskStatusSetDto>><any>Observable.throw(response_);
         });
     }
 
-    protected processGetTaskStatusSets(response: HttpResponseBase): Observable<ServiceResponse> {
+    protected processGetTaskStatusSets(response: HttpResponseBase): Observable<ServiceResponseOfListOfTaskStatusSetDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -3131,7 +3131,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             return blobToText(responseBlob).flatMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            result200 = resultData200 ? ServiceResponseOfListOfTaskStatusSetDto.fromJS(resultData200) : <any>null;
             return Observable.of(result200);
             });
         } else if (status !== 200 && status !== 204) {
@@ -3139,7 +3139,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Observable.of<ServiceResponse>(<any>null);
+        return Observable.of<ServiceResponseOfListOfTaskStatusSetDto>(<any>null);
     }
 }
 
@@ -4535,6 +4535,7 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
     instruction: string;
     helpContext?: string;
     taskStatusDetailId: string;
+    taskStatusDetail?: TaskStatusDetailDto;
     disabled: boolean;
 
     constructor(data?: ICheckListItemDto) {
@@ -4549,6 +4550,7 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
             this.instruction = data["instruction"];
             this.helpContext = data["helpContext"];
             this.taskStatusDetailId = data["taskStatusDetailId"];
+            this.taskStatusDetail = data["taskStatusDetail"] ? TaskStatusDetailDto.fromJS(data["taskStatusDetail"]) : <any>undefined;
             this.disabled = data["disabled"];
         }
     }
@@ -4567,6 +4569,7 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
         data["instruction"] = this.instruction;
         data["helpContext"] = this.helpContext;
         data["taskStatusDetailId"] = this.taskStatusDetailId;
+        data["taskStatusDetail"] = this.taskStatusDetail ? this.taskStatusDetail.toJSON() : <any>undefined;
         data["disabled"] = this.disabled;
         super.toJSON(data);
         return data; 
@@ -4579,7 +4582,65 @@ export interface ICheckListItemDto extends IBaseDto {
     instruction: string;
     helpContext?: string;
     taskStatusDetailId: string;
+    taskStatusDetail?: TaskStatusDetailDto;
     disabled: boolean;
+}
+
+export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+
+    constructor(data?: ITaskStatusDetailDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.caption = data["caption"];
+            this.color = data["color"];
+            this.backGroundColor = data["backGroundColor"];
+            this.order = data["order"];
+            this.taskStatusSetId = data["taskStatusSetId"];
+            this.disabled = data["disabled"];
+            this.taskStatusSetTitle = data["taskStatusSetTitle"];
+        }
+    }
+
+    static fromJS(data: any): TaskStatusDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaskStatusDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["caption"] = this.caption;
+        data["color"] = this.color;
+        data["backGroundColor"] = this.backGroundColor;
+        data["order"] = this.order;
+        data["taskStatusSetId"] = this.taskStatusSetId;
+        data["disabled"] = this.disabled;
+        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITaskStatusDetailDto extends IBaseDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
 }
 
 export class ServiceResponseOfCheckListItemDto extends ServiceResponse implements IServiceResponseOfCheckListItemDto {
@@ -6022,63 +6083,6 @@ export interface ITaskStatusSetDto extends IBaseDto {
     accountId: string;
     accountName?: string;
     taskStatusDetail?: TaskStatusDetailDto[];
-}
-
-export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
-    caption: string;
-    color: string;
-    backGroundColor: string;
-    order: number;
-    taskStatusSetId: string;
-    disabled: boolean;
-    taskStatusSetTitle?: string;
-
-    constructor(data?: ITaskStatusDetailDto) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.caption = data["caption"];
-            this.color = data["color"];
-            this.backGroundColor = data["backGroundColor"];
-            this.order = data["order"];
-            this.taskStatusSetId = data["taskStatusSetId"];
-            this.disabled = data["disabled"];
-            this.taskStatusSetTitle = data["taskStatusSetTitle"];
-        }
-    }
-
-    static fromJS(data: any): TaskStatusDetailDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TaskStatusDetailDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["caption"] = this.caption;
-        data["color"] = this.color;
-        data["backGroundColor"] = this.backGroundColor;
-        data["order"] = this.order;
-        data["taskStatusSetId"] = this.taskStatusSetId;
-        data["disabled"] = this.disabled;
-        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface ITaskStatusDetailDto extends IBaseDto {
-    caption: string;
-    color: string;
-    backGroundColor: string;
-    order: number;
-    taskStatusSetId: string;
-    disabled: boolean;
-    taskStatusSetTitle?: string;
 }
 
 export class TaskStatusSetForCreationDto implements ITaskStatusSetForCreationDto {

@@ -18,7 +18,11 @@ import {
 import {
   CheckListItemDto,
   ServiceResponseOfListOfCheckListItemDto,
-  CheckListItemsClient
+  CheckListItemsClient,
+  TaskStatusClient,
+  ServiceResponseOfListOfTaskStatusSetDto,
+  TaskStatusSetDto,
+  TaskStatusDetailDto
 } from 'api/apiclient';
 import { OAuthService } from '../../services/o-auth.service';
 import { LoaderService } from '../../loader/loader.service';
@@ -71,10 +75,13 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
   lastDragedRows: CheckListItemDto[];
   beforeDragedRowIndex: number;
   afterDragedRowIndex: number;
+  statueSetsList: TaskStatusSetDto[];
+  selectedItemIndex:number;
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
     public checkListItemClient: CheckListItemsClient,
+    public statusClient: TaskStatusClient,
     public oAuthService: OAuthService,
     public loaderService: LoaderService,
     public tokenService: TokenService,
@@ -82,6 +89,13 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
     public cdr: ChangeDetectorRef
   ) {
     this._sharedService.emitChange(this.pageTitle);
+    const accountid = sessionStorage.getItem('AccountIdCheckListItem');
+this.statusClient.getTaskStatusSets(accountid )
+.subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
+  console.log(res);
+  this.statueSetsList = res.data;
+  console.log(this.statueSetsList);
+});
   }
 
   getCheckListItems() {
@@ -139,7 +153,7 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
           data = data && data.length > 0 ?  (data as CheckListItemDto[])
           .sort((a, b) => a.order < b.order ? -1 : a.order > b.order ? 1 : 0) : [];
 
-          (this.checkListItems = data);
+            this.checkListItems = data;
             const newItem = new CheckListItemDto();
             newItem.checkListId = checkListId;
             newItem.order = this.checkListItems.length > 0 ?
@@ -256,20 +270,18 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
      }
   }
 
-  resetItem(checkListItem: CheckListItemDto) {
-    if (checkListItem.id) {
-      // checkListItem = this.allCheckListItems.data.filter(w => w.id  === checkListItem.id).length > 0 ?
-      // this.allCheckListItems.data.filter(w => w.id  === checkListItem.id)[0] : checkListItem;
-
-      // console.log(checkListItem);
-      this.allCheckListItems = null;
-      this.getCheckListItems();
+  resetItem(checkListItem: CheckListItemDto, index: number) {
+    if (checkListItem.id && this.allCheckListItems.data.filter(w => w.id  === checkListItem.id).length > 0) {
+      const x = this.allCheckListItems.data.filter(w => w.id  === checkListItem.id)[0];
+      this.checkListItems[index].instruction =  x.instruction;
+      this.checkListItems[index].helpContext =  x.helpContext;
+      this.checkListItems[index].taskStatusDetail =  x.taskStatusDetail;
+      this.checkListItems[index].taskStatusDetailId =  x.taskStatusDetailId;
     } else {
       checkListItem.helpContext = '';
       checkListItem.instruction = '';
       checkListItem.taskStatusDetailId = '';
     }
-    this.cdr.detectChanges();
   }
 
   deleteItem(checkListItem: CheckListItemDto) {
@@ -306,5 +318,18 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
   builderDrag(event: any) {
     this.lastDragedRows = Utility.deepClone(this.checkListItems);
     this.beforeDragedRowIndex = this.lastDragedRows.findIndex(w => w.id === event.value.id);
+  }
+
+  selectedStatusIndex(index: number) {
+    this.selectedItemIndex = index;
+  }
+  setColor(color: TaskStatusDetailDto) {
+    if (this.selectedItemIndex !== undefined) {
+    this.checkListItems[this.selectedItemIndex].taskStatusDetail = color;
+    this.checkListItems[this.selectedItemIndex].taskStatusDetailId = color.id;
+    }
+  }
+  trackItem (index: number, item: any) {
+    return item.trackId;
   }
 }
