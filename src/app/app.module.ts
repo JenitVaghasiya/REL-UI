@@ -162,7 +162,6 @@ import { ConfirmBoxComponent } from './pages/confirm-box/confirm-box.component';
 import { StandardColorDialogComponent } from './pages/standard-colors/standard-color-dialog/standard-color-dialog.component';
 import { StandardColorsComponent } from './pages/standard-colors/standard-colors.component';
 import { ChecklistItemsComponent } from './pages/checklist-items/checklist-items.component';
-import { StatusesDialogComponent } from './pages/checklist-items/statuses-dialog/statuses-dialog.component';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -320,8 +319,7 @@ import { StatusesDialogComponent } from './pages/checklist-items/statuses-dialog
     ConfirmBoxComponent,
     StandardColorDialogComponent,
     StandardColorsComponent,
-    ChecklistItemsComponent,
-    StatusesDialogComponent
+    ChecklistItemsComponent
   ],
   entryComponents: [
     DialogResultComponent,
@@ -339,8 +337,7 @@ import { StatusesDialogComponent } from './pages/checklist-items/statuses-dialog
     TaskStatusSetDialogComponent,
     TaskStatusDialogComponent,
     ConfirmBoxComponent,
-    StandardColorDialogComponent,
-    StatusesDialogComponent
+    StandardColorDialogComponent
   ],
   bootstrap: [AppComponent],
   exports: [],

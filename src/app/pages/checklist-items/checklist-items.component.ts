@@ -43,8 +43,6 @@ import Utility from 'utility/utility';
 import * as _ from 'underscore';
 import { DroppableDirective } from '@swimlane/ngx-dnd';
 import { ConfirmBoxComponent } from '../confirm-box/confirm-box.component';
-import { StatusesDialogComponent } from './statuses-dialog/statuses-dialog.component';
-
 @Component({
   selector: 'app-checklist-items',
   templateUrl: './checklist-items.component.html',
@@ -68,7 +66,6 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
   ];
   checkListItems: CheckListItemDto[] = [];
   allCheckListItems: ServiceResponseOfListOfCheckListItemDto = null;
-  dialogRef: MatDialogRef<StatusesDialogComponent>;
   selectedOption: string;
   resultsLength = 0;
   isLoadingResults = true;
