@@ -4,7 +4,8 @@ import {
   ViewChild,
   OnDestroy,
   ViewContainerRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Input
 } from '@angular/core';
 import { SharedService } from '../../layouts/shared-service';
 import {
@@ -53,6 +54,8 @@ import { StatusesDialogComponent } from './statuses-dialog/statuses-dialog.compo
 export class ChecklistItemsComponent implements OnInit, OnDestroy {
   @ViewChild('checkListItemDiv', { read: ViewContainerRef })
   checkListItemDiv: ViewContainerRef;
+  @Input('checkListId') checkListId = '';
+  @Input('accountId') accountId = '';
   txtCommonSearch = '';
   pageTitle = 'Check List Item Management';
   displayedColumns1: string[] = [
@@ -89,23 +92,19 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
     public cdr: ChangeDetectorRef
   ) {
     this._sharedService.emitChange(this.pageTitle);
-    const accountid = sessionStorage.getItem('AccountIdCheckListItem');
-this.statusClient.getTaskStatusSets(accountid )
-.subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
-  console.log(res);
-  this.statueSetsList = res.data;
-  console.log(this.statueSetsList);
-});
+    if (!this.accountId || this.accountId.length <= 0) {
+      this.accountId = sessionStorage.getItem('AccountIdCheckListItem');
+    }
+    this.statusClient.getTaskStatusSets(this.accountId )
+    .subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
+      this.statueSetsList = res.data;
+    });
   }
 
   getCheckListItems() {
-    // const tokenDetail = this.tokenService.getTokenDetails();
-    // const roles = tokenDetail ? tokenDetail.role : null;
-    let checkListId = '';
-    if (sessionStorage.getItem('CheckListId')) {
-      checkListId = sessionStorage.getItem('CheckListId');
+    if ((!this.checkListId || this.checkListId.length <= 0) && (sessionStorage.getItem('CheckListId'))) {
+      this.checkListId = sessionStorage.getItem('CheckListId');
     }
-
 
     merge()
       .pipe(
@@ -121,7 +120,7 @@ this.statusClient.getTaskStatusSets(accountid )
               return Observable.of<ServiceResponseOfListOfCheckListItemDto>(filterResultl);
           } else {
             return this.allCheckListItems ? Observable.of<ServiceResponseOfListOfCheckListItemDto>(this.allCheckListItems)
-          : this.checkListItemClient.getChecklistItems(checkListId);
+          : this.checkListItemClient.getChecklistItems(this.checkListId);
           }
         }),
         map(data => {
@@ -155,7 +154,7 @@ this.statusClient.getTaskStatusSets(accountid )
 
             this.checkListItems = data;
             const newItem = new CheckListItemDto();
-            newItem.checkListId = checkListId;
+            newItem.checkListId = this.checkListId;
             newItem.taskStatusDetail = new TaskStatusDetailDto();
             newItem.taskStatusDetail.caption = 'Plese Select';
             newItem.taskStatusDetail.backGroundColor = '#f2f2f2';
