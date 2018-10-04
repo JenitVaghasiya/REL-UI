@@ -76,7 +76,7 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
   beforeDragedRowIndex: number;
   afterDragedRowIndex: number;
   statueSetsList: TaskStatusSetDto[];
-  selectedItemIndex:number;
+  selectedItemIndex: number;
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
@@ -156,6 +156,9 @@ this.statusClient.getTaskStatusSets(accountid )
             this.checkListItems = data;
             const newItem = new CheckListItemDto();
             newItem.checkListId = checkListId;
+            newItem.taskStatusDetail = new TaskStatusDetailDto();
+            newItem.taskStatusDetail.caption = 'Plese Select';
+            newItem.taskStatusDetail.backGroundColor = '#f2f2f2';
             newItem.order = this.checkListItems.length > 0 ?
             this.checkListItems[ this.checkListItems.length - 1].order + 1 : 1;
               this.checkListItems.push(newItem);
@@ -168,10 +171,9 @@ this.statusClient.getTaskStatusSets(accountid )
     this.getCheckListItems();
   }
 
-  addListItem(item: CheckListItemDto) {
-    if (this.validateData()) {
+  addListItem(item: CheckListItemDto, index: any) {
+    if (this.validateData(item)) {
       if (!item.id) {
-        item.taskStatusDetailId = '24cabd63-14e3-4585-ab4e-08d624ed225b';
         this.checkListItemClient.create(item).subscribe(e => {
           this.loaderService.stop();
           if (e.successful) {
@@ -193,8 +195,8 @@ this.statusClient.getTaskStatusSets(accountid )
       }
     }
   }
-  updateListItem(item: CheckListItemDto) {
-    if (this.validateData()) {
+  updateListItem(item: CheckListItemDto, index: any) {
+    if (this.validateData(item)) {
 
       if (item.id) {
         this.checkListItemClient.update(item, item.id).subscribe(e => {
@@ -218,7 +220,20 @@ this.statusClient.getTaskStatusSets(accountid )
       }
     }
   }
-  validateData() {
+  validateData(item: CheckListItemDto) {
+
+    if (!item.instruction || item.instruction.trim().length === 0) {
+      this.toastrService.error('Please instert instruction..', 'Alert');
+      return false;
+    }
+    if (!item.helpContext || item.helpContext.trim().length === 0) {
+      this.toastrService.error('Please instert Help Context..', 'Alert');
+      return false;
+    }
+    if (!item.taskStatusDetailId || item.taskStatusDetailId.trim().length === 0) {
+      this.toastrService.error('Please Select Status..', 'Alert');
+      return false;
+    }
     return true;
   }
 
@@ -284,7 +299,7 @@ this.statusClient.getTaskStatusSets(accountid )
     }
   }
 
-  deleteItem(checkListItem: CheckListItemDto) {
+  deleteItem(checkListItem: CheckListItemDto, index: any) {
     const dialogRef = this.dialog.open(ConfirmBoxComponent, {
       data: {
         message: 'Are you sure, You want to delete?'

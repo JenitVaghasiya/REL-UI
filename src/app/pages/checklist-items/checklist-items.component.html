@@ -49,17 +49,17 @@
               <div class="mat-cell"> {{row.createdDate | date:'MM/dd/yyyy' }}</div>
               <div class="mat-cell"> {{row.modifiedDate | date:'MM/dd/yyyy' }}</div>
               <div class="mat-cell">
-                <button matTooltip="Update"  color="warn" *ngIf="(checkListItems && checkListItems.length -1 > i)" mat-icon-button (click)="updateListItem(row)">
+                <button matTooltip="Update"  name="update_{{i}}" color="accent"  *ngIf="(checkListItems && checkListItems.length -1 > i)" mat-icon-button (click)="updateListItem(row,i)">
                     <mat-icon>done</mat-icon>
                   </button>
-                  <button matTooltip="Add New" *ngIf=" (checkListItems && checkListItems.length -1  === i)" mat-icon-button color="accent" (click)="addListItem(row)">
+                  <button matTooltip="Add New" name="add_{{i}}" color="accent"  *ngIf=" (checkListItems && checkListItems.length -1  === i)" mat-icon-button (click)="addListItem(row,i)">
                       <mat-icon>add</mat-icon>
                   </button>
 
-                <button matTooltip="Cancel"  mat-icon-button (click)="resetItem(row, i)">
+                <button matTooltip="Cancel" name="clear_{{i}}"  mat-icon-button (click)="resetItem(row, i)">
                     <mat-icon>clear</mat-icon>
                 </button>
-                <button matTooltip="Delete"  color="warn" *ngIf="(checkListItems && checkListItems.length -1 > i)" mat-icon-button (click)="deleteItem(row)">
+                <button matTooltip="Delete"  name="delete_{{i}}" color="warn" *ngIf="(checkListItems && checkListItems.length -1 > i)" mat-icon-button (click)="deleteItem(row,i)">
                   <mat-icon>delete_forever</mat-icon>
                 </button>
 
