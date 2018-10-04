@@ -127,6 +127,9 @@ export class TaskStatusDialogComponent implements OnInit {
   }
 
   setColor(color: StandardColorDto) {
+    if (!this.model.id) {
+      this.model.caption = color.name;
+    }
     this.model.color = color.fontColor;
     this.model.backGroundColor = color.backGroundColor;
   }

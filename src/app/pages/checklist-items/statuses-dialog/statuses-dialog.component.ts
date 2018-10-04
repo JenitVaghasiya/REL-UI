@@ -85,46 +85,6 @@ export class StatusesDialogComponent implements OnInit {
 
 
   }
-  onSubmit() {
-    this.loaderService.start(this.taskStatusDiv);
-    if (!this.model.id) {
-      this.taskStatusClient.createTaskStatus(this.model).subscribe(e => {
-        this.loaderService.stop();
-        if (e.successful) {
-          this.toastrService.success(
-            'Task Status Created Successfully',
-            'Alert'
-          );
-          this.dialogRef.close(this.model);
-        } else {
-          let error = '';
-          e.errorMessages.map(
-            (item, i) =>
-              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
-          );
-          this.toastrService.error(error, 'Alert');
-        }
-      });
-    } else {
-      this.taskStatusClient.updateTaskStatus(this.model, this.model.id).subscribe(e => {
-        this.loaderService.stop();
-        if (e.successful) {
-          this.toastrService.success(
-            'Task Status Updated Successfully',
-            'Alert'
-          );
-          this.dialogRef.close(this.model);
-        } else {
-          let error = '';
-          e.errorMessages.map(
-            (item, i) =>
-              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
-          );
-          this.toastrService.error(error, 'Alert');
-        }
-      });
-    }
-  }
 
   setColor(color: StandardColorDto) {
     this.model.color = color.fontColor;

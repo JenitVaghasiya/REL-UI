@@ -6,9 +6,24 @@
       <div class="mat-header-row">
           <div class="mat-header-cell drag-col-sm-4" >
           </div>
-          <div class="mat-header-cell" *ngFor="let col of displayedColumns1" >
-              {{col}}
-            </div>
+          <div class="mat-header-cell" style="padding-right: 10px;" >
+            Instruction
+          </div>
+          <div class="mat-header-cell" style="padding-right: 10px;">
+            Help Context
+          </div>
+          <div class="mat-header-cell center" style="padding-right: 10px;" >
+            Status
+          </div>
+          <div class="mat-header-cell" >
+            Created Date
+          </div>
+          <div class="mat-header-cell" >
+            Modified Date
+          </div>
+          <div class="mat-header-cell" style="padding-left: 10px;" >
+            Action
+          </div>
       </div>
       </div>
       <div ngxDroppable class="mat-table" [model]="checkListItems"  (drag)="builderDrag($event)"   (drop)="builderDrop($event)">
@@ -25,16 +40,12 @@
                   </mat-form-field>
               </div>
               <div class="mat-cell">
-                  <mat-form-field style="padding-right: 10px;">
-                      <input name="taskStatusDetailId_{{i}}" matInput placeholder="Status" [(ngModel)]="row.taskStatusDetailId">
-                  </mat-form-field>
+                      <input name="taskStatusDetailId_{{i}}" type="hidden" placeholder="Status" [(ngModel)]="row.taskStatusDetailId">
+                  <button mat-button  style="width:100%;height: 100%;" >Pending</button>
               </div>
               <div class="mat-cell"> {{row.createdDate | date:'MM/dd/yyyy' }}</div>
               <div class="mat-cell"> {{row.modifiedDate | date:'MM/dd/yyyy' }}</div>
               <div class="mat-cell">
-                <!-- <button matTooltip="Edit"  mat-icon-button (click)="editTaskStatus(row)">
-                  <mat-icon>edit</mat-icon>
-                </button> -->
                 <button matTooltip="Update"  color="warn" *ngIf="(checkListItems && checkListItems.length -1 > i)" mat-icon-button (click)="updateListItem(row)">
                     <mat-icon>done</mat-icon>
                   </button>

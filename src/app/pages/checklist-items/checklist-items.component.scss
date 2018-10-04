@@ -50,8 +50,11 @@
 .mat-header-cell {
   font-size: 12px;
   font-weight: 500;
-}
 
+}
+.center {
+  text-align: center;
+ }
 .mat-cell, .mat-header-cell {
   flex: 1;
   overflow: hidden;

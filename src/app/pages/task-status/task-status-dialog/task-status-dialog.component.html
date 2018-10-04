@@ -24,7 +24,8 @@
     <mat-grid-list [cols]="3"  rowHeight="2:1" >
         <mat-grid-tile style="cursor: pointer;" *ngFor="let item of colors" [colspan]="1"
         [rowspan]="1" [ngStyle]="{'color' : item.fontColor ?  item.fontColor : '#000000',
-        'background-color': item.backGroundColor ?  item.backGroundColor : 'initial'}" > <button type="button" style="width:100%;height: 100%;" mat-button (click)="setColor(item)"  > {{ item.name}} </button> </mat-grid-tile>
+        'background-color': item.backGroundColor ?  item.backGroundColor : 'initial'}" >
+        <button type="button" style="width:100%;height: 100%;" mat-button (click)="setColor(item)"  > {{ item.name}} </button> </mat-grid-tile>
     </mat-grid-list>
     <!-- <mat-form-field>
       <input matInput disabled="true" placeholder="order" [(ngModel)]="model.order" [ngModelOptions]="{standalone: true}">
