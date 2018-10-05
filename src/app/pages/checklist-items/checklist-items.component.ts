@@ -5,7 +5,9 @@ import {
   OnDestroy,
   ViewContainerRef,
   ChangeDetectorRef,
-  Input
+  Input,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { SharedService } from '../../layouts/shared-service';
 import {
@@ -43,19 +45,20 @@ import Utility from 'utility/utility';
 import * as _ from 'underscore';
 import { DroppableDirective } from '@swimlane/ngx-dnd';
 import { ConfirmBoxComponent } from '../confirm-box/confirm-box.component';
+import { ViewEncapsulation } from '@angular/core';
 @Component({
   selector: 'app-checklist-items',
   templateUrl: './checklist-items.component.html',
   styleUrls: ['./checklist-items.component.scss'],
   providers: [DroppableDirective]
 })
-export class ChecklistItemsComponent implements OnInit, OnDestroy {
-  @ViewChild('checkListItemDiv', { read: ViewContainerRef })
-  checkListItemDiv: ViewContainerRef;
+export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
+  // @ViewChild('checkListItemDiv', { read: ViewContainerRef })
+  // checkListItemDiv: ViewContainerRef;
   @Input('checkListId') checkListId = '';
   @Input('accountId') accountId = '';
   txtCommonSearch = '';
-  pageTitle = 'Check List Item Management';
+  // pageTitle = 'Check List Item Management';
   displayedColumns1: string[] = [
     'Instruction',
     'Help Context',
@@ -88,14 +91,21 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
     public toastrService: ToastrService,
     public cdr: ChangeDetectorRef
   ) {
-    this._sharedService.emitChange(this.pageTitle);
+    // this._sharedService.emitChange(this.pageTitle);
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    // Add '${implements OnChanges}' to the class.
     if (!this.accountId || this.accountId.length <= 0) {
-      this.accountId = sessionStorage.getItem('AccountIdCheckListItem');
+      this.accountId = sessionStorage.getItem('AccountCheckList');
     }
     this.statusClient.getTaskStatusSets(this.accountId )
     .subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
       this.statueSetsList = res.data;
     });
+    this.getCheckListItems();
   }
 
   getCheckListItems() {
@@ -164,7 +174,7 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getCheckListItems();
+
   }
 
   addListItem(item: CheckListItemDto, index: any) {
@@ -258,12 +268,19 @@ export class ChecklistItemsComponent implements OnInit, OnDestroy {
     });
     const listStatus = Utility.deepClone(this.checkListItems);
     const finalList = [];
-    listStatus.forEach(element => {
-      delete element.checkListItemSetTitle;
+    listStatus.forEach((element: CheckListItemDto) => {
+      delete element.createdDate;
+      delete element.disabled;
+      delete element.helpContext;
+      delete element.instruction;
+      delete element.modifiedDate;
+      delete element.taskStatusDetail;
+      delete element.taskStatusDetailId;
+      delete element.toJSON;
+      delete element.init;
       if (element.id) {
         finalList.push(element);
       }
-
     });
     const res = await this.checkListItemClient.updateChecklistItemsOrder(finalList).toPromise();
       if (res.successful) {

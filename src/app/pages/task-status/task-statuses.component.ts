@@ -210,8 +210,18 @@ export class TaskStatusesComponent implements OnInit, OnDestroy {
 
     });
     const listStatus = Utility.deepClone(this.taskStatusDetails.data);
-    listStatus.forEach(element => {
+    listStatus.forEach((element: TaskStatusDetailDto ) => {
       delete element.taskStatusSetTitle;
+      delete element.backGroundColor;
+      delete element.caption;
+      delete element.color;
+      delete element.createdDate;
+      delete element.disabled;
+      delete element.init;
+      delete element.modifiedDate;
+      delete element.taskStatusSetId;
+      delete element.taskStatusSetTitle;
+      delete element.toJSON;
     });
     const res = await this.taskStatusDetailClient.updateTaskstatusDetailOrder(listStatus).toPromise();
       if (res.successful) {

@@ -64,10 +64,10 @@ export class CheckListComponent implements OnInit, OnDestroy {
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
-  @ViewChild(MatSort)
-  sort: MatSort;
   isSuperadmin = false;
   userInfoModel: UserInfoModel = new UserInfoModel();
+  accountId = '';
+  flagArray = [];
   constructor(
     public dialog: MatDialog,
     private _sharedService: SharedService,
@@ -84,16 +84,13 @@ export class CheckListComponent implements OnInit, OnDestroy {
   getCheckList() {
     const tokenDetail = this.tokenService.getTokenDetails();
     const roles = tokenDetail ? tokenDetail.role : null;
-    let accountId = '';
     if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountCheckList')) {
-      accountId = sessionStorage.getItem('AccountCheckList');
+      this.accountId = sessionStorage.getItem('AccountCheckList');
     } else {
-      accountId = this.oAuthService.getAccountId();
+      this.accountId = this.oAuthService.getAccountId();
     }
 
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
-    merge(this.sort.sortChange, this.paginator.page)
+    merge(this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
@@ -102,7 +99,7 @@ export class CheckListComponent implements OnInit, OnDestroy {
           ? Observable.of<ServiceResponseOfListOfCheckListDto>(
               this.AllCheckList
             )
-          : this.checkListClient.getListOfCheckList(accountId);
+          : this.checkListClient.getListOfCheckList(this.accountId);
         }),
         map(data => {
           if (!data.successful) {
@@ -117,6 +114,10 @@ export class CheckListComponent implements OnInit, OnDestroy {
             ? data
             : this.AllCheckList;
           this.resultsLength = data.data.length;
+          this.AllCheckList.data.forEach(res => {
+            this.flagArray.push(false);
+          });
+
           // below is for static data pagination
           const startPoint = this.paginator.pageIndex * 5;
           const finalForDisplay = data.data.slice(
@@ -147,36 +148,91 @@ export class CheckListComponent implements OnInit, OnDestroy {
     this.getCheckList();
   }
 
-  editCheckList(checkList: CheckListDto) {
-    const objIns = Utility.deepClone(checkList);
-    this.dialogRef = this.dialog.open(CheckListDialogComponent, {
-      data: objIns,  disableClose: true
-    });
+  // editCheckList(checkList: CheckListDto) {
+  //   const objIns = Utility.deepClone(checkList);
+  //   this.dialogRef = this.dialog.open(CheckListDialogComponent, {
+  //     data: objIns,  disableClose: true
+  //   });
 
-    this.dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.AllCheckList = null;
-        this.getCheckList();
-      }
-    });
-  }
+  //   this.dialogRef.afterClosed().subscribe(result => {
+  //     if (result) {
+  //       this.AllCheckList = null;
+  //       this.getCheckList();
+  //     }
+  //   });
+  // }
   addCheckList() {
-    this.dialogRef = this.dialog.open(CheckListDialogComponent, {
-      data: null,  disableClose: true
-    });
+    this.checkLists.data.push(new CheckListDto());
+    // this.dialogRef = this.dialog.open(CheckListDialogComponent, {
+    //   data: null,  disableClose: true
+    // });
 
-    this.dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.AllCheckList = null;
-        this.getCheckList();
-      }
-    });
+    // this.dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this.AllCheckList = null;
+    //     this.getCheckList();
+    //   }
+    // });
   }
-  checkListItems(checkList: CheckListDto) {
-    sessionStorage.setItem('CheckListId', checkList.id);
-    sessionStorage.setItem('AccountIdCheckListItem', checkList.accountId);
-    this.router.navigate(['/rel/checklist-items'])
+  // checkListItems(checkList: CheckListDto) {
+  //   sessionStorage.setItem('CheckListId', checkList.id);
+  //   sessionStorage.setItem('AccountIdCheckListItem', checkList.accountId);
+  //   this.router.navigate(['/rel/checklist-items'])
+  // }
+
+  updateCheckListList(model: CheckListDto, index: number ) {
+
+    this.loaderService.start(this.checkListDiv);
+    if (!model.id || model.id.trim().length <= 0) {
+      model.accountId = this.accountId;
+      console.log(model);
+      this.checkListClient.create(model).subscribe(e => {
+        this.loaderService.stop();
+        if (e.successful) {
+          this.toastrService.success(
+            'CheckList Created Successfully',
+            'Alert'
+          );
+          this.AllCheckList = null;
+          this.getCheckList();
+        } else {
+          let error = '';
+          e.errorMessages.map(
+            (item, i) =>
+              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
+        }
+      });
+    } else {
+      this.checkListClient.update(model, model.id).subscribe(e => {
+        this.loaderService.stop();
+        if (e.successful) {
+          this.toastrService.success(
+            'CheckList Updated Successfully',
+            'Alert'
+          );
+          this.AllCheckList = null;
+          this.getCheckList();
+        } else {
+          let error = '';
+          e.errorMessages.map(
+            (item, i) =>
+              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
+          this.toastrService.error(error, 'Alert');
+        }
+      });
+    }
   }
+  resetCheckList(checkList: CheckListDto, index: number) {
+    if (checkList.id && this.AllCheckList.data.filter(w => w.id  === checkList.id).length > 0) {
+      const x = this.AllCheckList.data.filter(w => w.id  === checkList.id)[0];
+      this.checkLists[index].name =  x.name;
+    } else {
+      checkList.name = '';
+    }
+  }
+
   ngOnDestroy() {
     sessionStorage.removeItem('AccountCheckList');
   }

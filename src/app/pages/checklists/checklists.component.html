@@ -1,41 +1,49 @@
-<card #checkListDiv title="Manage CheckList">
+<card #checkListDiv title="Manage CheckList for {{ checkLists && checkLists.data && checkLists.data.length > 0 ? checkLists.data[0].accountName : ''  }}">
     <button mat-raised-button color="accent" (click)="addCheckList()">Add CheckList</button>
+    <div style="min-height: 5px;">
+      &nbsp;
+    </div>
     <div *ngIf="isLoadingResults">
       <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
     </div>
-    <mat-table #table [dataSource]="checkLists" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+      <div class="mat-table" *ngFor="let row of checkLists.data;let i = index">
+          <div class="mat-row" style="background-color: #f5f5f5c0">
+            <div class="mat-cell drag-col-sm-4">
+              <button mat-icon-button  (click)="flagArray[i] = !flagArray[i]" >
+                  <mat-icon  color="primary" > {{ !flagArray[i] ? 'add_circle': 'remove_circle' }} </mat-icon>
 
-        <ng-container matColumnDef="name">
-          <mat-header-cell *matHeaderCellDef  disableClear> Name </mat-header-cell>
-          <!-- mat-sort-header -->
-          <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="accountname">
-          <mat-header-cell *matHeaderCellDef> Account Name </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.accountName}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="createdDate">
-          <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.createdDate | date:'MM/dd/yyyy' }} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="modifiedDate">
-          <mat-header-cell *matHeaderCellDef> Modified Date </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.modifiedDate | date:'MM/dd/yyyy'}} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="action">
-          <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            <button matTooltip="Edit"  mat-icon-button (click)="editCheckList(row)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button matTooltip="List CheckList Items"  mat-icon-button (click)="checkListItems(row)">
-              <mat-icon>list</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
+              </button>
+                </div>
+              <div class="mat-cell" >
+                  <mat-form-field style="padding-right: 10px;">
+                      <input name="title_{{i}}" matInput placeholder="Title" [(ngModel)]="row.name">
+                  </mat-form-field>
+              </div>
+              <!-- <div class="mat-cell">
+                {{row.accountName}}
+              </div> -->
+              <div class="mat-cell"> {{row.createdDate | date:'MM/dd/yyyy' }}</div>
+              <div class="mat-cell"> {{row.modifiedDate | date:'MM/dd/yyyy' }}</div>
+              <div class="mat-cell">
+                  <button matTooltip="Add"  name="add_{{i}}" color="accent"  *ngIf="!row.id" mat-icon-button (click)="updateCheckListList(row,i)">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                <button matTooltip="Update"  name="update_{{i}}" color="accent"  *ngIf="row.id" mat-icon-button (click)="updateCheckListList(row,i)">
+                    <mat-icon>done</mat-icon>
+                  </button>
+                <button matTooltip="Cancel" name="clear_{{i}}"  mat-icon-button (click)="resetCheckList(row, i)">
+                    <mat-icon>clear</mat-icon>
+                </button>
+
+              </div>
+
+          </div>
+          <div *ngIf="row.id && flagArray[i]" class="mat-row" style="padding-top: 5px;" >
+              <div class="mat-cell" >
+              <app-checklist-items style="width:100%;"  [accountId]="row.accountId" [checkListId]="row.id"></app-checklist-items>
+              </div>
+            </div>
+      </div>
       <div class="no-record-found" *ngIf="!checkLists || (checkLists && checkLists.data.length === 0)"> No Record Found.</div>
       <mat-paginator #paginator [length]="resultsLength"  [pageIndex]="0"
       [pageSize]="10"
