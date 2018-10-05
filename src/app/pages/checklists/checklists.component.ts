@@ -185,7 +185,6 @@ export class CheckListComponent implements OnInit, OnDestroy {
     this.loaderService.start(this.checkListDiv);
     if (!model.id || model.id.trim().length <= 0) {
       model.accountId = this.accountId;
-      console.log(model);
       this.checkListClient.create(model).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
