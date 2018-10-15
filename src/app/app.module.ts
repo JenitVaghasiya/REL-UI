@@ -62,25 +62,6 @@ import { NIHTimelineComponent } from './rel-ui-components/ni-h-timeline/ni-h-tim
 
 // RELUI Pages
 import { PageDashboardComponent } from './pages/dashboard/dashboard.component';
-import { PageButtonComponent } from './pages/material-components/button/button.component';
-import { PageCardComponent } from './pages/material-components/card/card.component';
-import { PageCheckboxComponent } from './pages/material-components/checkbox/checkbox.component';
-import { PageChipsComponent } from './pages/material-components/chips/chips.component';
-import { PageDialogComponent } from './pages/material-components/dialog/dialog.component';
-import { DialogResultComponent } from './pages/material-components/dialog/dialog.component';
-import { PageIconComponent } from './pages/material-components/icon/icon.component';
-import { PageInputComponent } from './pages/material-components/input/input.component';
-import { PageListComponent } from './pages/material-components/list/list.component';
-import { PageMenuComponent } from './pages/material-components/menu/menu.component';
-import { PageProgressBarComponent } from './pages/material-components/progress-bar/progress-bar.component';
-import { PageRadioButtonComponent } from './pages/material-components/radio-button/radio-button.component';
-import { PageSelectComponent } from './pages/material-components/select/select.component';
-import { PageSliderComponent } from './pages/material-components/slider/slider.component';
-import { PageSlideToggleComponent } from './pages/material-components/slide-toggle/slide-toggle.component';
-import { PageSnackbarComponent } from './pages/material-components/snackbar/snackbar.component';
-import { PageTabsComponent } from './pages/material-components/tabs/tabs.component';
-import { PageToolbarComponent } from './pages/material-components/toolbar/toolbar.component';
-import { PageTooltipComponent } from './pages/material-components/tooltip/tooltip.component';
 
 import { PageFileComponent } from './pages/rel-ui-components/file/file.component';
 import { PageRelUICardComponent } from './pages/rel-ui-components/rel-ui-card/rel-ui-card.component';
@@ -102,20 +83,8 @@ import { PageAboutUsComponent } from './pages/pages-service/about-us/about-us.co
 import { PageFaqComponent } from './pages/pages-service/faq/faq.component';
 import { PageTimelineComponent } from './pages/pages-service/timeline/timeline.component';
 import { PageInvoiceComponent } from './pages/pages-service/invoice/invoice.component';
-import { PageLineChartComponent } from './pages/charts/line-chart/line-chart.component';
-import { PageBarChartComponent } from './pages/charts/bar-chart/bar-chart.component';
-import { PageDoughnutChartComponent } from './pages/charts/doughnut-chart/doughnut-chart.component';
-import { PageRadarChartComponent } from './pages/charts/radar-chart/radar-chart.component';
-import { PagePieChartComponent } from './pages/charts/pie-chart/pie-chart.component';
-import { PagePolarAreaChartComponent } from './pages/charts/polar-area-chart/polar-area-chart.component';
-import { PageDynamicChartComponent } from './pages/charts/dynamic-chart/dynamic-chart.component';
 import { PageCalendarComponent } from './pages/calendar/calendar.component';
 import { CalendarDialogComponent } from './pages/calendar/calendar.component';
-import { PageSimpleTableComponent } from './pages/tables/simple-table/simple-table.component';
-import { PageBootstrapTablesComponent } from './pages/tables/bootstrap-tables/bootstrap-tables.component';
-import { PageSortingTableComponent } from './pages/tables/sorting-table/sorting-table.component';
-import { PageFilteringTableComponent } from './pages/tables/filtering-table/filtering-table.component';
-import { PagePaginationTableComponent } from './pages/tables/pagination-table/pagination-table.component';
 import { PageFormElementsComponent } from './pages/forms/form-elements/form-elements.component';
 import { PageFormLayoutComponent } from './pages/forms/form-layout/form-layout.component';
 import { PageFormValidationComponent } from './pages/forms/form-validation/form-validation.component';
@@ -233,26 +202,6 @@ import { ChecklistItemsComponent } from './pages/checklist-items/checklist-items
     NIHTimelineComponent,
 
     PageDashboardComponent,
-    PageButtonComponent,
-    PageCardComponent,
-    PageCheckboxComponent,
-    PageChipsComponent,
-    PageDialogComponent,
-    DialogResultComponent,
-    PageIconComponent,
-    PageInputComponent,
-    PageListComponent,
-    PageMenuComponent,
-    PageProgressBarComponent,
-    PageRadioButtonComponent,
-    PageSelectComponent,
-    PageSliderComponent,
-    PageSlideToggleComponent,
-    PageSnackbarComponent,
-    PageTabsComponent,
-    PageToolbarComponent,
-    PageTooltipComponent,
-
     PageFileComponent,
     PageRelUICardComponent,
     PageAlertComponent,
@@ -272,20 +221,8 @@ import { ChecklistItemsComponent } from './pages/checklist-items/checklist-items
     PageFaqComponent,
     PageTimelineComponent,
     PageInvoiceComponent,
-    PageLineChartComponent,
-    PageBarChartComponent,
-    PageDoughnutChartComponent,
-    PageRadarChartComponent,
-    PagePieChartComponent,
-    PagePolarAreaChartComponent,
-    PageDynamicChartComponent,
     PageCalendarComponent,
     CalendarDialogComponent,
-    PageSimpleTableComponent,
-    PageBootstrapTablesComponent,
-    PageSortingTableComponent,
-    PageFilteringTableComponent,
-    PagePaginationTableComponent,
     PageFormElementsComponent,
     PageFormLayoutComponent,
     PageFormValidationComponent,
@@ -322,7 +259,6 @@ import { ChecklistItemsComponent } from './pages/checklist-items/checklist-items
     ChecklistItemsComponent
   ],
   entryComponents: [
-    DialogResultComponent,
     CalendarDialogComponent,
     LoaderComponent,
     UserInviteDialogComponent,
