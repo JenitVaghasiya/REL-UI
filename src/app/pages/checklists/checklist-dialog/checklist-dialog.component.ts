@@ -41,23 +41,23 @@ export class CheckListDialogComponent implements OnInit {
     private oAuthService: OAuthService,
     private tokenService: TokenService
   ) {
-    const tokenDetail = this.tokenService.getTokenDetails();
-    const roles = tokenDetail ? tokenDetail.role : null;
+    // const tokenDetail = this.tokenService.getTokenDetails();
+    // const roles = tokenDetail ? tokenDetail.role : null;
 
-    let accountId = '';
-    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountCheckList')) {
-      accountId = sessionStorage.getItem('AccountCheckList');
+    let institutionId = ''; // roles && roles === 'superadmin' &&
+    if (sessionStorage.getItem('InstitutionCheckList')) {
+      institutionId = sessionStorage.getItem('InstitutionCheckList');
     } else {
-      accountId = this.oAuthService.getAccountId();
+      institutionId = this.oAuthService.getInstitutionId();
     }
     if (this.data) {
       this.model = this.data;
-      if (!this.model.accountId) {
-        this.model.accountId = accountId;
+      if (!this.model.institutionId) {
+        this.model.institutionId = institutionId;
       }
     } else {
       this.model.id = null;
-      this.model.accountId = accountId;
+      this.model.institutionId = institutionId;
     }
   }
   ngOnInit() {

@@ -46,6 +46,14 @@ export class InstitutionDialogComponent implements OnInit {
   ) {
     const tokenDetail = this.tokenService.getTokenDetails();
     const roles = tokenDetail ? tokenDetail.role : null;
+
+    let accountId = '';
+    if (sessionStorage.getItem('EditAccount')) {
+      accountId = sessionStorage.getItem('EditAccount');
+    } else {
+      accountId = this.oAuthService.getAccountId();
+    }
+
     if (roles && roles === 'superadmin') {
       this.isSuperAdmin = true;
     }
@@ -54,13 +62,12 @@ export class InstitutionDialogComponent implements OnInit {
     }
     if (this.data) {
       this.model = this.data;
-      if (!this.model.accountId && !this.isSuperAdmin && this.isAccountAdmin) {
-        this.model.accountId = this.oAuthService.getAccountId();
+      if (!this.model.accountId ) { // && !this.isSuperAdmin && this.isAccountAdmin
+        this.model.accountId = accountId;
       }
     } else {
-      const accountId = this.oAuthService.getAccountId();
       this.model.id = null;
-      this.model.accountId = !this.isSuperAdmin ? accountId : null;
+      this.model.accountId = accountId;
     }
   }
   ngOnInit() {

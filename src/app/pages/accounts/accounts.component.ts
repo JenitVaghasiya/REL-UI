@@ -162,25 +162,28 @@ export class AccountsComponent implements OnInit {
     sessionStorage.setItem('EditAccount', account.id);
     this.router.navigate(['/rel/users']);
   }
-
-  listCheckList(account: AccountDto) {
-    sessionStorage.setItem('AccountCheckList', account.id);
-    this.router.navigate(['/rel/checklists']);
+  listInstitution(account: AccountDto) {
+    sessionStorage.setItem('EditAccount', account.id);
+    this.router.navigate(['/rel/institutions']);
   }
-  listLoans(account: AccountDto) {
-    sessionStorage.setItem('LoanAccountId', account.id);
-    this.router.navigate(['/rel/loans']);
-  }
-  listInvestors(account: AccountDto) {
-    sessionStorage.setItem('InvestorAccountId', account.id);
-    this.router.navigate(['/rel/investors']);
-  }
-  listTaskStatusSet(account: AccountDto) {
-    sessionStorage.setItem('TaskStatusSetAccountId', account.id);
-    this.router.navigate(['/rel/taskstatus-sets']);
-  }
-  listColors(account: AccountDto) {
-    sessionStorage.setItem('AccountColors', account.id);
-    this.router.navigate(['/rel/standard-color']);
-  }
+  // listCheckList(account: AccountDto) {
+  //   sessionStorage.setItem('InstitutionCheckList', account.id);
+  //   this.router.navigate(['/rel/checklists']);
+  // }
+  // listLoans(account: AccountDto) {
+  //   sessionStorage.setItem('LoanInstitutionId', account.id);
+  //   this.router.navigate(['/rel/loans']);
+  // }
+  // listInvestors(account: AccountDto) {
+  //   sessionStorage.setItem('InvestorInstitutionId', account.id);
+  //   this.router.navigate(['/rel/investors']);
+  // }
+  // listTaskStatusSet(account: AccountDto) {
+  //   sessionStorage.setItem('TaskStatusSetInstitutionId', account.id);
+  //   this.router.navigate(['/rel/taskstatus-sets']);
+  // }
+  // listColors(account: AccountDto) {
+  //   sessionStorage.setItem('InstitutionColors', account.id);
+  //   this.router.navigate(['/rel/standard-color']);
+  // }
 }

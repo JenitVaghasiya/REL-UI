@@ -48,6 +48,7 @@ export class PageSignInComponent implements OnInit {
 
   onSubmit() {
     this.loaderService.start(this.signInDiv);
+    sessionStorage.clear();
     this.authClient.login(this.model).subscribe(e => {
       this.loaderService.stop();
       if (e.successful) {

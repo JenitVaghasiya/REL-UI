@@ -1,16 +1,6 @@
 <card #userInviteDiv [title]="'Invite New User'" [align]="'center'">
   <form (ngSubmit)="onSubmit()">
-    <mat-form-field *ngIf="isSuperAdmin">
-      <mat-select placeholder="Account" name="accountId" [(ngModel)]="model.accountId" [formControl]="form.controls['accountId']">
-        <mat-option *ngFor="let account of accountList" [value]="account.id">
-          {{ account.name }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="form.controls['accountId'].hasError('required') && form.controls['accountId'].touched">
-                    Please select account.
-      </mat-error>
-    </mat-form-field>
-    <input *ngIf="!isSuperAdmin" type="hidden" [(ngModel)]="model.accountId" [formControl]="form.controls['accountId']">
+    <input type="hidden" [(ngModel)]="model.accountId" [formControl]="form.controls['accountId']" />
     <mat-form-field>
       <input matInput placeholder="Email" value="" [(ngModel)]="model.email" [formControl]="form.controls['email']">
       <mat-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">

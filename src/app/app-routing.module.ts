@@ -10,7 +10,6 @@ import { PageAlertComponent } from './pages/rel-ui-components/alert/alert.compon
 import { PageBadgeComponent } from './pages/rel-ui-components/badge/badge.component';
 import { PageBreadcrumbComponent } from './pages/rel-ui-components/breadcrumb/breadcrumb.component';
 import { PageRelUICardComponent } from './pages/rel-ui-components/rel-ui-card/rel-ui-card.component';
-import { PageFileComponent } from './pages/rel-ui-components/file/file.component';
 
 import { PageTypographyComponent } from './pages/typography/typography.component';
 import { PageNotFoundComponent } from './pages/not-found/not-found.component';
@@ -25,7 +24,6 @@ import { PageAboutUsComponent } from './pages/pages-service/about-us/about-us.co
 import { PageFaqComponent } from './pages/pages-service/faq/faq.component';
 import { PageTimelineComponent } from './pages/pages-service/timeline/timeline.component';
 import { PageInvoiceComponent } from './pages/pages-service/invoice/invoice.component';
-import { PageCalendarComponent } from './pages/calendar/calendar.component';
 import { PageFormElementsComponent } from './pages/forms/form-elements/form-elements.component';
 import { PageFormLayoutComponent } from './pages/forms/form-layout/form-layout.component';
 // import { PageFormValidationComponent } from './pages/forms/form-validation/form-validation.component';
@@ -56,8 +54,6 @@ const defaultRoutes: Routes = [
   },
   { path: 'typography', component: PageTypographyComponent },
   { path: 'widgets', component: PageWidgetsComponent },
-  { path: 'calendar', component: PageCalendarComponent },
-  { path: 'file', component: PageFileComponent },
   { path: 'rel-ui-card', component: PageRelUICardComponent },
   { path: 'alert', component: PageAlertComponent },
   { path: 'badge', component: PageBadgeComponent },

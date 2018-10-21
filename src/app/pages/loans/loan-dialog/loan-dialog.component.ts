@@ -45,23 +45,23 @@ export class LoanDialogComponent implements OnInit {
     private tokenService: TokenService,
     private accountsClient: AccountsClient
   ) {
-    const tokenDetail = this.tokenService.getTokenDetails();
-    const roles = tokenDetail ? tokenDetail.role : null;
-
-    let accountId = '';
-    if (roles && roles === 'superadmin' && sessionStorage.getItem('LoanAccountId')) {
-      accountId = sessionStorage.getItem('LoanAccountId');
+    // const tokenDetail = this.tokenService.getTokenDetails();
+    // const roles = tokenDetail ? tokenDetail.role : null;
+    // roles && roles === 'superadmin' &&
+    let institutionId = '';
+    if (sessionStorage.getItem('LoanInstitutionId')) {
+      institutionId = sessionStorage.getItem('LoanInstitutionId');
     } else {
-      accountId = this.oAuthService.getAccountId();
+      institutionId = this.oAuthService.getInstitutionId();
     }
     if (this.data) {
       this.model = this.data;
-      if (!this.model.accountId) {
-        this.model.accountId = accountId;
+      if (!this.model.institutionId) {
+        this.model.institutionId = institutionId;
       }
     } else {
       this.model.id = null;
-      this.model.accountId = accountId;
+      this.model.institutionId = institutionId;
     }
 
     this.accountsClient.getStateList().subscribe(res => {

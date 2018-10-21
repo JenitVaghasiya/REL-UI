@@ -45,23 +45,23 @@ export class InvestorDialogComponent implements OnInit {
     private tokenService: TokenService,
     private accountsClient: AccountsClient
   ) {
-    const tokenDetail = this.tokenService.getTokenDetails();
-    const roles = tokenDetail ? tokenDetail.role : null;
+    // const tokenDetail = this.tokenService.getTokenDetails();
+    // const roles = tokenDetail ? tokenDetail.role : null;
 
-    let accountId = '';
-    if (roles && roles === 'superadmin' && sessionStorage.getItem('InvestorAccountId')) {
-      accountId = sessionStorage.getItem('InvestorAccountId');
+    let institutionId = ''; // roles && roles === 'superadmin' &&
+    if (sessionStorage.getItem('InvestorInstitutionId')) {
+      institutionId = sessionStorage.getItem('InvestorInstitutionId');
     } else {
-      accountId = this.oAuthService.getAccountId();
+      institutionId = this.oAuthService.getInstitutionId();
     }
     if (this.data) {
       this.model = this.data;
-      if (!this.model.accountId) {
-        this.model.accountId = accountId;
+      if (!this.model.institutionId) {
+        this.model.institutionId = institutionId;
       }
     } else {
       this.model.id = null;
-      this.model.accountId = accountId;
+      this.model.institutionId = institutionId;
     }
 
     this.accountsClient.getStateList().subscribe(res => {

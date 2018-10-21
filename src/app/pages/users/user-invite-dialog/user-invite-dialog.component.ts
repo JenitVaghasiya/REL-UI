@@ -6,7 +6,9 @@ import {
   ManageUserClient,
   AccountsClient,
   AccountDto,
-  AspNetRoleDto
+  AspNetRoleDto,
+  InstitutionClient,
+  InstitutionDto
 } from 'api/apiclient';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
@@ -24,15 +26,18 @@ export class UserInviteDialogComponent implements OnInit {
   @ViewChild('userInviteDiv', { read: ViewContainerRef })
   userInviteDiv: ViewContainerRef;
   isSuperAdmin: boolean;
+  isAccountAdmin: boolean;
   public form: FormGroup;
   public model = new InviteUserModel();
   public accountList: AccountDto[] = new Array<AccountDto>();
   public roleList: AspNetRoleDto[] = new Array<AspNetRoleDto>();
+  institutionList: InstitutionDto[] = new Array<InstitutionDto>();
   constructor(
     public dialogRef: MatDialogRef<UserInviteDialogComponent>,
     private fb: FormBuilder,
     private manageUserClient: ManageUserClient,
     private accountClient: AccountsClient,
+    private institutionClient: InstitutionClient,
     private toastrService: ToastrService,
     private loaderService: LoaderService,
     private oAuthService: OAuthService,
@@ -45,11 +50,6 @@ export class UserInviteDialogComponent implements OnInit {
     const roles = tokenDetail ? tokenDetail.role : null;
     if (roles && roles === 'superadmin') {
       this.isSuperAdmin = true;
-      this.accountClient.getAccounts().subscribe(res => {
-        if (res.successful) {
-          this.accountList = res.data;
-        }
-      });
       if (sessionStorage.getItem('EditAccount')) {
         this.model.accountId = sessionStorage.getItem('EditAccount');
       }
@@ -57,9 +57,19 @@ export class UserInviteDialogComponent implements OnInit {
       this.model.accountId = this.oAuthService.getAccountId();
     }
 
+
+    if (sessionStorage.getItem('EditInstitution')) {
+      this.model.institutionId = sessionStorage.getItem('EditInstitution');
+    }
+
     this.manageUserClient.getRoles().subscribe(res => {
       if (res.successful) {
-        this.roleList = res.data;
+        this.roleList = res.data ? res.data : [];
+        if (this.model.institutionId && this.model.institutionId.length > 0) {
+          this.roleList = this.roleList.filter(w => w.normalizedName !== 'ACCOUNTADMIN')
+        } else  {
+          this.roleList = this.roleList.filter(w => w.normalizedName !== 'USER')
+        }
       }
     });
   }

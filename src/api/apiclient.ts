@@ -658,7 +658,7 @@ export interface ICheckListClient {
     delete(id: string): Observable<ServiceResponse>;
     update(checkList: CheckListForUpdateDto, id: string): Observable<ServiceResponse>;
     getCheckList(id: string): Observable<ServiceResponseOfCheckListDto>;
-    getListOfCheckList(accountId: string): Observable<ServiceResponseOfListOfCheckListDto>;
+    getListOfCheckList(institutionId: string): Observable<ServiceResponseOfListOfCheckListDto>;
 }
 
 @Injectable()
@@ -895,12 +895,12 @@ export class CheckListClient extends BaseClient implements ICheckListClient {
         return Observable.of<ServiceResponseOfCheckListDto>(<any>null);
     }
 
-    getListOfCheckList(accountId: string): Observable<ServiceResponseOfListOfCheckListDto> {
+    getListOfCheckList(institutionId: string): Observable<ServiceResponseOfListOfCheckListDto> {
         let url_ = this.baseUrl + "/api/checklists/getlistofchecklist?";
-        if (accountId === undefined)
-            throw new Error("The parameter 'accountId' must be defined.");
+        if (institutionId === undefined)
+            throw new Error("The parameter 'institutionId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+            url_ += "institutionId=" + encodeURIComponent("" + institutionId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -973,7 +973,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     }
 
     create(checkListItem: CheckListItemForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/checklistitems/Create";
+        let url_ = this.baseUrl + "/api/checklistitems/create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(checkListItem);
@@ -1195,7 +1195,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     }
 
     getChecklistItems(checklistId: string): Observable<ServiceResponseOfListOfCheckListItemDto> {
-        let url_ = this.baseUrl + "/api/checklistitems/GetChecklistItems?";
+        let url_ = this.baseUrl + "/api/checklistitems/getchecklistitems?";
         if (checklistId === undefined)
             throw new Error("The parameter 'checklistId' must be defined.");
         else
@@ -1250,7 +1250,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     }
 
     updateChecklistItemsOrder(model: CheckListItemDto[]): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/checklistitems/UpdateChecklistItemsOrder?";
+        let url_ = this.baseUrl + "/api/checklistitems/updatechecklistitemsorder?";
         if (model !== undefined)
             model && model.forEach((item, index) => { 
                 for (let attr in item)
@@ -1313,7 +1313,7 @@ export interface IInstitutionClient {
     delete(id: string): Observable<ServiceResponse>;
     update(institution: InstitutionForUpdateDto, id: string): Observable<ServiceResponse>;
     getInstitution(id: string): Observable<ServiceResponseOfInstitutionDto>;
-    getInstitutionList(accountId: string): Observable<ServiceResponseOfListOfInstitutionDto>;
+    getInstitutionList(accountId: string, userId: string): Observable<ServiceResponseOfListOfInstitutionDto>;
 }
 
 @Injectable()
@@ -1329,7 +1329,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     }
 
     create(institution: InstitutionForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/institutions/Create";
+        let url_ = this.baseUrl + "/api/institutions/create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(institution);
@@ -1383,7 +1383,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     }
 
     delete(id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/institutions/Delete?";
+        let url_ = this.baseUrl + "/api/institutions/delete?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -1438,7 +1438,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     }
 
     update(institution: InstitutionForUpdateDto, id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/institutions/Update?";
+        let url_ = this.baseUrl + "/api/institutions/update?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -1550,12 +1550,14 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
         return Observable.of<ServiceResponseOfInstitutionDto>(<any>null);
     }
 
-    getInstitutionList(accountId: string): Observable<ServiceResponseOfListOfInstitutionDto> {
+    getInstitutionList(accountId: string, userId: string): Observable<ServiceResponseOfListOfInstitutionDto> {
         let url_ = this.baseUrl + "/api/institutions/getinstitutionlist?";
         if (accountId === undefined)
             throw new Error("The parameter 'accountId' must be defined.");
         else
             url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+        if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1611,7 +1613,7 @@ export interface IInvestorClient {
     delete(id: string): Observable<ServiceResponse>;
     update(investor: InvestorForUpdateDto, id: string): Observable<ServiceResponse>;
     getInvestorDetail(id: string): Observable<ServiceResponseOfInvestorDto>;
-    getInvestorList(accountId: string): Observable<ServiceResponseOfListOfInvestorDto>;
+    getInvestorList(institutionId: string): Observable<ServiceResponseOfListOfInvestorDto>;
 }
 
 @Injectable()
@@ -1848,12 +1850,12 @@ export class InvestorClient extends BaseClient implements IInvestorClient {
         return Observable.of<ServiceResponseOfInvestorDto>(<any>null);
     }
 
-    getInvestorList(accountId: string): Observable<ServiceResponseOfListOfInvestorDto> {
+    getInvestorList(institutionId: string): Observable<ServiceResponseOfListOfInvestorDto> {
         let url_ = this.baseUrl + "/api/investors/getinvestorlist?";
-        if (accountId === undefined)
-            throw new Error("The parameter 'accountId' must be defined.");
+        if (institutionId === undefined)
+            throw new Error("The parameter 'institutionId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+            url_ += "institutionId=" + encodeURIComponent("" + institutionId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1909,7 +1911,7 @@ export interface ILoanClient {
     delete(id: string): Observable<ServiceResponse>;
     update(loan: LoanForUpdateDto, id: string): Observable<ServiceResponse>;
     getLoanDetail(id: string): Observable<ServiceResponseOfLoanDto>;
-    getLoanList(accountId: string): Observable<ServiceResponseOfListOfLoanDto>;
+    getLoanList(institutionId: string): Observable<ServiceResponseOfListOfLoanDto>;
 }
 
 @Injectable()
@@ -2146,12 +2148,12 @@ export class LoanClient extends BaseClient implements ILoanClient {
         return Observable.of<ServiceResponseOfLoanDto>(<any>null);
     }
 
-    getLoanList(accountId: string): Observable<ServiceResponseOfListOfLoanDto> {
+    getLoanList(institutionId: string): Observable<ServiceResponseOfListOfLoanDto> {
         let url_ = this.baseUrl + "/api/loans/getloanlist?";
-        if (accountId === undefined)
-            throw new Error("The parameter 'accountId' must be defined.");
+        if (institutionId === undefined)
+            throw new Error("The parameter 'institutionId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+            url_ += "institutionId=" + encodeURIComponent("" + institutionId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2204,9 +2206,12 @@ export class LoanClient extends BaseClient implements ILoanClient {
 
 export interface IManageUserClient {
     inviteUser(model: InviteUserModel): Observable<ServiceResponse>;
+    reInviteUser(model: InviteUserModel, oldEmail: string): Observable<ServiceResponse>;
     getRegisterdUsersByAccount(accountId: string): Observable<ServiceResponseOfListOfUserModel>;
+    getRegisterdUsersByInstitution(institutionId: string): Observable<ServiceResponseOfListOfUserModel>;
     updatePasswordOfInvitedUser(model: UpdatePasswordOfInvitedUserModel): Observable<ServiceResponseOfProfileViewModel>;
     getRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto>;
+    getInstitutionRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto>;
     updateUserDetail(model: UserModel): Observable<ServiceResponseOfProfileViewModel>;
 }
 
@@ -2276,6 +2281,64 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
         return Observable.of<ServiceResponse>(<any>null);
     }
 
+    reInviteUser(model: InviteUserModel, oldEmail: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/manageuser/reinviteuser?";
+        if (oldEmail === undefined)
+            throw new Error("The parameter 'oldEmail' must be defined.");
+        else
+            url_ += "oldEmail=" + encodeURIComponent("" + oldEmail) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(model);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processReInviteUser(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processReInviteUser(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processReInviteUser(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
     getRegisterdUsersByAccount(accountId: string): Observable<ServiceResponseOfListOfUserModel> {
         let url_ = this.baseUrl + "/api/manageuser/getregisterdusersbyaccount?";
         if (accountId === undefined)
@@ -2310,6 +2373,61 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
     }
 
     protected processGetRegisterdUsersByAccount(response: HttpResponseBase): Observable<ServiceResponseOfListOfUserModel> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfUserModel.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfListOfUserModel>(<any>null);
+    }
+
+    getRegisterdUsersByInstitution(institutionId: string): Observable<ServiceResponseOfListOfUserModel> {
+        let url_ = this.baseUrl + "/api/manageuser/getregisterdusersbyinstitution?";
+        if (institutionId === undefined)
+            throw new Error("The parameter 'institutionId' must be defined.");
+        else
+            url_ += "institutionId=" + encodeURIComponent("" + institutionId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetRegisterdUsersByInstitution(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRegisterdUsersByInstitution(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfListOfUserModel>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfListOfUserModel>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetRegisterdUsersByInstitution(response: HttpResponseBase): Observable<ServiceResponseOfListOfUserModel> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -2436,6 +2554,57 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
         return Observable.of<ServiceResponseOfListOfAspNetRoleDto>(<any>null);
     }
 
+    getInstitutionRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto> {
+        let url_ = this.baseUrl + "/api/manageuser/getinstitutionroles";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processGetInstitutionRoles(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInstitutionRoles(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponseOfListOfAspNetRoleDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponseOfListOfAspNetRoleDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetInstitutionRoles(response: HttpResponseBase): Observable<ServiceResponseOfListOfAspNetRoleDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponseOfListOfAspNetRoleDto.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponseOfListOfAspNetRoleDto>(<any>null);
+    }
+
     updateUserDetail(model: UserModel): Observable<ServiceResponseOfProfileViewModel> {
         let url_ = this.baseUrl + "/api/manageuser/updateuserdetail";
         url_ = url_.replace(/[?&]$/, "");
@@ -2512,7 +2681,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     getStandardColor(id: string): Observable<ServiceResponseOfStandardColorDto> {
-        let url_ = this.baseUrl + "/api/StandardColor/getDetail?";
+        let url_ = this.baseUrl + "/api/standardcolor/getDetail?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2567,7 +2736,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     createStandardColor(model: StandardColorForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/StandardColor/create";
+        let url_ = this.baseUrl + "/api/standardcolor/create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -2621,7 +2790,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     deleteStandardColor(id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/StandardColor/delete?";
+        let url_ = this.baseUrl + "/api/standardcolor/delete?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2676,7 +2845,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     updateStandardColor(model: StandardColorForUpdateDto, id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/StandardColor/update?";
+        let url_ = this.baseUrl + "/api/standardcolor/update?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2734,7 +2903,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     getStandardColorList(id: string): Observable<ServiceResponseOfListOfStandardColorDto> {
-        let url_ = this.baseUrl + "/api/StandardColor/getList?";
+        let url_ = this.baseUrl + "/api/standardcolor/getList?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2790,12 +2959,12 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
 }
 
 export interface ITaskStatusClient {
-    getTaskStatusSet(id: string): Observable<ServiceResponseOfTaskStatusSetDto>;
+    getTaskStatusSet(setId: string): Observable<ServiceResponseOfTaskStatusSetDto>;
     createTaskStatusSet(model: TaskStatusSetForCreationDto): Observable<ServiceResponse>;
     deleteTaskStatusSet(id: string): Observable<ServiceResponse>;
     updateTaskStatusSet(model: TaskStatusSetForUpdateDto, id: string): Observable<ServiceResponse>;
-    getTaskStatusSetList(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto>;
-    getTaskStatusSets(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto>;
+    getTaskStatusSetList(institutionId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto>;
+    getTaskStatusSets(institutionId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto>;
 }
 
 @Injectable()
@@ -2810,12 +2979,12 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44354";
     }
 
-    getTaskStatusSet(id: string): Observable<ServiceResponseOfTaskStatusSetDto> {
-        let url_ = this.baseUrl + "/api/taststatussets/GetTaskStatusSet?";
-        if (id === undefined)
-            throw new Error("The parameter 'id' must be defined.");
+    getTaskStatusSet(setId: string): Observable<ServiceResponseOfTaskStatusSetDto> {
+        let url_ = this.baseUrl + "/api/taststatussets/gettaskstatusset?";
+        if (setId === undefined)
+            throw new Error("The parameter 'setId' must be defined.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "setId=" + encodeURIComponent("" + setId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2866,7 +3035,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
     }
 
     createTaskStatusSet(model: TaskStatusSetForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/taststatussets/CreateTaskStatusSet";
+        let url_ = this.baseUrl + "/api/taststatussets/createtaskstatusset";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -2920,7 +3089,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
     }
 
     deleteTaskStatusSet(id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/taststatussets/deleteTaskStatusSet?";
+        let url_ = this.baseUrl + "/api/taststatussets/deletetaskstatusset?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2975,7 +3144,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
     }
 
     updateTaskStatusSet(model: TaskStatusSetForUpdateDto, id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/taststatussets/updateTaskStatusSet?";
+        let url_ = this.baseUrl + "/api/taststatussets/updatetaskstatusset?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3032,12 +3201,12 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         return Observable.of<ServiceResponse>(<any>null);
     }
 
-    getTaskStatusSetList(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto> {
+    getTaskStatusSetList(institutionId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto> {
         let url_ = this.baseUrl + "/api/taststatussets/gettaskstatussetlist?";
-        if (accountId === undefined)
-            throw new Error("The parameter 'accountId' must be defined.");
+        if (institutionId === undefined)
+            throw new Error("The parameter 'institutionId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+            url_ += "institutionId=" + encodeURIComponent("" + institutionId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3087,12 +3256,12 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
         return Observable.of<ServiceResponseOfListOfTaskStatusSetDto>(<any>null);
     }
 
-    getTaskStatusSets(accountId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto> {
+    getTaskStatusSets(institutionId: string): Observable<ServiceResponseOfListOfTaskStatusSetDto> {
         let url_ = this.baseUrl + "/api/taststatussets/gettaskstatussets?";
-        if (accountId === undefined)
-            throw new Error("The parameter 'accountId' must be defined.");
+        if (institutionId === undefined)
+            throw new Error("The parameter 'institutionId' must be defined.");
         else
-            url_ += "accountId=" + encodeURIComponent("" + accountId) + "&"; 
+            url_ += "institutionId=" + encodeURIComponent("" + institutionId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3165,7 +3334,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     getTaskStatus(id: string): Observable<ServiceResponseOfTaskStatusDetailDto> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/GetTaskStatus?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/gettaskstatus?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3220,7 +3389,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     createTaskStatus(model: TaskStatusDetailForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/CreateTaskStatus";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/createtaskstatus";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -3274,7 +3443,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     deleteTaskStatus(id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/deleteTaskStatus?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/deletetaskstatus?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3329,7 +3498,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     updateTaskStatus(model: TaskStatusDetailForUpdateDto, id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/updateTaskStatus?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/updatetaskstatus?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3387,7 +3556,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     getTaskStatusList(id: string): Observable<ServiceResponseOfListOfTaskStatusDetailDto> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/gettaskstatuslist?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/gettaskstatuslist?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3442,7 +3611,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     updateTaskstatusDetailOrder(updatedtaskStatusdetailList: TaskStatusDetailDto[]): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/updateTaskstatusDetailOrder?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/updatetaskstatusdetailorder?";
         if (updatedtaskStatusdetailList !== undefined)
             updatedtaskStatusdetailList && updatedtaskStatusdetailList.forEach((item, index) => { 
                 for (let attr in item)
@@ -4236,7 +4405,7 @@ export interface IRegisterModel {
 
 export class CheckListForCreationDto implements ICheckListForCreationDto {
     name: string;
-    accountId?: string;
+    institutionId?: string;
 
     constructor(data?: ICheckListForCreationDto) {
         if (data) {
@@ -4250,7 +4419,7 @@ export class CheckListForCreationDto implements ICheckListForCreationDto {
     init(data?: any) {
         if (data) {
             this.name = data["name"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -4264,19 +4433,19 @@ export class CheckListForCreationDto implements ICheckListForCreationDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
 
 export interface ICheckListForCreationDto {
     name: string;
-    accountId?: string;
+    institutionId?: string;
 }
 
 export class CheckListForUpdateDto implements ICheckListForUpdateDto {
     name: string;
-    accountId?: string;
+    institutionId?: string;
 
     constructor(data?: ICheckListForUpdateDto) {
         if (data) {
@@ -4290,7 +4459,7 @@ export class CheckListForUpdateDto implements ICheckListForUpdateDto {
     init(data?: any) {
         if (data) {
             this.name = data["name"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -4304,14 +4473,14 @@ export class CheckListForUpdateDto implements ICheckListForUpdateDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
 
 export interface ICheckListForUpdateDto {
     name: string;
-    accountId?: string;
+    institutionId?: string;
 }
 
 export class ServiceResponseOfCheckListDto extends ServiceResponse implements IServiceResponseOfCheckListDto {
@@ -4393,8 +4562,8 @@ export interface IBaseDto {
 
 export class CheckListDto extends BaseDto implements ICheckListDto {
     name: string;
-    accountId?: string;
-    accountName?: string;
+    institutionId?: string;
+    institutionName?: string;
 
     constructor(data?: ICheckListDto) {
         super(data);
@@ -4404,8 +4573,8 @@ export class CheckListDto extends BaseDto implements ICheckListDto {
         super.init(data);
         if (data) {
             this.name = data["name"];
-            this.accountId = data["accountId"];
-            this.accountName = data["accountName"];
+            this.institutionId = data["institutionId"];
+            this.institutionName = data["institutionName"];
         }
     }
 
@@ -4419,8 +4588,8 @@ export class CheckListDto extends BaseDto implements ICheckListDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        data["accountId"] = this.accountId;
-        data["accountName"] = this.accountName;
+        data["institutionId"] = this.institutionId;
+        data["institutionName"] = this.institutionName;
         super.toJSON(data);
         return data; 
     }
@@ -4428,8 +4597,8 @@ export class CheckListDto extends BaseDto implements ICheckListDto {
 
 export interface ICheckListDto extends IBaseDto {
     name: string;
-    accountId?: string;
-    accountName?: string;
+    institutionId?: string;
+    institutionName?: string;
 }
 
 export class ServiceResponseOfListOfCheckListDto extends ServiceResponse implements IServiceResponseOfListOfCheckListDto {
@@ -4478,7 +4647,7 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
     order: number;
     instruction: string;
     helpContext?: string;
-    taskStatusDetailId: string;
+    taskStatusSetId: string;
     disabled: boolean;
 
     constructor(data?: ICheckListItemForCreationDto) {
@@ -4496,7 +4665,7 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
             this.order = data["order"];
             this.instruction = data["instruction"];
             this.helpContext = data["helpContext"];
-            this.taskStatusDetailId = data["taskStatusDetailId"];
+            this.taskStatusSetId = data["taskStatusSetId"];
             this.disabled = data["disabled"];
         }
     }
@@ -4514,7 +4683,7 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
         data["order"] = this.order;
         data["instruction"] = this.instruction;
         data["helpContext"] = this.helpContext;
-        data["taskStatusDetailId"] = this.taskStatusDetailId;
+        data["taskStatusSetId"] = this.taskStatusSetId;
         data["disabled"] = this.disabled;
         return data; 
     }
@@ -4525,7 +4694,7 @@ export interface ICheckListItemForCreationDto {
     order: number;
     instruction: string;
     helpContext?: string;
-    taskStatusDetailId: string;
+    taskStatusSetId: string;
     disabled: boolean;
 }
 
@@ -4534,8 +4703,8 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
     order: number;
     instruction: string;
     helpContext?: string;
-    taskStatusDetailId: string;
-    taskStatusDetail?: TaskStatusDetailDto;
+    taskStatusSetId: string;
+    taskStatusSetDetail?: TaskStatusSetDto;
     disabled: boolean;
 
     constructor(data?: ICheckListItemDto) {
@@ -4549,8 +4718,8 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
             this.order = data["order"];
             this.instruction = data["instruction"];
             this.helpContext = data["helpContext"];
-            this.taskStatusDetailId = data["taskStatusDetailId"];
-            this.taskStatusDetail = data["taskStatusDetail"] ? TaskStatusDetailDto.fromJS(data["taskStatusDetail"]) : <any>undefined;
+            this.taskStatusSetId = data["taskStatusSetId"];
+            this.taskStatusSetDetail = data["taskStatusSetDetail"] ? TaskStatusSetDto.fromJS(data["taskStatusSetDetail"]) : <any>undefined;
             this.disabled = data["disabled"];
         }
     }
@@ -4568,8 +4737,8 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
         data["order"] = this.order;
         data["instruction"] = this.instruction;
         data["helpContext"] = this.helpContext;
-        data["taskStatusDetailId"] = this.taskStatusDetailId;
-        data["taskStatusDetail"] = this.taskStatusDetail ? this.taskStatusDetail.toJSON() : <any>undefined;
+        data["taskStatusSetId"] = this.taskStatusSetId;
+        data["taskStatusSetDetail"] = this.taskStatusSetDetail ? this.taskStatusSetDetail.toJSON() : <any>undefined;
         data["disabled"] = this.disabled;
         super.toJSON(data);
         return data; 
@@ -4581,9 +4750,66 @@ export interface ICheckListItemDto extends IBaseDto {
     order: number;
     instruction: string;
     helpContext?: string;
-    taskStatusDetailId: string;
-    taskStatusDetail?: TaskStatusDetailDto;
+    taskStatusSetId: string;
+    taskStatusSetDetail?: TaskStatusSetDto;
     disabled: boolean;
+}
+
+export class TaskStatusSetDto extends BaseDto implements ITaskStatusSetDto {
+    title: string;
+    disabled: boolean;
+    institutionId: string;
+    institutionName?: string;
+    taskStatusDetail?: TaskStatusDetailDto[];
+
+    constructor(data?: ITaskStatusSetDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.title = data["title"];
+            this.disabled = data["disabled"];
+            this.institutionId = data["institutionId"];
+            this.institutionName = data["institutionName"];
+            if (data["taskStatusDetail"] && data["taskStatusDetail"].constructor === Array) {
+                this.taskStatusDetail = [];
+                for (let item of data["taskStatusDetail"])
+                    this.taskStatusDetail.push(TaskStatusDetailDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TaskStatusSetDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaskStatusSetDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["disabled"] = this.disabled;
+        data["institutionId"] = this.institutionId;
+        data["institutionName"] = this.institutionName;
+        if (this.taskStatusDetail && this.taskStatusDetail.constructor === Array) {
+            data["taskStatusDetail"] = [];
+            for (let item of this.taskStatusDetail)
+                data["taskStatusDetail"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITaskStatusSetDto extends IBaseDto {
+    title: string;
+    disabled: boolean;
+    institutionId: string;
+    institutionName?: string;
+    taskStatusDetail?: TaskStatusDetailDto[];
 }
 
 export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
@@ -4720,6 +4946,7 @@ export interface IServiceResponseOfListOfCheckListItemDto extends IServiceRespon
 export class InstitutionForCreationDto implements IInstitutionForCreationDto {
     name: string;
     accountId?: string;
+    userId?: string;
 
     constructor(data?: IInstitutionForCreationDto) {
         if (data) {
@@ -4734,6 +4961,7 @@ export class InstitutionForCreationDto implements IInstitutionForCreationDto {
         if (data) {
             this.name = data["name"];
             this.accountId = data["accountId"];
+            this.userId = data["userId"];
         }
     }
 
@@ -4748,6 +4976,7 @@ export class InstitutionForCreationDto implements IInstitutionForCreationDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["accountId"] = this.accountId;
+        data["userId"] = this.userId;
         return data; 
     }
 }
@@ -4755,11 +4984,13 @@ export class InstitutionForCreationDto implements IInstitutionForCreationDto {
 export interface IInstitutionForCreationDto {
     name: string;
     accountId?: string;
+    userId?: string;
 }
 
 export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
     name: string;
     accountId?: string;
+    userId?: string;
 
     constructor(data?: IInstitutionForUpdateDto) {
         if (data) {
@@ -4774,6 +5005,7 @@ export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
         if (data) {
             this.name = data["name"];
             this.accountId = data["accountId"];
+            this.userId = data["userId"];
         }
     }
 
@@ -4788,6 +5020,7 @@ export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["accountId"] = this.accountId;
+        data["userId"] = this.userId;
         return data; 
     }
 }
@@ -4795,6 +5028,7 @@ export class InstitutionForUpdateDto implements IInstitutionForUpdateDto {
 export interface IInstitutionForUpdateDto {
     name: string;
     accountId?: string;
+    userId?: string;
 }
 
 export class ServiceResponseOfInstitutionDto extends ServiceResponse implements IServiceResponseOfInstitutionDto {
@@ -4834,6 +5068,8 @@ export class InstitutionDto extends BaseDto implements IInstitutionDto {
     name: string;
     accountId?: string;
     accountName?: string;
+    userId?: string;
+    userName?: string;
 
     constructor(data?: IInstitutionDto) {
         super(data);
@@ -4845,6 +5081,8 @@ export class InstitutionDto extends BaseDto implements IInstitutionDto {
             this.name = data["name"];
             this.accountId = data["accountId"];
             this.accountName = data["accountName"];
+            this.userId = data["userId"];
+            this.userName = data["userName"];
         }
     }
 
@@ -4860,6 +5098,8 @@ export class InstitutionDto extends BaseDto implements IInstitutionDto {
         data["name"] = this.name;
         data["accountId"] = this.accountId;
         data["accountName"] = this.accountName;
+        data["userId"] = this.userId;
+        data["userName"] = this.userName;
         super.toJSON(data);
         return data; 
     }
@@ -4869,6 +5109,8 @@ export interface IInstitutionDto extends IBaseDto {
     name: string;
     accountId?: string;
     accountName?: string;
+    userId?: string;
+    userName?: string;
 }
 
 export class ServiceResponseOfListOfInstitutionDto extends ServiceResponse implements IServiceResponseOfListOfInstitutionDto {
@@ -4920,7 +5162,7 @@ export class InvestorForCreationDto implements IInvestorForCreationDto {
     zipCode?: string;
     contactName?: string;
     contactPhone?: string;
-    accountId: string;
+    institutionId: string;
 
     constructor(data?: IInvestorForCreationDto) {
         if (data) {
@@ -4940,7 +5182,7 @@ export class InvestorForCreationDto implements IInvestorForCreationDto {
             this.zipCode = data["zipCode"];
             this.contactName = data["contactName"];
             this.contactPhone = data["contactPhone"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -4960,7 +5202,7 @@ export class InvestorForCreationDto implements IInvestorForCreationDto {
         data["zipCode"] = this.zipCode;
         data["contactName"] = this.contactName;
         data["contactPhone"] = this.contactPhone;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
@@ -4973,7 +5215,7 @@ export interface IInvestorForCreationDto {
     zipCode?: string;
     contactName?: string;
     contactPhone?: string;
-    accountId: string;
+    institutionId: string;
 }
 
 export class InvestorForUpdateDto implements IInvestorForUpdateDto {
@@ -4984,7 +5226,7 @@ export class InvestorForUpdateDto implements IInvestorForUpdateDto {
     zipCode?: string;
     contactName?: string;
     contactPhone?: string;
-    accountId: string;
+    institutionId: string;
 
     constructor(data?: IInvestorForUpdateDto) {
         if (data) {
@@ -5004,7 +5246,7 @@ export class InvestorForUpdateDto implements IInvestorForUpdateDto {
             this.zipCode = data["zipCode"];
             this.contactName = data["contactName"];
             this.contactPhone = data["contactPhone"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -5024,7 +5266,7 @@ export class InvestorForUpdateDto implements IInvestorForUpdateDto {
         data["zipCode"] = this.zipCode;
         data["contactName"] = this.contactName;
         data["contactPhone"] = this.contactPhone;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
@@ -5037,7 +5279,7 @@ export interface IInvestorForUpdateDto {
     zipCode?: string;
     contactName?: string;
     contactPhone?: string;
-    accountId: string;
+    institutionId: string;
 }
 
 export class ServiceResponseOfInvestorDto extends ServiceResponse implements IServiceResponseOfInvestorDto {
@@ -5074,7 +5316,7 @@ export interface IServiceResponseOfInvestorDto extends IServiceResponse {
 }
 
 export class InvestorDto extends BaseDto implements IInvestorDto {
-    accountId: string;
+    institutionId: string;
     name: string;
     address?: string;
     city?: string;
@@ -5082,7 +5324,7 @@ export class InvestorDto extends BaseDto implements IInvestorDto {
     zipCode?: string;
     contactName?: string;
     contactPhone?: string;
-    accountName?: string;
+    institutionName?: string;
 
     constructor(data?: IInvestorDto) {
         super(data);
@@ -5091,7 +5333,7 @@ export class InvestorDto extends BaseDto implements IInvestorDto {
     init(data?: any) {
         super.init(data);
         if (data) {
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
             this.name = data["name"];
             this.address = data["address"];
             this.city = data["city"];
@@ -5099,7 +5341,7 @@ export class InvestorDto extends BaseDto implements IInvestorDto {
             this.zipCode = data["zipCode"];
             this.contactName = data["contactName"];
             this.contactPhone = data["contactPhone"];
-            this.accountName = data["accountName"];
+            this.institutionName = data["institutionName"];
         }
     }
 
@@ -5112,7 +5354,7 @@ export class InvestorDto extends BaseDto implements IInvestorDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         data["name"] = this.name;
         data["address"] = this.address;
         data["city"] = this.city;
@@ -5120,14 +5362,14 @@ export class InvestorDto extends BaseDto implements IInvestorDto {
         data["zipCode"] = this.zipCode;
         data["contactName"] = this.contactName;
         data["contactPhone"] = this.contactPhone;
-        data["accountName"] = this.accountName;
+        data["institutionName"] = this.institutionName;
         super.toJSON(data);
         return data; 
     }
 }
 
 export interface IInvestorDto extends IBaseDto {
-    accountId: string;
+    institutionId: string;
     name: string;
     address?: string;
     city?: string;
@@ -5135,7 +5377,7 @@ export interface IInvestorDto extends IBaseDto {
     zipCode?: string;
     contactName?: string;
     contactPhone?: string;
-    accountName?: string;
+    institutionName?: string;
 }
 
 export class ServiceResponseOfListOfInvestorDto extends ServiceResponse implements IServiceResponseOfListOfInvestorDto {
@@ -5190,7 +5432,7 @@ export class LoanForCreationDto implements ILoanForCreationDto {
     loanNumber?: string;
     branchId?: string;
     loanType?: string;
-    accountId: string;
+    institutionId: string;
 
     constructor(data?: ILoanForCreationDto) {
         if (data) {
@@ -5213,7 +5455,7 @@ export class LoanForCreationDto implements ILoanForCreationDto {
             this.loanNumber = data["loanNumber"];
             this.branchId = data["branchId"];
             this.loanType = data["loanType"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -5236,7 +5478,7 @@ export class LoanForCreationDto implements ILoanForCreationDto {
         data["loanNumber"] = this.loanNumber;
         data["branchId"] = this.branchId;
         data["loanType"] = this.loanType;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
@@ -5252,7 +5494,7 @@ export interface ILoanForCreationDto {
     loanNumber?: string;
     branchId?: string;
     loanType?: string;
-    accountId: string;
+    institutionId: string;
 }
 
 export class LoanForUpdateDto implements ILoanForUpdateDto {
@@ -5266,7 +5508,7 @@ export class LoanForUpdateDto implements ILoanForUpdateDto {
     loanNumber?: string;
     branchId?: string;
     loanType?: string;
-    accountId: string;
+    institutionId: string;
 
     constructor(data?: ILoanForUpdateDto) {
         if (data) {
@@ -5289,7 +5531,7 @@ export class LoanForUpdateDto implements ILoanForUpdateDto {
             this.loanNumber = data["loanNumber"];
             this.branchId = data["branchId"];
             this.loanType = data["loanType"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -5312,7 +5554,7 @@ export class LoanForUpdateDto implements ILoanForUpdateDto {
         data["loanNumber"] = this.loanNumber;
         data["branchId"] = this.branchId;
         data["loanType"] = this.loanType;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
@@ -5328,7 +5570,7 @@ export interface ILoanForUpdateDto {
     loanNumber?: string;
     branchId?: string;
     loanType?: string;
-    accountId: string;
+    institutionId: string;
 }
 
 export class ServiceResponseOfLoanDto extends ServiceResponse implements IServiceResponseOfLoanDto {
@@ -5375,8 +5617,8 @@ export class LoanDto extends BaseDto implements ILoanDto {
     loanNumber?: string;
     branchId?: string;
     loanType?: string;
-    accountId: string;
-    accountName?: string;
+    institutionId: string;
+    institutionName?: string;
 
     constructor(data?: ILoanDto) {
         super(data);
@@ -5395,8 +5637,8 @@ export class LoanDto extends BaseDto implements ILoanDto {
             this.loanNumber = data["loanNumber"];
             this.branchId = data["branchId"];
             this.loanType = data["loanType"];
-            this.accountId = data["accountId"];
-            this.accountName = data["accountName"];
+            this.institutionId = data["institutionId"];
+            this.institutionName = data["institutionName"];
         }
     }
 
@@ -5419,8 +5661,8 @@ export class LoanDto extends BaseDto implements ILoanDto {
         data["loanNumber"] = this.loanNumber;
         data["branchId"] = this.branchId;
         data["loanType"] = this.loanType;
-        data["accountId"] = this.accountId;
-        data["accountName"] = this.accountName;
+        data["institutionId"] = this.institutionId;
+        data["institutionName"] = this.institutionName;
         super.toJSON(data);
         return data; 
     }
@@ -5437,8 +5679,8 @@ export interface ILoanDto extends IBaseDto {
     loanNumber?: string;
     branchId?: string;
     loanType?: string;
-    accountId: string;
-    accountName?: string;
+    institutionId: string;
+    institutionName?: string;
 }
 
 export class ServiceResponseOfListOfLoanDto extends ServiceResponse implements IServiceResponseOfListOfLoanDto {
@@ -5483,7 +5725,8 @@ export interface IServiceResponseOfListOfLoanDto extends IServiceResponse {
 }
 
 export class InviteUserModel implements IInviteUserModel {
-    accountId: string;
+    institutionId?: string;
+    accountId?: string;
     email: string;
     roleId: string;
 
@@ -5498,6 +5741,7 @@ export class InviteUserModel implements IInviteUserModel {
 
     init(data?: any) {
         if (data) {
+            this.institutionId = data["institutionId"];
             this.accountId = data["accountId"];
             this.email = data["email"];
             this.roleId = data["roleId"];
@@ -5513,6 +5757,7 @@ export class InviteUserModel implements IInviteUserModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["institutionId"] = this.institutionId;
         data["accountId"] = this.accountId;
         data["email"] = this.email;
         data["roleId"] = this.roleId;
@@ -5521,7 +5766,8 @@ export class InviteUserModel implements IInviteUserModel {
 }
 
 export interface IInviteUserModel {
-    accountId: string;
+    institutionId?: string;
+    accountId?: string;
     email: string;
     roleId: string;
 }
@@ -5802,8 +6048,8 @@ export class StandardColorDto extends BaseDto implements IStandardColorDto {
     fontColor: string;
     backGroundColor: string;
     disabled: boolean;
-    accountId: string;
-    accountName?: string;
+    institutionId: string;
+    institutionName?: string;
 
     constructor(data?: IStandardColorDto) {
         super(data);
@@ -5816,8 +6062,8 @@ export class StandardColorDto extends BaseDto implements IStandardColorDto {
             this.fontColor = data["fontColor"];
             this.backGroundColor = data["backGroundColor"];
             this.disabled = data["disabled"];
-            this.accountId = data["accountId"];
-            this.accountName = data["accountName"];
+            this.institutionId = data["institutionId"];
+            this.institutionName = data["institutionName"];
         }
     }
 
@@ -5834,8 +6080,8 @@ export class StandardColorDto extends BaseDto implements IStandardColorDto {
         data["fontColor"] = this.fontColor;
         data["backGroundColor"] = this.backGroundColor;
         data["disabled"] = this.disabled;
-        data["accountId"] = this.accountId;
-        data["accountName"] = this.accountName;
+        data["institutionId"] = this.institutionId;
+        data["institutionName"] = this.institutionName;
         super.toJSON(data);
         return data; 
     }
@@ -5846,8 +6092,8 @@ export interface IStandardColorDto extends IBaseDto {
     fontColor: string;
     backGroundColor: string;
     disabled: boolean;
-    accountId: string;
-    accountName?: string;
+    institutionId: string;
+    institutionName?: string;
 }
 
 export class StandardColorForCreationDto implements IStandardColorForCreationDto {
@@ -5855,7 +6101,7 @@ export class StandardColorForCreationDto implements IStandardColorForCreationDto
     fontColor: string;
     backGroundColor: string;
     disabled: boolean;
-    accountId: string;
+    institutionId: string;
 
     constructor(data?: IStandardColorForCreationDto) {
         if (data) {
@@ -5872,7 +6118,7 @@ export class StandardColorForCreationDto implements IStandardColorForCreationDto
             this.fontColor = data["fontColor"];
             this.backGroundColor = data["backGroundColor"];
             this.disabled = data["disabled"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -5889,7 +6135,7 @@ export class StandardColorForCreationDto implements IStandardColorForCreationDto
         data["fontColor"] = this.fontColor;
         data["backGroundColor"] = this.backGroundColor;
         data["disabled"] = this.disabled;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
@@ -5899,7 +6145,7 @@ export interface IStandardColorForCreationDto {
     fontColor: string;
     backGroundColor: string;
     disabled: boolean;
-    accountId: string;
+    institutionId: string;
 }
 
 export class StandardColorForUpdateDto implements IStandardColorForUpdateDto {
@@ -5907,7 +6153,7 @@ export class StandardColorForUpdateDto implements IStandardColorForUpdateDto {
     fontColor: string;
     backGroundColor: string;
     disabled: boolean;
-    accountId: string;
+    institutionId: string;
 
     constructor(data?: IStandardColorForUpdateDto) {
         if (data) {
@@ -5924,7 +6170,7 @@ export class StandardColorForUpdateDto implements IStandardColorForUpdateDto {
             this.fontColor = data["fontColor"];
             this.backGroundColor = data["backGroundColor"];
             this.disabled = data["disabled"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -5941,7 +6187,7 @@ export class StandardColorForUpdateDto implements IStandardColorForUpdateDto {
         data["fontColor"] = this.fontColor;
         data["backGroundColor"] = this.backGroundColor;
         data["disabled"] = this.disabled;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
@@ -5951,7 +6197,7 @@ export interface IStandardColorForUpdateDto {
     fontColor: string;
     backGroundColor: string;
     disabled: boolean;
-    accountId: string;
+    institutionId: string;
 }
 
 export class ServiceResponseOfListOfStandardColorDto extends ServiceResponse implements IServiceResponseOfListOfStandardColorDto {
@@ -6028,67 +6274,10 @@ export interface IServiceResponseOfTaskStatusSetDto extends IServiceResponse {
     data?: TaskStatusSetDto;
 }
 
-export class TaskStatusSetDto extends BaseDto implements ITaskStatusSetDto {
-    title: string;
-    disabled: boolean;
-    accountId: string;
-    accountName?: string;
-    taskStatusDetail?: TaskStatusDetailDto[];
-
-    constructor(data?: ITaskStatusSetDto) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.title = data["title"];
-            this.disabled = data["disabled"];
-            this.accountId = data["accountId"];
-            this.accountName = data["accountName"];
-            if (data["taskStatusDetail"] && data["taskStatusDetail"].constructor === Array) {
-                this.taskStatusDetail = [];
-                for (let item of data["taskStatusDetail"])
-                    this.taskStatusDetail.push(TaskStatusDetailDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): TaskStatusSetDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TaskStatusSetDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["title"] = this.title;
-        data["disabled"] = this.disabled;
-        data["accountId"] = this.accountId;
-        data["accountName"] = this.accountName;
-        if (this.taskStatusDetail && this.taskStatusDetail.constructor === Array) {
-            data["taskStatusDetail"] = [];
-            for (let item of this.taskStatusDetail)
-                data["taskStatusDetail"].push(item.toJSON());
-        }
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface ITaskStatusSetDto extends IBaseDto {
-    title: string;
-    disabled: boolean;
-    accountId: string;
-    accountName?: string;
-    taskStatusDetail?: TaskStatusDetailDto[];
-}
-
 export class TaskStatusSetForCreationDto implements ITaskStatusSetForCreationDto {
     title: string;
     disabled: boolean;
-    accountId: string;
+    institutionId: string;
 
     constructor(data?: ITaskStatusSetForCreationDto) {
         if (data) {
@@ -6103,7 +6292,7 @@ export class TaskStatusSetForCreationDto implements ITaskStatusSetForCreationDto
         if (data) {
             this.title = data["title"];
             this.disabled = data["disabled"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -6118,7 +6307,7 @@ export class TaskStatusSetForCreationDto implements ITaskStatusSetForCreationDto
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title;
         data["disabled"] = this.disabled;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
@@ -6126,13 +6315,13 @@ export class TaskStatusSetForCreationDto implements ITaskStatusSetForCreationDto
 export interface ITaskStatusSetForCreationDto {
     title: string;
     disabled: boolean;
-    accountId: string;
+    institutionId: string;
 }
 
 export class TaskStatusSetForUpdateDto implements ITaskStatusSetForUpdateDto {
     title: string;
     disabled: boolean;
-    accountId: string;
+    institutionId: string;
 
     constructor(data?: ITaskStatusSetForUpdateDto) {
         if (data) {
@@ -6147,7 +6336,7 @@ export class TaskStatusSetForUpdateDto implements ITaskStatusSetForUpdateDto {
         if (data) {
             this.title = data["title"];
             this.disabled = data["disabled"];
-            this.accountId = data["accountId"];
+            this.institutionId = data["institutionId"];
         }
     }
 
@@ -6162,7 +6351,7 @@ export class TaskStatusSetForUpdateDto implements ITaskStatusSetForUpdateDto {
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title;
         data["disabled"] = this.disabled;
-        data["accountId"] = this.accountId;
+        data["institutionId"] = this.institutionId;
         return data; 
     }
 }
@@ -6170,7 +6359,7 @@ export class TaskStatusSetForUpdateDto implements ITaskStatusSetForUpdateDto {
 export interface ITaskStatusSetForUpdateDto {
     title: string;
     disabled: boolean;
-    accountId: string;
+    institutionId: string;
 }
 
 export class ServiceResponseOfListOfTaskStatusSetDto extends ServiceResponse implements IServiceResponseOfListOfTaskStatusSetDto {

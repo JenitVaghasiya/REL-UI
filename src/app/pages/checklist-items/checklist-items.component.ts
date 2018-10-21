@@ -56,7 +56,7 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
   // @ViewChild('checkListItemDiv', { read: ViewContainerRef })
   // checkListItemDiv: ViewContainerRef;
   @Input('checkListId') checkListId = '';
-  @Input('accountId') accountId = '';
+  @Input('institutionId') institutionId = '';
   txtCommonSearch = '';
   // pageTitle = 'Check List Item Management';
   displayedColumns1: string[] = [
@@ -98,13 +98,16 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     // Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     // Add '${implements OnChanges}' to the class.
-    if (!this.accountId || this.accountId.length <= 0) {
-      this.accountId = sessionStorage.getItem('AccountCheckList');
+    if (!this.institutionId || this.institutionId.length <= 0) {
+      this.institutionId = sessionStorage.getItem('InstitutionCheckList');
     }
-    this.statusClient.getTaskStatusSets(this.accountId )
-    .subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
+    this.statusClient.getTaskStatusSetList(this.institutionId).subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
       this.statueSetsList = res.data;
     });
+    // this.statusClient.getTaskStatusSets(this.institutionId )
+    // .subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
+    //   this.statueSetsList = res.data;
+    // });
     this.getCheckListItems();
   }
 
@@ -162,9 +165,9 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
             this.checkListItems = data;
             const newItem = new CheckListItemDto();
             newItem.checkListId = this.checkListId;
-            newItem.taskStatusDetail = new TaskStatusDetailDto();
-            newItem.taskStatusDetail.caption = 'Plese Select';
-            newItem.taskStatusDetail.backGroundColor = '#f2f2f2';
+            // newItem.taskStatusDetail = new TaskStatusDetailDto();
+            // newItem.taskStatusDetail.caption = 'Plese Select';
+            // newItem.taskStatusDetail.backGroundColor = '#f2f2f2';
             newItem.order = this.checkListItems.length > 0 ?
             this.checkListItems[ this.checkListItems.length - 1].order + 1 : 1;
               this.checkListItems.push(newItem);
@@ -236,7 +239,7 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       this.toastrService.error('Please instert Help Context..', 'Alert');
       return false;
     }
-    if (!item.taskStatusDetailId || item.taskStatusDetailId.trim().length === 0) {
+    if (!item.taskStatusSetId || item.taskStatusSetId.trim().length === 0) {
       this.toastrService.error('Please Select Status..', 'Alert');
       return false;
     }
@@ -274,8 +277,8 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       delete element.helpContext;
       delete element.instruction;
       delete element.modifiedDate;
-      delete element.taskStatusDetail;
-      delete element.taskStatusDetailId;
+      delete element.taskStatusSetDetail;
+      delete element.taskStatusSetId;
       delete element.toJSON;
       delete element.init;
       if (element.id) {
@@ -303,12 +306,12 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       const x = this.allCheckListItems.data.filter(w => w.id  === checkListItem.id)[0];
       this.checkListItems[index].instruction =  x.instruction;
       this.checkListItems[index].helpContext =  x.helpContext;
-      this.checkListItems[index].taskStatusDetail =  x.taskStatusDetail;
-      this.checkListItems[index].taskStatusDetailId =  x.taskStatusDetailId;
+      this.checkListItems[index].taskStatusSetDetail =  x.taskStatusSetDetail;
+      this.checkListItems[index].taskStatusSetId =  x.taskStatusSetId;
     } else {
       checkListItem.helpContext = '';
       checkListItem.instruction = '';
-      checkListItem.taskStatusDetailId = '';
+      checkListItem.taskStatusSetId = '';
     }
   }
 
@@ -351,12 +354,12 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
   selectedStatusIndex(index: number) {
     this.selectedItemIndex = index;
   }
-  setColor(color: TaskStatusDetailDto) {
-    if (this.selectedItemIndex !== undefined) {
-    this.checkListItems[this.selectedItemIndex].taskStatusDetail = color;
-    this.checkListItems[this.selectedItemIndex].taskStatusDetailId = color.id;
-    }
-  }
+  // setColor(color: TaskStatusDetailDto) {
+  //   if (this.selectedItemIndex !== undefined) {
+  //   this.checkListItems[this.selectedItemIndex].taskStatusDetail = color;
+  //   this.checkListItems[this.selectedItemIndex].taskStatusDetailId = color.id;
+  //   }
+  // }
   trackItem (index: number, item: any) {
     return item.trackId;
   }

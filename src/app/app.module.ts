@@ -63,7 +63,6 @@ import { NIHTimelineComponent } from './rel-ui-components/ni-h-timeline/ni-h-tim
 // RELUI Pages
 import { PageDashboardComponent } from './pages/dashboard/dashboard.component';
 
-import { PageFileComponent } from './pages/rel-ui-components/file/file.component';
 import { PageRelUICardComponent } from './pages/rel-ui-components/rel-ui-card/rel-ui-card.component';
 import { PageAlertComponent } from './pages/rel-ui-components/alert/alert.component';
 import { PageBadgeComponent } from './pages/rel-ui-components/badge/badge.component';
@@ -83,8 +82,6 @@ import { PageAboutUsComponent } from './pages/pages-service/about-us/about-us.co
 import { PageFaqComponent } from './pages/pages-service/faq/faq.component';
 import { PageTimelineComponent } from './pages/pages-service/timeline/timeline.component';
 import { PageInvoiceComponent } from './pages/pages-service/invoice/invoice.component';
-import { PageCalendarComponent } from './pages/calendar/calendar.component';
-import { CalendarDialogComponent } from './pages/calendar/calendar.component';
 import { PageFormElementsComponent } from './pages/forms/form-elements/form-elements.component';
 import { PageFormLayoutComponent } from './pages/forms/form-layout/form-layout.component';
 import { PageFormValidationComponent } from './pages/forms/form-validation/form-validation.component';
@@ -202,7 +199,6 @@ import { ChecklistItemsComponent } from './pages/checklist-items/checklist-items
     NIHTimelineComponent,
 
     PageDashboardComponent,
-    PageFileComponent,
     PageRelUICardComponent,
     PageAlertComponent,
     PageBadgeComponent,
@@ -221,8 +217,6 @@ import { ChecklistItemsComponent } from './pages/checklist-items/checklist-items
     PageFaqComponent,
     PageTimelineComponent,
     PageInvoiceComponent,
-    PageCalendarComponent,
-    CalendarDialogComponent,
     PageFormElementsComponent,
     PageFormLayoutComponent,
     PageFormValidationComponent,
@@ -259,7 +253,6 @@ import { ChecklistItemsComponent } from './pages/checklist-items/checklist-items
     ChecklistItemsComponent
   ],
   entryComponents: [
-    CalendarDialogComponent,
     LoaderComponent,
     UserInviteDialogComponent,
     UserDialogComponent,

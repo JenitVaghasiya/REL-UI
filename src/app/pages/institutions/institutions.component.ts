@@ -36,6 +36,7 @@ import { TokenService } from '../../services/token.service';
 import { UserInfoModel } from 'models/custom.model';
 import { ToastrService } from 'ngx-toastr';
 import Utility from 'utility/utility';
+import { Route, Router } from '@angular/router';
 @Component({
   selector: 'app-institutions',
   templateUrl: './institutions.component.html',
@@ -74,7 +75,8 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
     public oAuthService: OAuthService,
     public loaderService: LoaderService,
     public tokenService: TokenService,
-    public toastrService: ToastrService
+    public toastrService: ToastrService,
+    public router: Router
   ) {
     this._sharedService.emitChange(this.pageTitle);
   }
@@ -82,17 +84,13 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
   getInstitutions() {
     // this.loaderService.start(this.InstitutionsDiv);
     const tokenDetail = this.tokenService.getTokenDetails();
-    const roles = tokenDetail ? tokenDetail.role : null;
+
     let accountId = '';
-
-    if (roles && roles === 'superadmin') {
-      accountId = '';
-      this.isSuperadmin = true;
+    if (sessionStorage.getItem('EditAccount')) {
+      accountId = sessionStorage.getItem('EditAccount');
+    } else {
+      accountId = this.oAuthService.getAccountId();
     }
-    if (roles && roles === 'accountadmin') {
-      accountId = this.includeMasterList ? '' :  this.oAuthService.getAccountId();
-    }
-
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
     merge(this.sort.sortChange, this.paginator.page)
@@ -104,7 +102,7 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
           ? Observable.of<ServiceResponseOfListOfInstitutionDto>(
               this.AllInstitutions
             )
-          : this.institutionClient.getInstitutionList(accountId);
+          : this.institutionClient.getInstitutionList(accountId, '');
         }),
         map(data => {
           if (!data.successful) {
@@ -179,6 +177,35 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
         this.getInstitutions();
       }
     });
+  }
+
+
+
+  listUsers(institution: InstitutionDto) {
+    sessionStorage.setItem('EditAccount', institution.accountId);
+    sessionStorage.setItem('EditInstitution', institution.id);
+    this.router.navigate(['/rel/users']);
+  }
+
+  listCheckList(institution: InstitutionDto) {
+    sessionStorage.setItem('InstitutionCheckList', institution.id);
+    this.router.navigate(['/rel/checklists']);
+  }
+  listLoans(institution: InstitutionDto) {
+    sessionStorage.setItem('LoanInstitutionId', institution.id);
+    this.router.navigate(['/rel/loans']);
+  }
+  listInvestors(institution: InstitutionDto) {
+    sessionStorage.setItem('InvestorInstitutionId', institution.id);
+    this.router.navigate(['/rel/investors']);
+  }
+  listTaskStatusSet(institution: InstitutionDto) {
+    sessionStorage.setItem('TaskStatusSetInstitutionId', institution.id);
+    this.router.navigate(['/rel/taskstatus-sets']);
+  }
+  listColors(institution: InstitutionDto) {
+    sessionStorage.setItem('InstitutionColors', institution.id);
+    this.router.navigate(['/rel/standard-color']);
   }
   ngOnDestroy() {
     sessionStorage.removeItem('EditAccount');

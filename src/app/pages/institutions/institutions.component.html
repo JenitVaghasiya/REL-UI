@@ -32,12 +32,43 @@
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action  </mat-header-cell>
           <mat-cell *matCellDef="let row">
-            <button matTooltip="Edit" *ngIf="this.isSuperadmin ||  (this.isSuperadmin && !row.accountId) || (!this.isSuperadmin && row.accountId)" mat-icon-button (click)="editInstitution(row)">
-              <mat-icon>edit</mat-icon>
-            </button>
             <button color="accent" matTooltip="Pick up & Create" *ngIf="!row.accountId" mat-icon-button (click)="editInstitution(row, true)">
               <mat-icon>library_add</mat-icon>
             </button>
+            <button mat-icon-button matTooltip="Actions" [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button matTooltip="Edit" *ngIf="this.isSuperadmin ||  (this.isSuperadmin && !row.accountId) || (!this.isSuperadmin && row.accountId)" mat-menu-item (click)="editInstitution(row)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit Institution</span>
+                </button>
+                  <button color="warn" mat-menu-item  (click)="listUsers(row)">
+                    <mat-icon>list</mat-icon>
+                    <span>Users</span>
+                  </button>
+                  <button color="warn" mat-menu-item  (click)="listCheckList(row)">
+                    <mat-icon>playlist_add_check</mat-icon>
+                    <span>CheckLists</span>
+                  </button>
+                  <button color="warn" mat-menu-item  (click)="listLoans(row)">
+                    <mat-icon>assignment</mat-icon>
+                    <span>Loans</span>
+                  </button>
+                  <button color="warn" mat-menu-item  (click)="listInvestors(row)">
+                    <mat-icon>account_balance_wallet</mat-icon>
+                    <span>Investors</span>
+                  </button>
+                  <button color="warn" mat-menu-item  (click)="listTaskStatusSet(row)">
+                    <mat-icon>account_balance_wallet</mat-icon>
+                    <span>Task Status Set</span>
+                  </button>
+                  <button color="warn" mat-menu-item  (click)="listColors(row)">
+                      <mat-icon>list</mat-icon>
+                      <span>Standard Colors</span>
+                    </button>
+            </mat-menu>
+
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
