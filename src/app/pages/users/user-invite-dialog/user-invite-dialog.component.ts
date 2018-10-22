@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, ViewChild, ViewContainerRef, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   InviteUserModel,
@@ -32,9 +32,11 @@ export class UserInviteDialogComponent implements OnInit {
   public accountList: AccountDto[] = new Array<AccountDto>();
   public roleList: AspNetRoleDto[] = new Array<AspNetRoleDto>();
   institutionList: InstitutionDto[] = new Array<InstitutionDto>();
+  oldemail;
   constructor(
     public dialogRef: MatDialogRef<UserInviteDialogComponent>,
     private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private manageUserClient: ManageUserClient,
     private accountClient: AccountsClient,
     private institutionClient: InstitutionClient,
@@ -45,16 +47,23 @@ export class UserInviteDialogComponent implements OnInit {
   ) {
 
 
-
     const tokenDetail = this.tokenService.getTokenDetails();
     const roles = tokenDetail ? tokenDetail.role : null;
     if (roles && roles === 'superadmin') {
       this.isSuperAdmin = true;
       if (sessionStorage.getItem('EditAccount')) {
         this.model.accountId = sessionStorage.getItem('EditAccount');
+      } else if (sessionStorage.getItem('EditAccountInstitution')) {
+        this.model.accountId = sessionStorage.getItem('EditAccountInstitution');
       }
+
     } else {
       this.model.accountId = this.oAuthService.getAccountId();
+    }
+    if (data) {
+      this.oldemail = data.email;
+      this.model.roleId = data.roleId;
+      this.model.email = data.email;
     }
 
 
@@ -74,30 +83,50 @@ export class UserInviteDialogComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.form = this.fb.group({
-      accountId: [null, Validators.compose([Validators.required])],
-      email: [
-        null,
-        Validators.compose([Validators.required, CustomValidators.email])
-      ],
-      roleId: [null, Validators.compose([Validators.required])]
-    });
+      this.form = this.fb.group({
+        accountId: [null, Validators.compose([Validators.required])],
+        institutionId: [null, this.model.institutionId  ? Validators.compose([Validators.required]) : null],
+        email: [
+          null,
+          Validators.compose([Validators.required, CustomValidators.email])
+        ],
+        roleId: [null, Validators.compose([Validators.required])]
+      });
   }
   onSubmit() {
     this.loaderService.start(this.userInviteDiv);
-    this.manageUserClient.inviteUser(this.model).subscribe(e => {
-      this.loaderService.stop();
-      if (e.successful) {
-        this.toastrService.success('User Invited Successfully', 'Alert');
-        this.dialogRef.close(true);
-      } else {
-        let error = '';
-        e.errorMessages.map(
-          (item, i) =>
-            (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
-        );
-        this.toastrService.error(error, 'Alert');
-      }
-    });
+
+    if (this.oldemail) {
+      this.manageUserClient.reInviteUser(this.model, this.oldemail).subscribe(e => {
+        this.loaderService.stop();
+        if (e.successful) {
+          this.toastrService.success('User ReInvited Successfully', 'Alert');
+          this.dialogRef.close(true);
+        } else {
+          let error = '';
+          e.errorMessages.map(
+            (item, i) =>
+              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
+          this.toastrService.error(error, 'Alert');
+        }
+      });
+    } else {
+      this.manageUserClient.inviteUser(this.model).subscribe(e => {
+        this.loaderService.stop();
+        if (e.successful) {
+          this.toastrService.success('User Invited Successfully', 'Alert');
+          this.dialogRef.close(true);
+        } else {
+          let error = '';
+          e.errorMessages.map(
+            (item, i) =>
+              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
+          this.toastrService.error(error, 'Alert');
+        }
+      });
+    }
+
   }
 }

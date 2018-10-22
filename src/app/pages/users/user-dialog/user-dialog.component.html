@@ -16,7 +16,7 @@
       <input matInput placeholder="Phone Number"  [(ngModel)]="model.phoneNumber" [formControl]="form.controls['phoneNumber']">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Email" [readonly]="!model.isInvited" [(ngModel)]="model.email" [formControl]="form.controls['email']">
+      <input matInput placeholder="Email" readonly="readonly" [(ngModel)]="model.email" [formControl]="form.controls['email']">
       <mat-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">
         You must include email.
       </mat-error>
@@ -40,7 +40,7 @@
           </mat-checkbox>
     </div>
 
-    <button mat-raised-button color="primary" class="btn-margin-top" type="submit" color="accent" [disabled]="!form.valid"> {{ model.isInvited ? 'Resend/Save': 'Save'}} </button>
+    <button mat-raised-button color="primary" class="btn-margin-top" type="submit" color="accent" [disabled]="!form.valid"> Save </button>
     <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>
   </form>
 </card>

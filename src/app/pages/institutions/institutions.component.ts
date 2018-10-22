@@ -182,7 +182,7 @@ export class InstitutionsComponent implements OnInit, OnDestroy {
 
 
   listUsers(institution: InstitutionDto) {
-    sessionStorage.setItem('EditAccount', institution.accountId);
+    sessionStorage.setItem('EditAccountInstitution', institution.accountId);
     sessionStorage.setItem('EditInstitution', institution.id);
     this.router.navigate(['/rel/users']);
   }
