@@ -4704,7 +4704,6 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
     instruction: string;
     helpContext?: string;
     taskStatusSetId: string;
-    taskStatusSetDetail?: TaskStatusSetDto;
     disabled: boolean;
 
     constructor(data?: ICheckListItemDto) {
@@ -4719,7 +4718,6 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
             this.instruction = data["instruction"];
             this.helpContext = data["helpContext"];
             this.taskStatusSetId = data["taskStatusSetId"];
-            this.taskStatusSetDetail = data["taskStatusSetDetail"] ? TaskStatusSetDto.fromJS(data["taskStatusSetDetail"]) : <any>undefined;
             this.disabled = data["disabled"];
         }
     }
@@ -4738,7 +4736,6 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
         data["instruction"] = this.instruction;
         data["helpContext"] = this.helpContext;
         data["taskStatusSetId"] = this.taskStatusSetId;
-        data["taskStatusSetDetail"] = this.taskStatusSetDetail ? this.taskStatusSetDetail.toJSON() : <any>undefined;
         data["disabled"] = this.disabled;
         super.toJSON(data);
         return data; 
@@ -4751,122 +4748,7 @@ export interface ICheckListItemDto extends IBaseDto {
     instruction: string;
     helpContext?: string;
     taskStatusSetId: string;
-    taskStatusSetDetail?: TaskStatusSetDto;
     disabled: boolean;
-}
-
-export class TaskStatusSetDto extends BaseDto implements ITaskStatusSetDto {
-    title: string;
-    disabled: boolean;
-    institutionId: string;
-    institutionName?: string;
-    taskStatusDetail?: TaskStatusDetailDto[];
-
-    constructor(data?: ITaskStatusSetDto) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.title = data["title"];
-            this.disabled = data["disabled"];
-            this.institutionId = data["institutionId"];
-            this.institutionName = data["institutionName"];
-            if (data["taskStatusDetail"] && data["taskStatusDetail"].constructor === Array) {
-                this.taskStatusDetail = [];
-                for (let item of data["taskStatusDetail"])
-                    this.taskStatusDetail.push(TaskStatusDetailDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): TaskStatusSetDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TaskStatusSetDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["title"] = this.title;
-        data["disabled"] = this.disabled;
-        data["institutionId"] = this.institutionId;
-        data["institutionName"] = this.institutionName;
-        if (this.taskStatusDetail && this.taskStatusDetail.constructor === Array) {
-            data["taskStatusDetail"] = [];
-            for (let item of this.taskStatusDetail)
-                data["taskStatusDetail"].push(item.toJSON());
-        }
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface ITaskStatusSetDto extends IBaseDto {
-    title: string;
-    disabled: boolean;
-    institutionId: string;
-    institutionName?: string;
-    taskStatusDetail?: TaskStatusDetailDto[];
-}
-
-export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
-    caption: string;
-    color: string;
-    backGroundColor: string;
-    order: number;
-    taskStatusSetId: string;
-    disabled: boolean;
-    taskStatusSetTitle?: string;
-
-    constructor(data?: ITaskStatusDetailDto) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.caption = data["caption"];
-            this.color = data["color"];
-            this.backGroundColor = data["backGroundColor"];
-            this.order = data["order"];
-            this.taskStatusSetId = data["taskStatusSetId"];
-            this.disabled = data["disabled"];
-            this.taskStatusSetTitle = data["taskStatusSetTitle"];
-        }
-    }
-
-    static fromJS(data: any): TaskStatusDetailDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TaskStatusDetailDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["caption"] = this.caption;
-        data["color"] = this.color;
-        data["backGroundColor"] = this.backGroundColor;
-        data["order"] = this.order;
-        data["taskStatusSetId"] = this.taskStatusSetId;
-        data["disabled"] = this.disabled;
-        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface ITaskStatusDetailDto extends IBaseDto {
-    caption: string;
-    color: string;
-    backGroundColor: string;
-    order: number;
-    taskStatusSetId: string;
-    disabled: boolean;
-    taskStatusSetTitle?: string;
 }
 
 export class ServiceResponseOfCheckListItemDto extends ServiceResponse implements IServiceResponseOfCheckListItemDto {
@@ -6272,6 +6154,120 @@ export class ServiceResponseOfTaskStatusSetDto extends ServiceResponse implement
 
 export interface IServiceResponseOfTaskStatusSetDto extends IServiceResponse {
     data?: TaskStatusSetDto;
+}
+
+export class TaskStatusSetDto extends BaseDto implements ITaskStatusSetDto {
+    title: string;
+    disabled: boolean;
+    institutionId: string;
+    institutionName?: string;
+    taskStatusDetail?: TaskStatusDetailDto[];
+
+    constructor(data?: ITaskStatusSetDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.title = data["title"];
+            this.disabled = data["disabled"];
+            this.institutionId = data["institutionId"];
+            this.institutionName = data["institutionName"];
+            if (data["taskStatusDetail"] && data["taskStatusDetail"].constructor === Array) {
+                this.taskStatusDetail = [];
+                for (let item of data["taskStatusDetail"])
+                    this.taskStatusDetail.push(TaskStatusDetailDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TaskStatusSetDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaskStatusSetDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["disabled"] = this.disabled;
+        data["institutionId"] = this.institutionId;
+        data["institutionName"] = this.institutionName;
+        if (this.taskStatusDetail && this.taskStatusDetail.constructor === Array) {
+            data["taskStatusDetail"] = [];
+            for (let item of this.taskStatusDetail)
+                data["taskStatusDetail"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITaskStatusSetDto extends IBaseDto {
+    title: string;
+    disabled: boolean;
+    institutionId: string;
+    institutionName?: string;
+    taskStatusDetail?: TaskStatusDetailDto[];
+}
+
+export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+
+    constructor(data?: ITaskStatusDetailDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.caption = data["caption"];
+            this.color = data["color"];
+            this.backGroundColor = data["backGroundColor"];
+            this.order = data["order"];
+            this.taskStatusSetId = data["taskStatusSetId"];
+            this.disabled = data["disabled"];
+            this.taskStatusSetTitle = data["taskStatusSetTitle"];
+        }
+    }
+
+    static fromJS(data: any): TaskStatusDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaskStatusDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["caption"] = this.caption;
+        data["color"] = this.color;
+        data["backGroundColor"] = this.backGroundColor;
+        data["order"] = this.order;
+        data["taskStatusSetId"] = this.taskStatusSetId;
+        data["disabled"] = this.disabled;
+        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITaskStatusDetailDto extends IBaseDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
 }
 
 export class TaskStatusSetForCreationDto implements ITaskStatusSetForCreationDto {

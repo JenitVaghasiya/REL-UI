@@ -277,7 +277,7 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       delete element.helpContext;
       delete element.instruction;
       delete element.modifiedDate;
-      delete element.taskStatusSetDetail;
+      // delete element.taskStatusSetDetail;
       delete element.taskStatusSetId;
       delete element.toJSON;
       delete element.init;
@@ -306,7 +306,7 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       const x = this.allCheckListItems.data.filter(w => w.id  === checkListItem.id)[0];
       this.checkListItems[index].instruction =  x.instruction;
       this.checkListItems[index].helpContext =  x.helpContext;
-      this.checkListItems[index].taskStatusSetDetail =  x.taskStatusSetDetail;
+      // this.checkListItems[index].taskStatusSetDetail =  x.taskStatusSetDetail;
       this.checkListItems[index].taskStatusSetId =  x.taskStatusSetId;
     } else {
       checkListItem.helpContext = '';
