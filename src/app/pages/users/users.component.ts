@@ -161,7 +161,18 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.getUsers();
     });
   }
+  reInviteUser(user: UserModel) {
 
+    this.dialogRef = this.dialog.open(UserInviteDialogComponent, {
+      disableClose: true,
+      data: { email: user.email , roleId : user.roleId }
+    });
+    this.dialogRef.afterClosed().subscribe(result => {
+      this.selectedOption = result;
+      this.AllUsers = null;
+      this.getUsers();
+    });
+  }
   editUser(user: UserModel) {
     this.dialogUserRef = this.dialog.open(UserDialogComponent, {
       data: user,

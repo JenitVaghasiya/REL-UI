@@ -69,19 +69,19 @@ export class MainMenuService {
         budgeColor: ''
       });
     }
-    if (this.isSuperAdmin || this.isAccountAdmin) {
-      MAINMENUITEMS.push({
-        title: 'Manage Institutions',
-        icon: 'fa fa-building',
-        active: false,
-        groupTitle: false,
-        sub: '',
-        routing: '/rel/institutions',
-        externalLink: '',
-        budge: '',
-        budgeColor: ''
-      });
-    }
+    // if (this.isSuperAdmin || this.isAccountAdmin) {
+    //   MAINMENUITEMS.push({
+    //     title: 'Manage Institutions',
+    //     icon: 'fa fa-building',
+    //     active: false,
+    //     groupTitle: false,
+    //     sub: '',
+    //     routing: '/rel/institutions',
+    //     externalLink: '',
+    //     budge: '',
+    //     budgeColor: ''
+    //   });
+    // }
 
     if (this.isAccountAdmin) {
       MAINMENUITEMS.push({

@@ -101,7 +101,7 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.accountId || this.accountId.length <= 0) {
       this.accountId = sessionStorage.getItem('AccountCheckList');
     }
-    this.statusClient.getTaskStatusSets(this.accountId )
+    this.statusClient.getTaskStatusSetList(this.accountId )
     .subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
       this.statueSetsList = res.data;
     });
@@ -162,9 +162,6 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
             this.checkListItems = data;
             const newItem = new CheckListItemDto();
             newItem.checkListId = this.checkListId;
-            newItem.taskStatusDetail = new TaskStatusDetailDto();
-            newItem.taskStatusDetail.caption = 'Plese Select';
-            newItem.taskStatusDetail.backGroundColor = '#f2f2f2';
             newItem.order = this.checkListItems.length > 0 ?
             this.checkListItems[ this.checkListItems.length - 1].order + 1 : 1;
               this.checkListItems.push(newItem);
@@ -236,7 +233,7 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       this.toastrService.error('Please instert Help Context..', 'Alert');
       return false;
     }
-    if (!item.taskStatusDetailId || item.taskStatusDetailId.trim().length === 0) {
+    if (!item.taskStatusSetId || item.taskStatusSetId.trim().length === 0) {
       this.toastrService.error('Please Select Status..', 'Alert');
       return false;
     }
@@ -274,8 +271,7 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       delete element.helpContext;
       delete element.instruction;
       delete element.modifiedDate;
-      delete element.taskStatusDetail;
-      delete element.taskStatusDetailId;
+      delete element.taskStatusSetId;
       delete element.toJSON;
       delete element.init;
       if (element.id) {
@@ -303,12 +299,11 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       const x = this.allCheckListItems.data.filter(w => w.id  === checkListItem.id)[0];
       this.checkListItems[index].instruction =  x.instruction;
       this.checkListItems[index].helpContext =  x.helpContext;
-      this.checkListItems[index].taskStatusDetail =  x.taskStatusDetail;
-      this.checkListItems[index].taskStatusDetailId =  x.taskStatusDetailId;
+      this.checkListItems[index].taskStatusSetId =  x.taskStatusSetId;
     } else {
       checkListItem.helpContext = '';
       checkListItem.instruction = '';
-      checkListItem.taskStatusDetailId = '';
+      checkListItem.taskStatusSetId = '';
     }
   }
 
@@ -351,12 +346,12 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
   selectedStatusIndex(index: number) {
     this.selectedItemIndex = index;
   }
-  setColor(color: TaskStatusDetailDto) {
-    if (this.selectedItemIndex !== undefined) {
-    this.checkListItems[this.selectedItemIndex].taskStatusDetail = color;
-    this.checkListItems[this.selectedItemIndex].taskStatusDetailId = color.id;
-    }
-  }
+  // setColor(color: TaskStatusDetailDto) {
+  //   if (this.selectedItemIndex !== undefined) {
+  //   this.checkListItems[this.selectedItemIndex].taskStatusDetail = color;
+  //   this.checkListItems[this.selectedItemIndex].taskStatusDetailId = color.id;
+  //   }
+  // }
   trackItem (index: number, item: any) {
     return item.trackId;
   }

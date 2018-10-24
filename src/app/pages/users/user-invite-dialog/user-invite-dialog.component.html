@@ -12,7 +12,7 @@
     </mat-form-field>
     <input *ngIf="!isSuperAdmin" type="hidden" [(ngModel)]="model.accountId" [formControl]="form.controls['accountId']">
     <mat-form-field>
-      <input matInput placeholder="Email" value="" [(ngModel)]="model.email" [formControl]="form.controls['email']">
+      <input matInput placeholder="Email" [(ngModel)]="model.email" [formControl]="form.controls['email']">
       <mat-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">
         You must include email.
       </mat-error>
@@ -30,7 +30,7 @@
         Please select role.
       </mat-error>
     </mat-form-field>
-    <button mat-raised-button color="primary" class="btn-margin-top" type="submit" color="accent" [disabled]="!form.valid">Invite</button>
+    <button mat-raised-button color="primary" class="btn-margin-top" type="submit" color="accent" [disabled]="!form.valid">{{ oldemail ? "Reinvite" : "Invite" }}</button>
     <button mat-raised-button type="button" (click)="dialogRef.close('flase')">Cancel</button>
   </form>
 </card>

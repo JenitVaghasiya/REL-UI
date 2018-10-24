@@ -973,7 +973,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     }
 
     create(checkListItem: CheckListItemForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/checklistitems/Create";
+        let url_ = this.baseUrl + "/api/checklistitems/create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(checkListItem);
@@ -1195,7 +1195,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     }
 
     getChecklistItems(checklistId: string): Observable<ServiceResponseOfListOfCheckListItemDto> {
-        let url_ = this.baseUrl + "/api/checklistitems/GetChecklistItems?";
+        let url_ = this.baseUrl + "/api/checklistitems/getchecklistitems?";
         if (checklistId === undefined)
             throw new Error("The parameter 'checklistId' must be defined.");
         else
@@ -1250,7 +1250,7 @@ export class CheckListItemsClient extends BaseClient implements ICheckListItemsC
     }
 
     updateChecklistItemsOrder(model: CheckListItemDto[]): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/checklistitems/UpdateChecklistItemsOrder?";
+        let url_ = this.baseUrl + "/api/checklistitems/updatechecklistitemsorder?";
         if (model !== undefined)
             model && model.forEach((item, index) => { 
                 for (let attr in item)
@@ -1329,7 +1329,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     }
 
     create(institution: InstitutionForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/institutions/Create";
+        let url_ = this.baseUrl + "/api/institutions/create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(institution);
@@ -1383,7 +1383,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     }
 
     delete(id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/institutions/Delete?";
+        let url_ = this.baseUrl + "/api/institutions/delete?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -1438,7 +1438,7 @@ export class InstitutionClient extends BaseClient implements IInstitutionClient 
     }
 
     update(institution: InstitutionForUpdateDto, id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/institutions/Update?";
+        let url_ = this.baseUrl + "/api/institutions/update?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2204,6 +2204,7 @@ export class LoanClient extends BaseClient implements ILoanClient {
 
 export interface IManageUserClient {
     inviteUser(model: InviteUserModel): Observable<ServiceResponse>;
+    reInviteUser(model: InviteUserModel, oldEmail: string): Observable<ServiceResponse>;
     getRegisterdUsersByAccount(accountId: string): Observable<ServiceResponseOfListOfUserModel>;
     updatePasswordOfInvitedUser(model: UpdatePasswordOfInvitedUserModel): Observable<ServiceResponseOfProfileViewModel>;
     getRoles(): Observable<ServiceResponseOfListOfAspNetRoleDto>;
@@ -2255,6 +2256,64 @@ export class ManageUserClient extends BaseClient implements IManageUserClient {
     }
 
     protected processInviteUser(response: HttpResponseBase): Observable<ServiceResponse> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ServiceResponse.fromJS(resultData200) : <any>null;
+            return Observable.of(result200);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).flatMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Observable.of<ServiceResponse>(<any>null);
+    }
+
+    reInviteUser(model: InviteUserModel, oldEmail: string): Observable<ServiceResponse> {
+        let url_ = this.baseUrl + "/api/manageuser/reinviteuser?";
+        if (oldEmail === undefined)
+            throw new Error("The parameter 'oldEmail' must be defined.");
+        else
+            url_ += "oldEmail=" + encodeURIComponent("" + oldEmail) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(model);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return Observable.fromPromise(this.transformOptions(options_)).flatMap(transformedOptions_ => {
+            return this.http.request("post", url_, transformedOptions_);
+        }).flatMap((response_: any) => {
+            return this.processReInviteUser(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processReInviteUser(<any>response_);
+                } catch (e) {
+                    return <Observable<ServiceResponse>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ServiceResponse>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processReInviteUser(response: HttpResponseBase): Observable<ServiceResponse> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -2512,7 +2571,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     getStandardColor(id: string): Observable<ServiceResponseOfStandardColorDto> {
-        let url_ = this.baseUrl + "/api/StandardColor/getDetail?";
+        let url_ = this.baseUrl + "/api/standardcolor/getDetail?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2567,7 +2626,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     createStandardColor(model: StandardColorForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/StandardColor/create";
+        let url_ = this.baseUrl + "/api/standardcolor/create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -2621,7 +2680,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     deleteStandardColor(id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/StandardColor/delete?";
+        let url_ = this.baseUrl + "/api/standardcolor/delete?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2676,7 +2735,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     updateStandardColor(model: StandardColorForUpdateDto, id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/StandardColor/update?";
+        let url_ = this.baseUrl + "/api/standardcolor/update?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2734,7 +2793,7 @@ export class StandardColorClient extends BaseClient implements IStandardColorCli
     }
 
     getStandardColorList(id: string): Observable<ServiceResponseOfListOfStandardColorDto> {
-        let url_ = this.baseUrl + "/api/StandardColor/getList?";
+        let url_ = this.baseUrl + "/api/standardcolor/getList?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2811,7 +2870,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
     }
 
     getTaskStatusSet(id: string): Observable<ServiceResponseOfTaskStatusSetDto> {
-        let url_ = this.baseUrl + "/api/taststatussets/GetTaskStatusSet?";
+        let url_ = this.baseUrl + "/api/taststatussets/gettaskstatusset?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2866,7 +2925,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
     }
 
     createTaskStatusSet(model: TaskStatusSetForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/taststatussets/CreateTaskStatusSet";
+        let url_ = this.baseUrl + "/api/taststatussets/createtaskstatusset";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -2920,7 +2979,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
     }
 
     deleteTaskStatusSet(id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/taststatussets/deleteTaskStatusSet?";
+        let url_ = this.baseUrl + "/api/taststatussets/deletetaskstatusset?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -2975,7 +3034,7 @@ export class TaskStatusClient extends BaseClient implements ITaskStatusClient {
     }
 
     updateTaskStatusSet(model: TaskStatusSetForUpdateDto, id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/taststatussets/updateTaskStatusSet?";
+        let url_ = this.baseUrl + "/api/taststatussets/updatetaskstatusset?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3165,7 +3224,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     getTaskStatus(id: string): Observable<ServiceResponseOfTaskStatusDetailDto> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/GetTaskStatus?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/gettaskstatus?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3220,7 +3279,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     createTaskStatus(model: TaskStatusDetailForCreationDto): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/CreateTaskStatus";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/createtaskstatus";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -3274,7 +3333,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     deleteTaskStatus(id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/deleteTaskStatus?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/deletetaskstatus?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3329,7 +3388,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     updateTaskStatus(model: TaskStatusDetailForUpdateDto, id: string): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/updateTaskStatus?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/updatetaskstatus?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3387,7 +3446,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     getTaskStatusList(id: string): Observable<ServiceResponseOfListOfTaskStatusDetailDto> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/gettaskstatuslist?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/gettaskstatuslist?";
         if (id === undefined)
             throw new Error("The parameter 'id' must be defined.");
         else
@@ -3442,7 +3501,7 @@ export class TaskStatusDetailClient extends BaseClient implements ITaskStatusDet
     }
 
     updateTaskstatusDetailOrder(updatedtaskStatusdetailList: TaskStatusDetailDto[]): Observable<ServiceResponse> {
-        let url_ = this.baseUrl + "/api/TaskStatusDetail/updateTaskstatusDetailOrder?";
+        let url_ = this.baseUrl + "/api/taskstatusdetail/updatetaskstatusdetailorder?";
         if (updatedtaskStatusdetailList !== undefined)
             updatedtaskStatusdetailList && updatedtaskStatusdetailList.forEach((item, index) => { 
                 for (let attr in item)
@@ -4478,7 +4537,7 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
     order: number;
     instruction: string;
     helpContext?: string;
-    taskStatusDetailId: string;
+    taskStatusSetId: string;
     disabled: boolean;
 
     constructor(data?: ICheckListItemForCreationDto) {
@@ -4496,7 +4555,7 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
             this.order = data["order"];
             this.instruction = data["instruction"];
             this.helpContext = data["helpContext"];
-            this.taskStatusDetailId = data["taskStatusDetailId"];
+            this.taskStatusSetId = data["taskStatusSetId"];
             this.disabled = data["disabled"];
         }
     }
@@ -4514,7 +4573,7 @@ export class CheckListItemForCreationDto implements ICheckListItemForCreationDto
         data["order"] = this.order;
         data["instruction"] = this.instruction;
         data["helpContext"] = this.helpContext;
-        data["taskStatusDetailId"] = this.taskStatusDetailId;
+        data["taskStatusSetId"] = this.taskStatusSetId;
         data["disabled"] = this.disabled;
         return data; 
     }
@@ -4525,7 +4584,7 @@ export interface ICheckListItemForCreationDto {
     order: number;
     instruction: string;
     helpContext?: string;
-    taskStatusDetailId: string;
+    taskStatusSetId: string;
     disabled: boolean;
 }
 
@@ -4534,8 +4593,7 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
     order: number;
     instruction: string;
     helpContext?: string;
-    taskStatusDetailId: string;
-    taskStatusDetail?: TaskStatusDetailDto;
+    taskStatusSetId: string;
     disabled: boolean;
 
     constructor(data?: ICheckListItemDto) {
@@ -4549,8 +4607,7 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
             this.order = data["order"];
             this.instruction = data["instruction"];
             this.helpContext = data["helpContext"];
-            this.taskStatusDetailId = data["taskStatusDetailId"];
-            this.taskStatusDetail = data["taskStatusDetail"] ? TaskStatusDetailDto.fromJS(data["taskStatusDetail"]) : <any>undefined;
+            this.taskStatusSetId = data["taskStatusSetId"];
             this.disabled = data["disabled"];
         }
     }
@@ -4568,8 +4625,7 @@ export class CheckListItemDto extends BaseDto implements ICheckListItemDto {
         data["order"] = this.order;
         data["instruction"] = this.instruction;
         data["helpContext"] = this.helpContext;
-        data["taskStatusDetailId"] = this.taskStatusDetailId;
-        data["taskStatusDetail"] = this.taskStatusDetail ? this.taskStatusDetail.toJSON() : <any>undefined;
+        data["taskStatusSetId"] = this.taskStatusSetId;
         data["disabled"] = this.disabled;
         super.toJSON(data);
         return data; 
@@ -4581,66 +4637,8 @@ export interface ICheckListItemDto extends IBaseDto {
     order: number;
     instruction: string;
     helpContext?: string;
-    taskStatusDetailId: string;
-    taskStatusDetail?: TaskStatusDetailDto;
-    disabled: boolean;
-}
-
-export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
-    caption: string;
-    color: string;
-    backGroundColor: string;
-    order: number;
     taskStatusSetId: string;
     disabled: boolean;
-    taskStatusSetTitle?: string;
-
-    constructor(data?: ITaskStatusDetailDto) {
-        super(data);
-    }
-
-    init(data?: any) {
-        super.init(data);
-        if (data) {
-            this.caption = data["caption"];
-            this.color = data["color"];
-            this.backGroundColor = data["backGroundColor"];
-            this.order = data["order"];
-            this.taskStatusSetId = data["taskStatusSetId"];
-            this.disabled = data["disabled"];
-            this.taskStatusSetTitle = data["taskStatusSetTitle"];
-        }
-    }
-
-    static fromJS(data: any): TaskStatusDetailDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TaskStatusDetailDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["caption"] = this.caption;
-        data["color"] = this.color;
-        data["backGroundColor"] = this.backGroundColor;
-        data["order"] = this.order;
-        data["taskStatusSetId"] = this.taskStatusSetId;
-        data["disabled"] = this.disabled;
-        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface ITaskStatusDetailDto extends IBaseDto {
-    caption: string;
-    color: string;
-    backGroundColor: string;
-    order: number;
-    taskStatusSetId: string;
-    disabled: boolean;
-    taskStatusSetTitle?: string;
 }
 
 export class ServiceResponseOfCheckListItemDto extends ServiceResponse implements IServiceResponseOfCheckListItemDto {
@@ -6083,6 +6081,63 @@ export interface ITaskStatusSetDto extends IBaseDto {
     accountId: string;
     accountName?: string;
     taskStatusDetail?: TaskStatusDetailDto[];
+}
+
+export class TaskStatusDetailDto extends BaseDto implements ITaskStatusDetailDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
+
+    constructor(data?: ITaskStatusDetailDto) {
+        super(data);
+    }
+
+    init(data?: any) {
+        super.init(data);
+        if (data) {
+            this.caption = data["caption"];
+            this.color = data["color"];
+            this.backGroundColor = data["backGroundColor"];
+            this.order = data["order"];
+            this.taskStatusSetId = data["taskStatusSetId"];
+            this.disabled = data["disabled"];
+            this.taskStatusSetTitle = data["taskStatusSetTitle"];
+        }
+    }
+
+    static fromJS(data: any): TaskStatusDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TaskStatusDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["caption"] = this.caption;
+        data["color"] = this.color;
+        data["backGroundColor"] = this.backGroundColor;
+        data["order"] = this.order;
+        data["taskStatusSetId"] = this.taskStatusSetId;
+        data["disabled"] = this.disabled;
+        data["taskStatusSetTitle"] = this.taskStatusSetTitle;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ITaskStatusDetailDto extends IBaseDto {
+    caption: string;
+    color: string;
+    backGroundColor: string;
+    order: number;
+    taskStatusSetId: string;
+    disabled: boolean;
+    taskStatusSetTitle?: string;
 }
 
 export class TaskStatusSetForCreationDto implements ITaskStatusSetForCreationDto {

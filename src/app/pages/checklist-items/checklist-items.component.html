@@ -13,7 +13,7 @@
             Help Context
           </div>
           <div class="mat-header-cell center" style="padding-right: 10px;" >
-            Status
+            Status Set
           </div>
           <div class="mat-header-cell" >
             Created Date
@@ -40,10 +40,17 @@
                   </mat-form-field>
               </div>
               <div class="mat-cell" style="padding-right: 10px;">
-                      <input name="taskStatusDetailId_{{i}}" type="hidden" placeholder="Status" [(ngModel)]="row.taskStatusDetailId">
+                <mat-form-field floatPlaceholder="never" style="padding-right: 10px;">
+                  <mat-select placeholder="Select Status Set" name="taskStatusSetId_{{i}}" [(ngModel)]="row.taskStatusSetId" >
+                    <mat-option *ngFor="let role of statueSetsList" [value]="role.id">
+                      {{ role.title }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field >
+                      <!-- <input name="taskStatusDetailId_{{i}}" type="hidden" placeholder="Status" [(ngModel)]="row.taskStatusDetailId">
                   <button mat-button [matMenuTriggerFor]="menu" (click)="selectedStatusIndex(i)" style="width:100%;height: 100%;" [ngStyle]="{'color' : row.taskStatusDetail?.color ?  row.taskStatusDetail?.color : '#000000',
                   'background-color': row.taskStatusDetail?.backGroundColor ?  row.taskStatusDetail?.backGroundColor : 'initial'}"
-   >{{ row.taskStatusDetail?.caption }}</button>
+                     >{{ row.taskStatusDetail?.caption }}</button> -->
 
               </div>
               <div class="mat-cell"> {{row.createdDate | date:'MM/dd/yyyy' }}</div>
@@ -68,7 +75,7 @@
 
       </div>
       <div class="no-record-found" *ngIf="!checkListItems || (checkListItems && checkListItems.length === 0)"> No Record Found.</div>
-      <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before" yPosition="below">
+      <!-- <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before" yPosition="below">
         <div class="status-set card-primary" *ngFor="let statusset of statueSetsList;trackBy: trackItem" style="min-width: 300px;">
           <div style="text-align: center;">
               <div mat-list-item  color="accent" i18n="@@lblCompany">{{statusset.title}}</div>
@@ -83,5 +90,5 @@
           </div>
 
         </div>
-    </mat-menu>
+    </mat-menu> -->
 <!-- </card> -->

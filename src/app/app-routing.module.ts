@@ -97,14 +97,14 @@ const defaultRoutes: Routes = [
       expectedRole: ['accountadmin', 'superadmin']
     }
   },
-  {
-    path: 'institutions',
-    component: InstitutionsComponent,
-    canActivate: [AuthenticationGuard],
-    data: {
-      expectedRole: ['accountadmin', 'superadmin']
-    }
-  },
+  // {
+  //   path: 'institutions',
+  //   component: InstitutionsComponent,
+  //   canActivate: [AuthenticationGuard],
+  //   data: {
+  //     expectedRole: ['accountadmin', 'superadmin']
+  //   }
+  // },
   {
     path: 'checklists',
     component: CheckListComponent,

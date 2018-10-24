@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, ViewChild, ViewContainerRef, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   InviteUserModel,
@@ -28,6 +28,7 @@ export class UserInviteDialogComponent implements OnInit {
   public model = new InviteUserModel();
   public accountList: AccountDto[] = new Array<AccountDto>();
   public roleList: AspNetRoleDto[] = new Array<AspNetRoleDto>();
+  oldemail;
   constructor(
     public dialogRef: MatDialogRef<UserInviteDialogComponent>,
     private fb: FormBuilder,
@@ -36,7 +37,8 @@ export class UserInviteDialogComponent implements OnInit {
     private toastrService: ToastrService,
     private loaderService: LoaderService,
     private oAuthService: OAuthService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
 
 
@@ -56,7 +58,11 @@ export class UserInviteDialogComponent implements OnInit {
     } else {
       this.model.accountId = this.oAuthService.getAccountId();
     }
-
+    if (data) {
+      this.oldemail = data.email;
+      this.model.roleId = data.roleId;
+      this.model.email = data.email;
+    }
     this.manageUserClient.getRoles().subscribe(res => {
       if (res.successful) {
         this.roleList = res.data;
@@ -75,6 +81,23 @@ export class UserInviteDialogComponent implements OnInit {
   }
   onSubmit() {
     this.loaderService.start(this.userInviteDiv);
+
+    if (this.oldemail) {
+      this.manageUserClient.reInviteUser(this.model, this.oldemail).subscribe(e => {
+        this.loaderService.stop();
+        if (e.successful) {
+          this.toastrService.success('User ReInvited Successfully', 'Alert');
+          this.dialogRef.close(true);
+        } else {
+          let error = '';
+          e.errorMessages.map(
+            (item, i) =>
+              (error += i !== 0 ? '<br/>' + item.errorMessage : item.errorMessage)
+          );
+          this.toastrService.error(error, 'Alert');
+        }
+      });
+    } else {
     this.manageUserClient.inviteUser(this.model).subscribe(e => {
       this.loaderService.stop();
       if (e.successful) {
@@ -89,5 +112,6 @@ export class UserInviteDialogComponent implements OnInit {
         this.toastrService.error(error, 'Alert');
       }
     });
+  }
   }
 }

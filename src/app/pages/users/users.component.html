@@ -38,6 +38,9 @@
             <button matTooltip="Edit User" mat-icon-button (click)="editUser(row)">
               <mat-icon>edit</mat-icon>
             </button>
+            <button matTooltip="Resend" mat-icon-button (click)="reInviteUser(row)">
+              <mat-icon>refresh</mat-icon>
+            </button>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
