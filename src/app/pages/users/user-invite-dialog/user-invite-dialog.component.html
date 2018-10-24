@@ -7,7 +7,7 @@
         </mat-option>
       </mat-select>
       <mat-error *ngIf="form.controls['accountId'].hasError('required') && form.controls['accountId'].touched">
-                    Please select account.
+                    Please select institution.
       </mat-error>
     </mat-form-field>
     <input *ngIf="!isSuperAdmin" type="hidden" [(ngModel)]="model.accountId" [formControl]="form.controls['accountId']">

@@ -74,7 +74,7 @@ const defaultRoutes: Routes = [
 
   // newly added
   {
-    path: 'account',
+    path: 'institution',
     component: AccountComponent,
     canActivate: [AuthenticationGuard],
     data: {
@@ -82,7 +82,7 @@ const defaultRoutes: Routes = [
     }
   },
   {
-    path: 'accounts',
+    path: 'institutions',
     component: AccountsComponent,
     canActivate: [AuthenticationGuard],
     data: {
@@ -173,7 +173,7 @@ const extraRoutes: Routes = [
   { path: 'confirm', component: PageConfirmComponent },
   { path: 'page-404', component: Page404Component },
   { path: 'page-500', component: Page500Component },
-  { path: 'account', component: AccountComponent },
+  { path: 'institution', component: AccountComponent },
   { path: 'unauthorized', component: Page403Component }
 ];
 

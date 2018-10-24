@@ -71,7 +71,7 @@ export class InviteResetComponent implements OnInit {
             this.oAuthService.setAccountId(e.data.accountId);
             this.router.navigate(['/rel/dashboard']);
           } else {
-            this.router.navigate(['/registration/account']);
+            this.router.navigate(['/registration/institution']);
           }
         } else {
           let error = '';

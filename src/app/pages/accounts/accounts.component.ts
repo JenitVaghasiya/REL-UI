@@ -31,7 +31,7 @@ import { AccountDialogComponent } from './account/account-dialog.component';
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnInit {
-  pageTitle = 'Accounts Management';
+  pageTitle = 'Institutions Management';
 
   @ViewChild('accountsDiv', { read: ViewContainerRef })
   accountsDiv: ViewContainerRef;

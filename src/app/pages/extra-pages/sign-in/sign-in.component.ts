@@ -80,7 +80,7 @@ export class PageSignInComponent implements OnInit {
             this.router.navigate(['/rel/dashboard']);
 
           } else {
-            this.router.navigate(['/registration/account']);
+            this.router.navigate(['/registration/institution']);
           }
         }
       } else {

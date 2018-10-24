@@ -58,12 +58,12 @@ export class MainMenuService {
     }
     if (this.isSuperAdmin) {
       MAINMENUITEMS.push({
-        title: 'Manage Accounts',
+        title: 'Manage Institutions',
         icon: 'fa fa-table',
         active: false,
         groupTitle: false,
         sub: '',
-        routing: '/rel/accounts',
+        routing: '/rel/institutions',
         externalLink: '',
         budge: '',
         budgeColor: ''

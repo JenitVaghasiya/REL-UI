@@ -94,7 +94,6 @@ export class AccountComponent implements OnInit, OnDestroy {
         this.loaderService.stop();
         if (e.successful) {
           this.toastrService.success('Institution Updated Successfully', 'Alert');
-          // account id needed
           // if (sessionStorage.getItem('EditAccount')) {
           // } else {
             this.router.navigate(['/rel/dashboard']);

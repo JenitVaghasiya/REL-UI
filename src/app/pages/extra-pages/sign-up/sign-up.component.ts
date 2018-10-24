@@ -69,7 +69,7 @@ export class PageSignUpComponent implements OnInit {
 
         }
 
-        this.router.navigate(['/registration/account']);
+        this.router.navigate(['/registration/institution']);
       } else {
         let error = '';
         e.errorMessages.map(
