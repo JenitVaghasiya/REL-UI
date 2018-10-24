@@ -93,7 +93,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.accountsClient.update(this.model, this.accountId).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
-          this.toastrService.success('Account Updated Successfully', 'Alert');
+          this.toastrService.success('Institution Updated Successfully', 'Alert');
           // account id needed
           // if (sessionStorage.getItem('EditAccount')) {
           // } else {
@@ -113,7 +113,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.accountsClient.create(this.model).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
-          this.toastrService.success('Account added Successfully', 'Alert');
+          this.toastrService.success('Institution Added Successfully', 'Alert');
           // if (sessionStorage.getItem('AddAccount')) {
           // } else {
             this.oAuthService.setAccountId(e.data ? e.data : '');

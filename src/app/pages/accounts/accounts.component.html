@@ -1,5 +1,5 @@
 <card #accountsDiv title="Manage Accounts">
-  <button mat-raised-button color="accent" (click)="addNewAccount()">Add New Account</button>
+  <button mat-raised-button color="accent" (click)="addNewAccount()">Add New Institution</button>
 
   <div *ngIf="isLoadingResults">
     <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
@@ -39,7 +39,7 @@
             <mat-menu #menu="matMenu">
                 <button color="primary" mat-menu-item (click)="editAccount(row)">
                     <mat-icon>edit</mat-icon>
-                    <span>Edit Account</span>
+                    <span>Edit Institution</span>
                 </button>
                   <button color="warn" mat-menu-item  (click)="listUsers(row)">
                     <mat-icon>list</mat-icon>

@@ -47,7 +47,7 @@ export class AccountDialogComponent extends AccountComponent {
       this.accountsClient.update(this.model, this.accountId).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
-          this.toastrService.success('Account Updated Successfully', 'Alert');
+          this.toastrService.success('Institution Updated Successfully', 'Alert');
           // account id needed
           if (sessionStorage.getItem('EditAccount')) {
             this.dialogRef.close(this.model);
@@ -68,7 +68,7 @@ export class AccountDialogComponent extends AccountComponent {
       this.accountsClient.create(this.model).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
-          this.toastrService.success('Account added Successfully', 'Alert');
+          this.toastrService.success('Institution added Successfully', 'Alert');
           if (sessionStorage.getItem('AddAccount')) {
             this.dialogRef.close(this.model);
           } else {
