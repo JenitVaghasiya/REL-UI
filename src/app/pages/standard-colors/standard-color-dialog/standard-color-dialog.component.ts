@@ -38,23 +38,23 @@ export class StandardColorDialogComponent implements OnInit {
     private oAuthService: OAuthService,
     private tokenService: TokenService
   ) {
-    // const tokenDetail = this.tokenService.getTokenDetails();
-    // const roles = tokenDetail ? tokenDetail.role : null;
-    // roles && roles === 'superadmin' &&
-    let institutionId = '';
-    if (sessionStorage.getItem('InstitutionColors')) {
-      institutionId = sessionStorage.getItem('InstitutionColors');
+    const tokenDetail = this.tokenService.getTokenDetails();
+    const roles = tokenDetail ? tokenDetail.role : null;
+
+    let accountId = '';
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountColors')) {
+      accountId = sessionStorage.getItem('AccountColors');
     } else {
-      institutionId = this.oAuthService.getInstitutionId();
+      accountId = this.oAuthService.getAccountId();
     }
     if (this.data) {
       this.model = this.data;
-      if (!this.model.institutionId) {
-        this.model.institutionId = institutionId;
+      if (!this.model.accountId) {
+        this.model.accountId = accountId;
       }
     } else {
       this.model.id = null;
-      this.model.institutionId = institutionId;
+      this.model.accountId = accountId;
     }
   }
   ngOnInit() {

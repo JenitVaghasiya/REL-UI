@@ -56,7 +56,7 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
   // @ViewChild('checkListItemDiv', { read: ViewContainerRef })
   // checkListItemDiv: ViewContainerRef;
   @Input('checkListId') checkListId = '';
-  @Input('institutionId') institutionId = '';
+  @Input('accountId') accountId = '';
   txtCommonSearch = '';
   // pageTitle = 'Check List Item Management';
   displayedColumns1: string[] = [
@@ -98,16 +98,13 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     // Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     // Add '${implements OnChanges}' to the class.
-    if (!this.institutionId || this.institutionId.length <= 0) {
-      this.institutionId = sessionStorage.getItem('InstitutionCheckList');
+    if (!this.accountId || this.accountId.length <= 0) {
+      this.accountId = sessionStorage.getItem('AccountCheckList');
     }
-    this.statusClient.getTaskStatusSetList(this.institutionId).subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
+    this.statusClient.getTaskStatusSetList(this.accountId )
+    .subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
       this.statueSetsList = res.data;
     });
-    // this.statusClient.getTaskStatusSets(this.institutionId )
-    // .subscribe((res: ServiceResponseOfListOfTaskStatusSetDto) => {
-    //   this.statueSetsList = res.data;
-    // });
     this.getCheckListItems();
   }
 
@@ -165,9 +162,6 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
             this.checkListItems = data;
             const newItem = new CheckListItemDto();
             newItem.checkListId = this.checkListId;
-            // newItem.taskStatusDetail = new TaskStatusDetailDto();
-            // newItem.taskStatusDetail.caption = 'Plese Select';
-            // newItem.taskStatusDetail.backGroundColor = '#f2f2f2';
             newItem.order = this.checkListItems.length > 0 ?
             this.checkListItems[ this.checkListItems.length - 1].order + 1 : 1;
               this.checkListItems.push(newItem);
@@ -277,7 +271,6 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       delete element.helpContext;
       delete element.instruction;
       delete element.modifiedDate;
-      // delete element.taskStatusSetDetail;
       delete element.taskStatusSetId;
       delete element.toJSON;
       delete element.init;
@@ -306,7 +299,6 @@ export class ChecklistItemsComponent implements OnInit, OnChanges, OnDestroy {
       const x = this.allCheckListItems.data.filter(w => w.id  === checkListItem.id)[0];
       this.checkListItems[index].instruction =  x.instruction;
       this.checkListItems[index].helpContext =  x.helpContext;
-      // this.checkListItems[index].taskStatusSetDetail =  x.taskStatusSetDetail;
       this.checkListItems[index].taskStatusSetId =  x.taskStatusSetId;
     } else {
       checkListItem.helpContext = '';

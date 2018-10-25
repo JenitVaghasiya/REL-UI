@@ -87,13 +87,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     } else {
       accountId = this.oAuthService.getAccountId();
     }
-
-    let institututionId = '';
-    if (sessionStorage.getItem('EditInstitution')) {
-      institututionId = sessionStorage.getItem('EditInstitution');
-    } else {
-      institututionId = this.oAuthService.getInstitutionId();
-    }
     // this.manageUserClient
     //   .getRegisterdUsersByAccount(accountId)
     //   .subscribe(res => {
@@ -115,9 +108,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           // console.log(this.paginator.pageIndex);
           return this.AllUsers
             ? Observable.of<ServiceResponseOfListOfUserModel>(this.AllUsers)
-            : (institututionId && institututionId.length > 0 ? this.manageUserClient.getRegisterdUsersByInstitution(institututionId)
-            :  this.manageUserClient.getRegisterdUsersByAccount(accountId));
-
+            : this.manageUserClient.getRegisterdUsersByAccount(accountId);
           // return this.exampleDatabase!.getRepoIssues(
           // this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),
@@ -170,7 +161,6 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.getUsers();
     });
   }
-
   reInviteUser(user: UserModel) {
 
     this.dialogRef = this.dialog.open(UserInviteDialogComponent, {
@@ -183,9 +173,6 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.getUsers();
     });
   }
-
-
-
   editUser(user: UserModel) {
     this.dialogUserRef = this.dialog.open(UserDialogComponent, {
       data: user,
@@ -194,7 +181,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     this.dialogUserRef.afterClosed().subscribe(result => {
       if (result) {
-        // user = result;S
+        // user = result;
         this.AllUsers = null;
         this.getUsers();
       }
@@ -202,6 +189,5 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     sessionStorage.removeItem('EditAccount');
-    sessionStorage.removeItem('EditInstitution');
   }
 }

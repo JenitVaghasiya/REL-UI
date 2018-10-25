@@ -35,7 +35,7 @@ export class TaskStatusDialogComponent implements OnInit {
   public model = new TaskStatusDetailDto();
   public accountList: AccountDto[] = new Array<AccountDto>();
   public colors: StandardColorDto[] = new Array<StandardColorDto>();
-  taskStatusInstitutionId: string;
+  taskStatusAccountId: string;
   constructor(
     public dialogRef: MatDialogRef<TaskStatusDialogComponent>,
     private fb: FormBuilder,
@@ -54,8 +54,8 @@ export class TaskStatusDialogComponent implements OnInit {
     if (sessionStorage.getItem('TaskStatusSetId')) {
       taskStatusSetId = sessionStorage.getItem('TaskStatusSetId');
     }
-    if (sessionStorage.getItem('TaskStatusInstitutionId')) {
-      this.taskStatusInstitutionId = sessionStorage.getItem('TaskStatusInstitutionId');
+    if (sessionStorage.getItem('TaskStatusAccountId')) {
+      this.taskStatusAccountId = sessionStorage.getItem('TaskStatusAccountId');
     }
     if (this.data && this.data.id) {
       this.model = this.data;
@@ -68,7 +68,7 @@ export class TaskStatusDialogComponent implements OnInit {
       this.model.taskStatusSetId = taskStatusSetId;
     }
 
-    this.colorsClient.getStandardColorList(this.taskStatusInstitutionId).subscribe(res => {
+    this.colorsClient.getStandardColorList(this.taskStatusAccountId).subscribe(res => {
       if (res.successful) {
         this.colors = res.data;
       }

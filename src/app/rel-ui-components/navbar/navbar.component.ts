@@ -80,7 +80,6 @@ export class NavbarComponent implements OnInit {
   }
 
   myAccount(event) {
-    // this.router.navigate(['/rel/account']);
     this.dialogRef = this.dialog.open(AccountDialogComponent, { disableClose: true });
     this.dialogRef.afterClosed().subscribe(result => {
       // this.selectedOption = result;

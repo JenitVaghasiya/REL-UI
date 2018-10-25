@@ -1,7 +1,16 @@
 <card #userInviteDiv [title]="'Invite New User'" [align]="'center'">
   <form (ngSubmit)="onSubmit()">
-    <input type="hidden" [(ngModel)]="model.accountId" [formControl]="form.controls['accountId']" />
-    <input type="hidden" [(ngModel)]="model.institutionId" [formControl]="form.controls['institutionId']" />
+    <mat-form-field *ngIf="isSuperAdmin">
+      <mat-select placeholder="Institution" name="accountId" [(ngModel)]="model.accountId" [formControl]="form.controls['accountId']">
+        <mat-option *ngFor="let account of accountList" [value]="account.id">
+          {{ account.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls['accountId'].hasError('required') && form.controls['accountId'].touched">
+                    Please select institution.
+      </mat-error>
+    </mat-form-field>
+    <input *ngIf="!isSuperAdmin" type="hidden" [(ngModel)]="model.accountId" [formControl]="form.controls['accountId']">
     <mat-form-field>
       <input matInput placeholder="Email" [(ngModel)]="model.email" [formControl]="form.controls['email']">
       <mat-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">
@@ -21,7 +30,7 @@
         Please select role.
       </mat-error>
     </mat-form-field>
-    <button mat-raised-button color="primary" class="btn-margin-top" type="submit" color="accent" [disabled]="!form.valid"> {{ oldemail ? "Reinvite" : "Invite" }} </button>
+    <button mat-raised-button color="primary" class="btn-margin-top" type="submit" color="accent" [disabled]="!form.valid">{{ oldemail ? "Reinvite" : "Invite" }}</button>
     <button mat-raised-button type="button" (click)="dialogRef.close('flase')">Cancel</button>
   </form>
 </card>

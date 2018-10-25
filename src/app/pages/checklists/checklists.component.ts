@@ -49,7 +49,7 @@ export class CheckListComponent implements OnInit, OnDestroy {
   pageTitle = 'CheckList Management';
   displayedColumns: string[] = [
     'name',
-    'institutionName',
+    'accountname',
     'createdDate',
     'modifiedDate',
     // 'status',
@@ -66,7 +66,7 @@ export class CheckListComponent implements OnInit, OnDestroy {
   isRateLimitReached = false;
   isSuperadmin = false;
   userInfoModel: UserInfoModel = new UserInfoModel();
-  institutionId = '';
+  accountId = '';
   flagArray = [];
   constructor(
     public dialog: MatDialog,
@@ -82,13 +82,12 @@ export class CheckListComponent implements OnInit, OnDestroy {
   }
 
   getCheckList() {
-    // const tokenDetail = this.tokenService.getTokenDetails();
-    // const roles = tokenDetail ? tokenDetail.role : null;
-    // roles && roles === 'superadmin' &&
-    if (sessionStorage.getItem('InstitutionCheckList')) {
-      this.institutionId = sessionStorage.getItem('InstitutionCheckList');
+    const tokenDetail = this.tokenService.getTokenDetails();
+    const roles = tokenDetail ? tokenDetail.role : null;
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountCheckList')) {
+      this.accountId = sessionStorage.getItem('AccountCheckList');
     } else {
-      this.institutionId = this.oAuthService.getInstitutionId();
+      this.accountId = this.oAuthService.getAccountId();
     }
 
     merge(this.paginator.page)
@@ -100,7 +99,7 @@ export class CheckListComponent implements OnInit, OnDestroy {
           ? Observable.of<ServiceResponseOfListOfCheckListDto>(
               this.AllCheckList
             )
-          : this.checkListClient.getListOfCheckList(this.institutionId);
+          : this.checkListClient.getListOfCheckList(this.accountId);
         }),
         map(data => {
           if (!data.successful) {
@@ -149,22 +148,43 @@ export class CheckListComponent implements OnInit, OnDestroy {
     this.getCheckList();
   }
 
+  // editCheckList(checkList: CheckListDto) {
+  //   const objIns = Utility.deepClone(checkList);
+  //   this.dialogRef = this.dialog.open(CheckListDialogComponent, {
+  //     data: objIns,  disableClose: true
+  //   });
+
+  //   this.dialogRef.afterClosed().subscribe(result => {
+  //     if (result) {
+  //       this.AllCheckList = null;
+  //       this.getCheckList();
+  //     }
+  //   });
+  // }
   addCheckList() {
     this.checkLists.data.push(new CheckListDto());
+    // this.dialogRef = this.dialog.open(CheckListDialogComponent, {
+    //   data: null,  disableClose: true
+    // });
 
+    // this.dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this.AllCheckList = null;
+    //     this.getCheckList();
+    //   }
+    // });
   }
+  // checkListItems(checkList: CheckListDto) {
+  //   sessionStorage.setItem('CheckListId', checkList.id);
+  //   sessionStorage.setItem('AccountIdCheckListItem', checkList.accountId);
+  //   this.router.navigate(['/rel/checklist-items'])
+  // }
 
   updateCheckListList(model: CheckListDto, index: number ) {
 
     this.loaderService.start(this.checkListDiv);
     if (!model.id || model.id.trim().length <= 0) {
-      model.institutionId = this.institutionId;
-      if (!model.institutionId) {
-        this.toastrService.info(
-          'Please go to Insitution & try again!',
-          'Alert'
-        );
-      }
+      model.accountId = this.accountId;
       this.checkListClient.create(model).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
@@ -213,6 +233,6 @@ export class CheckListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    sessionStorage.removeItem('InstitutionCheckList');
+    sessionStorage.removeItem('AccountCheckList');
   }
 }

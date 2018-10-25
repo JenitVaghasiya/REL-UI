@@ -54,7 +54,7 @@ export class LoansComponent implements OnInit, OnDestroy {
     'broker',
     'accountManager',
     'propertyAddress',
-    'institutionName',
+    'accountname',
     'createdDate',
     'modifiedDate',
     'action'
@@ -85,14 +85,13 @@ export class LoansComponent implements OnInit, OnDestroy {
   }
 
   getLoans() {
-    // const tokenDetail = this.tokenService.getTokenDetails();
-    // const roles = tokenDetail ? tokenDetail.role : null;
-    // roles && roles === 'superadmin' &&
-    let institutionId = '';
-    if (sessionStorage.getItem('LoanInstitutionId')) {
-      institutionId = sessionStorage.getItem('LoanInstitutionId');
+    const tokenDetail = this.tokenService.getTokenDetails();
+    const roles = tokenDetail ? tokenDetail.role : null;
+    let accountId = '';
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('LoanAccountId')) {
+      accountId = sessionStorage.getItem('LoanAccountId');
     } else {
-      institutionId = this.oAuthService.getInstitutionId();
+      accountId = this.oAuthService.getAccountId();
     }
 
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
@@ -106,7 +105,7 @@ export class LoansComponent implements OnInit, OnDestroy {
           if (this.txtCommonSearch && this.txtCommonSearch.length > 0) {
             const filterResultl = _.clone(this.AllLoans);
             filterResultl.data = filterResultl.data.filter(
-              x => x.institutionName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x => x.accountName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.propertyCity.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.accountManager.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.borrower.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
@@ -121,7 +120,7 @@ export class LoansComponent implements OnInit, OnDestroy {
           ? Observable.of<ServiceResponseOfListOfLoanDto>(
               this.AllLoans
             )
-          : this.loansClient.getLoanList(institutionId);
+          : this.loansClient.getLoanList(accountId);
           }
         }),
         map(data => {
@@ -191,6 +190,6 @@ export class LoansComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    sessionStorage.removeItem('LoanInstitutionId');
+    sessionStorage.removeItem('LoanAccountId');
   }
 }

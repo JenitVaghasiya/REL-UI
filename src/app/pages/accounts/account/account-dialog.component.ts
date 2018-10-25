@@ -1,17 +1,11 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-  OnDestroy
-} from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthClient, AccountDto, AccountsClient } from 'api/apiclient';
-import { OAuthService } from '../../../services/o-auth.service';
+import { AccountsClient, AuthClient } from 'api/apiclient';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../loader/loader.service';
-import { MatDialogRef } from '@angular/material';
+import { OAuthService } from '../../../services/o-auth.service';
 import { UserDialogComponent } from '../../users/user-dialog/user-dialog.component';
 import { AccountComponent } from './account.component';
 
@@ -47,8 +41,7 @@ export class AccountDialogComponent extends AccountComponent {
       this.accountsClient.update(this.model, this.accountId).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
-          this.toastrService.success('Account Updated Successfully', 'Alert');
-          // account id needed
+          this.toastrService.success('Institution Updated Successfully', 'Alert');
           if (sessionStorage.getItem('EditAccount')) {
             this.dialogRef.close(this.model);
           } else {
@@ -68,7 +61,7 @@ export class AccountDialogComponent extends AccountComponent {
       this.accountsClient.create(this.model).subscribe(e => {
         this.loaderService.stop();
         if (e.successful) {
-          this.toastrService.success('Account added Successfully', 'Alert');
+          this.toastrService.success('Institution added Successfully', 'Alert');
           if (sessionStorage.getItem('AddAccount')) {
             this.dialogRef.close(this.model);
           } else {

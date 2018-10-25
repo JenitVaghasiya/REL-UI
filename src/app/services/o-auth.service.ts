@@ -31,11 +31,4 @@ export class OAuthService {
   public getAccountId() {
     return localStorage.getItem('RelAccountId');
   }
-
-  public setInstitutionId(value) {
-    localStorage.setItem('RelInstitutionId', value);
-  }
-  public getInstitutionId() {
-    return localStorage.getItem('RelInstitutionId');
-  }
 }

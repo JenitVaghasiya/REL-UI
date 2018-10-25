@@ -51,7 +51,7 @@ export class TaskStatusSetComponent implements OnInit, OnDestroy {
   pageTitle = 'TaskStatusSets Management';
   displayedColumns: string[] = [
     'title',
-    'institutionName',
+    'accountname',
     'createdDate',
     'modifiedDate',
     'action'
@@ -83,14 +83,13 @@ export class TaskStatusSetComponent implements OnInit, OnDestroy {
   }
 
   getTaskStatusSets() {
-    // const tokenDetail = this.tokenService.getTokenDetails();
-    // const roles = tokenDetail ? tokenDetail.role : null;
-    // roles && roles === 'superadmin' &&
-    let institutionId = '';
-    if (sessionStorage.getItem('TaskStatusSetInstitutionId')) {
-      institutionId = sessionStorage.getItem('TaskStatusSetInstitutionId');
+    const tokenDetail = this.tokenService.getTokenDetails();
+    const roles = tokenDetail ? tokenDetail.role : null;
+    let accountId = '';
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('TaskStatusSetAccountId')) {
+      accountId = sessionStorage.getItem('TaskStatusSetAccountId');
     } else {
-      institutionId = this.oAuthService.getInstitutionId();
+      accountId = this.oAuthService.getAccountId();
     }
 
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
@@ -104,12 +103,12 @@ export class TaskStatusSetComponent implements OnInit, OnDestroy {
           if (this.txtCommonSearch && this.txtCommonSearch.length > 0) {
             const filterResultl = _.clone(this.AllTaskStatusSets);
             filterResultl.data = filterResultl.data.filter(
-              x => x.institutionName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x => x.accountName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.title.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0);
               return Observable.of<ServiceResponseOfListOfTaskStatusSetDto>(filterResultl);
           } else {
             return this.AllTaskStatusSets ? Observable.of<ServiceResponseOfListOfTaskStatusSetDto>(this.AllTaskStatusSets)
-          : this.taskStatusClient.getTaskStatusSetList(institutionId);
+          : this.taskStatusClient.getTaskStatusSetList(accountId);
           }
         }),
         map(data => {
@@ -211,11 +210,11 @@ export class TaskStatusSetComponent implements OnInit, OnDestroy {
 
   taskStatusesDetail(statusSet: TaskStatusSetDto) {
     sessionStorage.setItem('TaskStatusSetId', statusSet.id);
-    sessionStorage.setItem('TaskStatusInstitutionId', statusSet.institutionId);
+    sessionStorage.setItem('TaskStatusAccountId', statusSet.accountId);
     this.router.navigate(['/rel/taskstatuses']);
   }
 
   ngOnDestroy() {
-    sessionStorage.removeItem('TaskStatusSetInstitutionId');
+    sessionStorage.removeItem('TaskStatusSetAccountId');
   }
 }

@@ -32,7 +32,6 @@ export class UserDialogComponent implements OnInit {
   public model = new UserModel();
   public accountList: AccountDto[] = new Array<AccountDto>();
   public roleList: AspNetRoleDto[] = new Array<AspNetRoleDto>();
-  oldEmailId;
   constructor(
     public dialogRef: MatDialogRef<UserDialogComponent>,
     private fb: FormBuilder,

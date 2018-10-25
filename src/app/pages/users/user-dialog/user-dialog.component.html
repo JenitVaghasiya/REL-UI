@@ -38,9 +38,10 @@
         <mat-checkbox   [(ngModel)]="model.emailConfirmed" [formControl]="form.controls['emailConfirmed']">
             <span>Is Active</span>
           </mat-checkbox>
+
     </div>
 
-    <button mat-raised-button color="primary" class="btn-margin-top" type="submit" color="accent" [disabled]="!form.valid"> Save </button>
+    <button mat-raised-button color="primary" class="btn-margin-top" type="submit" color="accent" [disabled]="!form.valid">Save</button>
     <button mat-raised-button type="button" (click)="dialogRef.close(null)">Cancel</button>
   </form>
 </card>

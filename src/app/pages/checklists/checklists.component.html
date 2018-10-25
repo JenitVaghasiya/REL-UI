@@ -1,4 +1,4 @@
-<card #checkListDiv title="Manage CheckList for {{ checkLists && checkLists.data && checkLists.data.length > 0 ? checkLists.data[0].institutionName : ''  }}">
+<card #checkListDiv title="Manage CheckList for {{ checkLists && checkLists.data && checkLists.data.length > 0 ? checkLists.data[0].accountName : ''  }}">
     <button mat-raised-button color="accent" (click)="addCheckList()">Add CheckList</button>
     <div style="min-height: 5px;">
       &nbsp;
@@ -20,7 +20,7 @@
                   </mat-form-field>
               </div>
               <!-- <div class="mat-cell">
-                {{row.institutionName}}
+                {{row.accountName}}
               </div> -->
               <div class="mat-cell"> {{row.createdDate | date:'MM/dd/yyyy' }}</div>
               <div class="mat-cell"> {{row.modifiedDate | date:'MM/dd/yyyy' }}</div>
@@ -40,7 +40,7 @@
           </div>
           <div *ngIf="row.id && flagArray[i]" class="mat-row" style="padding-top: 5px;" >
               <div class="mat-cell" >
-              <app-checklist-items style="width:100%;"  [institutionId]="row.institutionId" [checkListId]="row.id"></app-checklist-items>
+              <app-checklist-items style="width:100%;"  [accountId]="row.accountId" [checkListId]="row.id"></app-checklist-items>
               </div>
             </div>
       </div>

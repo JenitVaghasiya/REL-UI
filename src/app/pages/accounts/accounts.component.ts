@@ -31,7 +31,7 @@ import { AccountDialogComponent } from './account/account-dialog.component';
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnInit {
-  pageTitle = 'Accounts Management';
+  pageTitle = 'Institutions Management';
 
   @ViewChild('accountsDiv', { read: ViewContainerRef })
   accountsDiv: ViewContainerRef;
@@ -162,28 +162,25 @@ export class AccountsComponent implements OnInit {
     sessionStorage.setItem('EditAccount', account.id);
     this.router.navigate(['/rel/users']);
   }
-  listInstitution(account: AccountDto) {
-    sessionStorage.setItem('EditAccount', account.id);
-    this.router.navigate(['/rel/institutions']);
+
+  listCheckList(account: AccountDto) {
+    sessionStorage.setItem('AccountCheckList', account.id);
+    this.router.navigate(['/rel/checklists']);
   }
-  // listCheckList(account: AccountDto) {
-  //   sessionStorage.setItem('InstitutionCheckList', account.id);
-  //   this.router.navigate(['/rel/checklists']);
-  // }
-  // listLoans(account: AccountDto) {
-  //   sessionStorage.setItem('LoanInstitutionId', account.id);
-  //   this.router.navigate(['/rel/loans']);
-  // }
-  // listInvestors(account: AccountDto) {
-  //   sessionStorage.setItem('InvestorInstitutionId', account.id);
-  //   this.router.navigate(['/rel/investors']);
-  // }
-  // listTaskStatusSet(account: AccountDto) {
-  //   sessionStorage.setItem('TaskStatusSetInstitutionId', account.id);
-  //   this.router.navigate(['/rel/taskstatus-sets']);
-  // }
-  // listColors(account: AccountDto) {
-  //   sessionStorage.setItem('InstitutionColors', account.id);
-  //   this.router.navigate(['/rel/standard-color']);
-  // }
+  listLoans(account: AccountDto) {
+    sessionStorage.setItem('LoanAccountId', account.id);
+    this.router.navigate(['/rel/loans']);
+  }
+  listInvestors(account: AccountDto) {
+    sessionStorage.setItem('InvestorAccountId', account.id);
+    this.router.navigate(['/rel/investors']);
+  }
+  listTaskStatusSet(account: AccountDto) {
+    sessionStorage.setItem('TaskStatusSetAccountId', account.id);
+    this.router.navigate(['/rel/taskstatus-sets']);
+  }
+  listColors(account: AccountDto) {
+    sessionStorage.setItem('AccountColors', account.id);
+    this.router.navigate(['/rel/standard-color']);
+  }
 }

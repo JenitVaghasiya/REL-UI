@@ -47,7 +47,7 @@ pre {
   font-size: $code-font-size;
   color: $pre-color;
 
-  // Account for some code outputs that place code tags in pre tags
+  // Institution for some code outputs that place code tags in pre tags
   code {
     padding: 0;
     font-size: inherit;

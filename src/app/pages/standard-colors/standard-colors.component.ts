@@ -82,14 +82,13 @@ export class StandardColorsComponent implements OnInit, OnDestroy {
   }
 
   getColors() {
-    // const tokenDetail = this.tokenService.getTokenDetails();
-    // const roles = tokenDetail ? tokenDetail.role : null;
-    // roles && roles === 'superadmin' &&
-    let institutionId = '';
-    if (sessionStorage.getItem('InstitutionColors')) {
-      institutionId = sessionStorage.getItem('InstitutionColors');
+    const tokenDetail = this.tokenService.getTokenDetails();
+    const roles = tokenDetail ? tokenDetail.role : null;
+    let accountId = '';
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('AccountColors')) {
+      accountId = sessionStorage.getItem('AccountColors');
     } else {
-      institutionId = this.oAuthService.getInstitutionId();
+      accountId = this.oAuthService.getAccountId();
     }
 
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
@@ -103,7 +102,7 @@ export class StandardColorsComponent implements OnInit, OnDestroy {
           ? Observable.of<ServiceResponseOfListOfStandardColorDto>(
               this.AllColors
             )
-          : this.colorClient.getStandardColorList(institutionId);
+          : this.colorClient.getStandardColorList(accountId);
         }),
         map(data => {
           if (!data.successful) {
@@ -201,6 +200,6 @@ export class StandardColorsComponent implements OnInit, OnDestroy {
 
   }
   ngOnDestroy() {
-    sessionStorage.removeItem('InstitutionColors');
+    sessionStorage.removeItem('AccountColors');
   }
 }

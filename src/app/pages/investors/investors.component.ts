@@ -52,7 +52,7 @@ export class InvestorsComponent implements OnInit, OnDestroy {
     'contactPhone',
     'address',
     'city',
-    'institutionName',
+    'accountname',
     'createdDate',
     'modifiedDate',
     'action'
@@ -83,13 +83,13 @@ export class InvestorsComponent implements OnInit, OnDestroy {
   }
 
   getInvestors() {
-    // const tokenDetail = this.tokenService.getTokenDetails();
-    // const roles = tokenDetail ? tokenDetail.role : null;
-    let institutionId = ''; // roles && roles === 'superadmin' &&
-    if (sessionStorage.getItem('InvestorInstitutionId')) {
-      institutionId = sessionStorage.getItem('InvestorInstitutionId');
+    const tokenDetail = this.tokenService.getTokenDetails();
+    const roles = tokenDetail ? tokenDetail.role : null;
+    let accountId = '';
+    if (roles && roles === 'superadmin' && sessionStorage.getItem('InvestorAccountId')) {
+      accountId = sessionStorage.getItem('InvestorAccountId');
     } else {
-      institutionId = this.oAuthService.getInstitutionId();
+      accountId = this.oAuthService.getAccountId();
     }
 
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
@@ -103,7 +103,7 @@ export class InvestorsComponent implements OnInit, OnDestroy {
           if (this.txtCommonSearch && this.txtCommonSearch.length > 0) {
             const filterResultl = _.clone(this.AllInvestors);
             filterResultl.data = filterResultl.data.filter(
-              x => x.institutionName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
+              x => x.accountName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.city.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.contactName.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
               x.contactPhone.toUpperCase().indexOf(this.txtCommonSearch.toUpperCase()) >= 0 ||
@@ -113,7 +113,7 @@ export class InvestorsComponent implements OnInit, OnDestroy {
               return Observable.of<ServiceResponseOfListOfInvestorDto>(filterResultl);
           } else {
             return this.AllInvestors ? Observable.of<ServiceResponseOfListOfInvestorDto>(this.AllInvestors)
-          : this.investorClient.getInvestorList(institutionId);
+          : this.investorClient.getInvestorList(accountId);
           }
         }),
         map(data => {
@@ -183,6 +183,6 @@ export class InvestorsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    sessionStorage.removeItem('InvestorInstitutionId');
+    sessionStorage.removeItem('InvestorAccountId');
   }
 }
